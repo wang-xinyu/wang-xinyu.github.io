@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>blogtest</title>
+    <title>$YOUR_POST_TITLE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="wangxinyu">
@@ -64,7 +64,7 @@
           <div class="nav-collapse">
             <ul class="nav">
                           <li class="divider-vertical"></li>
-                  <li >
+                  <li class="active">
                     <a href="/category/misc.html">
 						<i class="icon-folder-open icon-large"></i>misc
 					</a>
@@ -84,9 +84,20 @@
     <div class="container-fluid">
       <div class="row">
         <div class="span9" id="content">
-        <div class="article">
-                <h1><a href="/your_post_title.html">$YOUR_POST_TITLE</a></h1>
-                <div class="well small"><footer class="post-info">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to $YOUR_POST_TITLE">
+                                        $YOUR_POST_TITLE
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2015-10-10T00:00:00+02:00">
         <i class="icon-calendar"></i>Sat 10 October 2015
@@ -97,8 +108,8 @@
 <a href="/category/misc.html"><i class="icon-folder-open"></i>misc</a>.
 
 
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h1>Test</h1>
+</footer><!-- /.post-info -->                </div>
+                <h1>Test</h1>
 <h2>test</h2>
 <h3>第一段</h3>
 <div class="highlight"><pre>pip install pelican
@@ -108,11 +119,9 @@
 <h3>第二段</h3>
 <div class="highlight"><pre>我是无辜的
 </pre></div>
-                        <a class="btn primary xsmall" href="/your_post_title.html">more ...</a>
-                </div>
-        </div>
-        <hr />
-
+                </div><!-- /.entry-content -->
+        </article>
+</section>
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">
