@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 06 Nov 2015 00:00:00 +0800</lastBuildDate><item><title>Concepts for ES</title><link>https://wang-xinyu.github.io/concepts-for-es.html</link><description>&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
 &lt;h2&gt;1. 什么是嵌入式系统？&lt;/h2&gt;
-&lt;h5&gt;维基百科的定义&lt;/h5&gt;
+&lt;h4&gt;维基百科的定义&lt;/h4&gt;
 &lt;p&gt;嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。&lt;/p&gt;
-&lt;h5&gt;TechTarget的定义&lt;/h5&gt;
+&lt;h4&gt;TechTarget的定义&lt;/h4&gt;
 &lt;p&gt;嵌入式系统是一些计算机软硬件的集合，它是功能固定的或者可编程的，它是专门为一个特殊的功能而设计的。&lt;/p&gt;
-&lt;h5&gt;WeboPedia的定义&lt;/h5&gt;
+&lt;h4&gt;WeboPedia的定义&lt;/h4&gt;
 &lt;p&gt;一种专用的计算机系统，是一个大型系统或机械的一部分。通常，一个嵌入式系统位于一块单处理器的板子上，程序存在ROM中。&lt;/p&gt;
-&lt;h5&gt;TechoPedia的定义&lt;/h5&gt;
+&lt;h4&gt;TechoPedia的定义&lt;/h4&gt;
 &lt;p&gt;嵌入式系统是为一两个特殊功能而设计的专用计算机系统。这个系统被嵌入到一个完整的硬件设备中。嵌入式系统由一个或多个处理芯片管理，如MCU、DSP、FPGA、ASIC等。&lt;/p&gt;
-&lt;h5&gt;我的理解&lt;/h5&gt;
+&lt;h4&gt;我的理解&lt;/h4&gt;
 &lt;p&gt;嵌入式系统是一个专用的计算机系统，嵌入到一套设备中，完成特定的功能。可以有也可以没有操作系统。&lt;/p&gt;
 &lt;h2&gt;2. 可用性、可靠性、安全性、保险性&lt;/h2&gt;
-&lt;h5&gt;可用性Availability&lt;/h5&gt;
+&lt;h4&gt;可用性Availability&lt;/h4&gt;
 &lt;p&gt;系统在某个时间点是可运行的，并能够提供所期望服务的概率。&lt;/p&gt;
-&lt;h5&gt;可靠性Reliability&lt;/h5&gt;
+&lt;h4&gt;可靠性Reliability&lt;/h4&gt;
 &lt;p&gt;系统在给定的时间内，给定的环境下，为给定目的而执行的系统操作保持无失效的概率。&lt;/p&gt;
-&lt;h5&gt;安全性Security&lt;/h5&gt;
+&lt;h4&gt;安全性Security&lt;/h4&gt;
 &lt;p&gt;系统保护自身不被外界故意或无意攻击的能力。&lt;/p&gt;
-&lt;h5&gt;保险性Safety&lt;/h5&gt;
+&lt;h4&gt;保险性Safety&lt;/h4&gt;
 &lt;p&gt;系统运行期间不对人身或周边环境带来伤害的能力。&lt;/p&gt;
 &lt;p&gt;未完待续......&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 06 Nov 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-11-06:concepts-for-es.html</guid><category>ES</category></item></channel></rss>
