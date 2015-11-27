@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all-en.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2015-11-06T00:00:00+08:00</updated><entry><title>Concepts for ES</title><link href="https://wang-xinyu.github.io/concepts-for-es.html" rel="alternate"></link><updated>2015-11-06T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-06:concepts-for-es.html</id><summary type="html">&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all-en.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2015-11-27T00:00:00+08:00</updated><entry><title>Get Started with MQTT</title><link href="https://wang-xinyu.github.io/get-started-with-mqtt.html" rel="alternate"></link><updated>2015-11-27T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-27:get-started-with-mqtt.html</id><summary type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
+&lt;p&gt;本文参考&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;，根据个人的理解对MQTT进行入门级的介绍。&lt;/p&gt;
+&lt;h2&gt;1. 概述&lt;/h2&gt;
+&lt;p&gt;MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。&lt;/p&gt;
+&lt;p&gt;MQTT是极其简单、轻量级的协议，这是针对IoT的带宽低、延迟高、不稳定、终端设备功能简单等特点而设计的。MQTT在简单轻量的同时保证了通信的有效性和可靠性。&lt;/p&gt;
+&lt;p&gt;MQTT采用客户端和服务器之间发布／订阅的方式进行消息传递。客户端可向服务器发布消息，也可向服务器订阅其它客户端发布的消息。服务器可被视为发布消息的客户端和订阅消息的客户端之间的中介。客户端之间不可直接传递消息，必须通过中介（服务器）来发布／订阅消息。&lt;/p&gt;
+&lt;p&gt;MQTT可基于TCP/IP或其它有序的、丢包率低的、双向的网络协议。&lt;/p&gt;
+&lt;p&gt;MQTT控制包（Control Packet）是网络中传输的MQTT信息的总称，控制包分为14种类型。&lt;/p&gt;
+&lt;h2&gt;2. MQTT内容概况&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;标准内容非常少，整个标准只有81页，包括的主要内容只有：&lt;/p&gt;
+&lt;p&gt;（1）MQTT控制包（Control Packet）的通用格式；&lt;/p&gt;
+&lt;p&gt;（2）14种控制包的具体说明；&lt;/p&gt;
+&lt;p&gt;（3）通信的具体流程；&lt;/p&gt;
+&lt;p&gt;（4）加密问题。&lt;/p&gt;
+&lt;h2&gt;3. 控制包格式&lt;/h2&gt;
+&lt;p&gt;MQTT控制包只有三部分，固定头、可选头、净荷，如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Alt Text" src="/images/MQTTctrlPktStruc.png" /&gt;&lt;/p&gt;
+&lt;p&gt;固定头是每一种控制包都有的，大小为2Byte，包括控制包类型、标志和剩余长度三个字段，如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Alt Text" src="/images/MQTTfixHead.png" /&gt;&lt;/p&gt;
+&lt;p&gt;未完待续......&lt;/p&gt;
+&lt;p&gt;本文为作者原创，转载请注明出处。&lt;/p&gt;</summary><category term="IoT"></category></entry><entry><title>Concepts for ES</title><link href="https://wang-xinyu.github.io/concepts-for-es.html" rel="alternate"></link><updated>2015-11-06T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-06:concepts-for-es.html</id><summary type="html">&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
 &lt;h2&gt;1. 什么是嵌入式系统？&lt;/h2&gt;
 &lt;h4&gt;维基百科的定义&lt;/h4&gt;
 &lt;p&gt;嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。&lt;/p&gt;

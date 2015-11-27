@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Author list">
-        <meta name="keywords" content="">
+        <meta name="description" content="MQTT入门介绍 本文参考MQTT Version 3.1.1，根据个人的理解对MQTT进行入门级的介绍。 1. 概述 MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。 ...">
+        <meta name="keywords" content="IoT">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
-        <title>Author list - BlogWX</title>
+        <title>Get Started with MQTT - BlogWX</title>
 
         <!-- Stylesheets -->
         <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
 
         <!-- RSS Feeds -->
         <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/iot.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
         <!-- /RSS Feeds -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -31,7 +32,7 @@
     <body>
 
         <!-- Header -->
-    <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wang-xinyu.github.io/images/homepage.png'); background-position: center; ">
+    <div class="header-container gradient">
 
             <!-- Static navbar -->
             <div class="container">
@@ -48,17 +49,23 @@
             <!-- /Static navbar -->
 
             <!-- Header -->
+    <!-- Header -->
     <div class="container header-wrapper">
         <div class="row">
               <div class="col-lg-12">
                   <div class="header-content">
-                      <h1 class="header-title text-uppercase">Author list</h1>
+                      <h1 class="header-title">Get Started with MQTT</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Fri 27 November 2015, in category <a href="https://wang-xinyu.github.io/category/iot.html">Iot</a></p>
                       <div class="header-underline"></div>
-                      <p class="header-subtitle header-subtitle-homepage">Archives listed by author</p>
+                      <div class="clearfix"></div>
+                      <p class="pull-right header-tags">
+                          <span class="glyphicon glyphicon-tags mr5" aria-hidden="true"></span>
+<a href="https://wang-xinyu.github.io/tag/iot.html">IoT</a>                      </p>
                   </div>
               </div>
         </div>
     </div>
+    <!-- /Header -->
             <!-- /Header -->
 
         </div>
@@ -66,16 +73,45 @@
 
 
         <!-- Content -->
-    <div class="archive-container">
-        <div class="container content archive">
-            <h2><a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a></h2>
-            <dl class="dl-horizontal">
-            	<dt>Fri 27 November 2015</dt>
-            	<dd><a href="https://wang-xinyu.github.io/get-started-with-mqtt.html">Get Started with MQTT</a></dd>
-            	<dt>Fri 06 November 2015</dt>
-            	<dd><a href="https://wang-xinyu.github.io/concepts-for-es.html">Concepts for ES</a></dd>
-            </dl>
-        </div>
+    <div class="container content">
+        <h1>MQTT入门介绍</h1>
+<p>本文参考<a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html">MQTT Version 3.1.1</a>，根据个人的理解对MQTT进行入门级的介绍。</p>
+<h2>1. 概述</h2>
+<p>MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。</p>
+<p>MQTT是极其简单、轻量级的协议，这是针对IoT的带宽低、延迟高、不稳定、终端设备功能简单等特点而设计的。MQTT在简单轻量的同时保证了通信的有效性和可靠性。</p>
+<p>MQTT采用客户端和服务器之间发布／订阅的方式进行消息传递。客户端可向服务器发布消息，也可向服务器订阅其它客户端发布的消息。服务器可被视为发布消息的客户端和订阅消息的客户端之间的中介。客户端之间不可直接传递消息，必须通过中介（服务器）来发布／订阅消息。</p>
+<p>MQTT可基于TCP/IP或其它有序的、丢包率低的、双向的网络协议。</p>
+<p>MQTT控制包（Control Packet）是网络中传输的MQTT信息的总称，控制包分为14种类型。</p>
+<h2>2. MQTT内容概况</h2>
+<p><a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html">MQTT Version 3.1.1</a>标准内容非常少，整个标准只有81页，包括的主要内容只有：</p>
+<p>（1）MQTT控制包（Control Packet）的通用格式；</p>
+<p>（2）14种控制包的具体说明；</p>
+<p>（3）通信的具体流程；</p>
+<p>（4）加密问题。</p>
+<h2>3. 控制包格式</h2>
+<p>MQTT控制包只有三部分，固定头、可选头、净荷，如下图所示：</p>
+<p><img alt="Alt Text" src="/images/MQTTctrlPktStruc.png" /></p>
+<p>固定头是每一种控制包都有的，大小为2Byte，包括控制包类型、标志和剩余长度三个字段，如下图所示：</p>
+<p><img alt="Alt Text" src="/images/MQTTfixHead.png" /></p>
+<p>未完待续......</p>
+<p>本文为作者原创，转载请注明出处。</p>
+
+
+    <div class="comments">
+        <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'blogwx';
+                var disqus_identifier = 'get-started-with-mqtt.html';
+                var disqus_url = 'https://wang-xinyu.github.io/get-started-with-mqtt.html';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+        
     </div>
         <!-- /Content --> 
 
