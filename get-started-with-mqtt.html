@@ -93,8 +93,111 @@
 <p><img alt="Alt Text" src="/images/MQTTctrlPktStruc.png" /></p>
 <p>固定头是每一种控制包都有的，大小为2Byte，包括控制包类型、标志和剩余长度三个字段，如下图所示：</p>
 <p><img alt="Alt Text" src="/images/MQTTfixHead.png" /></p>
-<p>未完待续......</p>
-<p>本文为作者原创，转载请注明出处。</p>
+<p>可选头和净荷都存在于其中几种类型的控制包中，内容取决于包类型。</p>
+<h2>4. 控制包类型</h2>
+<p>下表是MQTT控制包的14种类型，C2S代表客户端到服务器，S2C反之。各类型控制包的具体内容请参阅<a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html">MQTT Version 3.1.1</a>。</p>
+<table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="left">名称</th>
+<th align="left">方向</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="left">CONNECT</td>
+<td align="left">C2S</td>
+<td align="center">客户端向服务器请求连接</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="left">CONNACK</td>
+<td align="left">S2C</td>
+<td align="center">连接确认</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="left">PUBLISH</td>
+<td align="left">C2S或S2C</td>
+<td align="center">发布消息</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="left">PUBACK</td>
+<td align="left">C2S或S2C</td>
+<td align="center">发布确认</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="left">PUBREC</td>
+<td align="left">C2S或S2C</td>
+<td align="center">已收到发布的消息</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">PUBREL</td>
+<td align="left">C2S或S2C</td>
+<td align="center">发布释放</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left">PUBCOMP</td>
+<td align="left">C2S或S2C</td>
+<td align="center">发布完成</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left">SUBSCRIBE</td>
+<td align="left">C2S</td>
+<td align="center">客户端的订阅请求</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left">SUBACK</td>
+<td align="left">S2C</td>
+<td align="center">订阅确认</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left">UNSUBSCRIBE</td>
+<td align="left">C2S</td>
+<td align="center">取消订阅</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left">UNSUBACK</td>
+<td align="left">S2C</td>
+<td align="center">取消订阅的确认</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">PINGREQ</td>
+<td align="left">C2S</td>
+<td align="center">PING请求</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="left">PINGRESP</td>
+<td align="left">S2C</td>
+<td align="center">PING响应</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="left">DISCONNECT</td>
+<td align="left">C2S</td>
+<td align="center">客户端将断开连接</td>
+</tr>
+</tbody>
+</table>
+<h2>5. QoS等级和消息传递流程</h2>
+<p>MQTT应用消息的传递有3个保障级别，即3个QoS等级。不同QoS等级对应着不同的消息传递流程。</p>
+<p>（1）QoS 0: At most once delivery，至多一次传递。发送端仅发送一次，无重传，接收端无响应。消息可能到达接收端一次或零次。</p>
+<p>（2）QoS 1: At least once delivery，至少一次传递。接收端收到消息后返回PUBACK，消息至少到达接收端一次。</p>
+<p>（3）QoS 2: Exactly once delivery，消息传且仅传一次。此级别不允许丢包和消息重复。消息要经过两次确认，第一次发送端发送PUBLISH，接收端返回PUBREC；随后第二次发送端发送PUBREL，接收端返回PUBCOMP。</p>
+<p>注：本文为作者原创，转载请注明出处。</p>
 
 
     <div class="comments">
