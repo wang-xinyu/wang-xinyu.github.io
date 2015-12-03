@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="嵌入式系统的相关概念 1. 什么是嵌入式系统？ 维基百科的定义 嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。 TechTarget的定义 嵌入式系统是一些计算机软硬件的集合，它是功能固定的或者可编程的，它是专门为一个特殊的功能而设计的。 WeboPedia的定义 ...">
-        <meta name="keywords" content="ES">
+        <meta name="description" content="MODBUS over Serial Line介绍 本文参考&#39;MODBUS over Serial Line V1.02&#39;，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问MODBUS官网。 1. MODBUS简介 ...">
+        <meta name="keywords" content="IoT">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
-        <title>Concepts for ES - BlogWX</title>
+        <title>Introduction to MODBUS over Serial Line - BlogWX</title>
 
         <!-- Stylesheets -->
         <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 
         <!-- RSS Feeds -->
         <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
-        <link href="https://wang-xinyu.github.io/feeds/embedded-system.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/iot.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
         <!-- /RSS Feeds -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -54,13 +54,13 @@
         <div class="row">
               <div class="col-lg-12">
                   <div class="header-content">
-                      <h1 class="header-title">Concepts for ES</h1>
-                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Fri 06 November 2015, in category <a href="https://wang-xinyu.github.io/category/embedded-system.html">Embedded System</a></p>
+                      <h1 class="header-title">Introduction to MODBUS over Serial Line</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Wed 02 December 2015, in category <a href="https://wang-xinyu.github.io/category/iot.html">IoT</a></p>
                       <div class="header-underline"></div>
                       <div class="clearfix"></div>
                       <p class="pull-right header-tags">
                           <span class="glyphicon glyphicon-tags mr5" aria-hidden="true"></span>
-<a href="https://wang-xinyu.github.io/tag/es.html">ES</a>                      </p>
+<a href="https://wang-xinyu.github.io/tag/iot.html">IoT</a>                      </p>
                   </div>
               </div>
         </div>
@@ -74,37 +74,66 @@
 
         <!-- Content -->
     <div class="container content">
-        <h1>嵌入式系统的相关概念</h1>
-<h2>1. 什么是嵌入式系统？</h2>
-<h3>维基百科的定义</h3>
-<p>嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。</p>
-<h3>TechTarget的定义</h3>
-<p>嵌入式系统是一些计算机软硬件的集合，它是功能固定的或者可编程的，它是专门为一个特殊的功能而设计的。</p>
-<h3>WeboPedia的定义</h3>
-<p>一种专用的计算机系统，是一个大型系统或机械的一部分。通常，一个嵌入式系统位于一块单处理器的板子上，程序存在ROM中。</p>
-<h3>TechoPedia的定义</h3>
-<p>嵌入式系统是为一两个特殊功能而设计的专用计算机系统。这个系统被嵌入到一个完整的硬件设备中。嵌入式系统由一个或多个处理芯片管理，如MCU、DSP、FPGA、ASIC等。</p>
-<h3>我的理解</h3>
-<p>嵌入式系统是一个专用的计算机系统，嵌入到一套设备中，完成特定的功能。可以有也可以没有操作系统。</p>
-<h2>2. 可用性、可靠性、安全性、保险性</h2>
-<h3>可用性Availability</h3>
-<p>系统在某个时间点是可运行的，并能够提供所期望服务的概率。</p>
-<h3>可靠性Reliability</h3>
-<p>系统在给定的时间内，给定的环境下，为给定目的而执行的系统操作保持无失效的概率。</p>
-<h3>安全性Security</h3>
-<p>系统保护自身不被外界故意或无意攻击的能力。</p>
-<h3>保险性Safety</h3>
-<p>系统运行期间不对人身或周边环境带来伤害的能力。</p>
-<p>未完待续......</p>
-<p>注：本文为作者原创，转载请注明出处。</p>
+        <h1>MODBUS over Serial Line介绍</h1>
+<p>本文参考'MODBUS over Serial Line V1.02'，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问<a href="http://www.modbus.org">MODBUS官网</a>。</p>
+<h2>1. MODBUS简介</h2>
+<p>MODBUS标准定义了一个应用层的消息传输协议，即位于OSI模型的第七层，它为连接至不同类型总线或网络的设备提供了Client/Server通信机制。此外，MODBUS也标定了一个串行线上的协议，即MODBUS over Serial Line，用于主机与从机之间交换MODBUS请求。</p>
+<h2>2. MODBUS over Serial Line概述</h2>
+<p>MODBUS over Serial Line也可被称为MODBUS Serial Line protocol，该协议位于OSI模型的第二层，即数据链路层。它是一种主从式的协议，支持的物理层协议是TIA/EIA-485或TIA/EIA-232，即RS485和RS232。</p>
+<h2>3. MODBUS over Serial Line明细</h2>
+<h3>3.1 主从式协议的原则</h3>
+<p>MODBUS over Serial Line主从式系统的特点如下：</p>
+<ul>
+<li>主节点有且仅有一个，从节点有1-247个；</li>
+<li>主节点向从节点下达命令，并处理从节点的响应；</li>
+<li>从节点只有在收到主节点的请求后才发送数据，从节点之间不可直接通信；</li>
+<li>主节点在同一时刻只能进行一项MODBUS交易，即不能同时与多个从节点通信。</li>
+</ul>
+<p>主节点下达的MODBUS请求有如下两种模式：</p>
+<ul>
+<li>unicast mode（单播模式），主机向一个从机下达一条请求，从机的地址是1-247，该从机在收到并处理请求后，返回一条'reply'；</li>
+<li>broadcast mode（广播模式），主机可将一条请求下达至所有从机，广播请求中地址值为0，从机在收到广播请求后不返回信息。</li>
+</ul>
+<h3>3.2 寻址规则</h3>
+<p>MODBUS的寻址空间包括256个地址，主节点没有地址，一条MODBUS串行总线上的从节点必须有一个独立的地址，具体的地址分配如下：</p>
+<ul>
+<li>0，广播地址；</li>
+<li>1-247，从节点地址；</li>
+<li>248-255，保留。</li>
+</ul>
+<h3>3.3 帧结构</h3>
+<p>帧结构图如下，PDU即Protocol Data Unit。主机下达请求时，将从机的地址写入地址字段，从机返回响应时，将自己的地址写入地址字段。功能码用于指示功能，数据字段包含请求或响应的参数。</p>
+<p><img alt="ModbusPDU.png" src="/images/ModbusPDU.png" /></p>
+<h3>3.4 状态转换图</h3>
+<p>主机状态转换图：</p>
+<p><img alt="ModbusMasterStat.png" src="/images/ModbusMasterStat.png" /></p>
+<p>从机状态转换图：</p>
+<p><img alt="ModbusSlaveStat.png" src="/images/ModbusSlaveStat.png" /></p>
+<h3>3.5 两种串行传输模式——RTU与ASCII</h3>
+<h4>3.5.1 RTU模式</h4>
+<p>RTU即Remote Terminal Unit，该模式下，数据以二进制数字形式传输，例如需传输的一个字节是0x5B，实际传输的数据也是0x5B。RTU模式主要包含如下几点约定：</p>
+<ul>
+<li>每个字节都被封装成11位，包含1位起始位、8位数据、1位奇/偶校验位、1位停止位；</li>
+<li>帧结构包含1字节从机地址、1字节功能码、0－252字节数据、2字节CRC校验；</li>
+<li>帧间间隔至少为3.5倍的单字符传输时间；</li>
+<li>帧内的字符间隔至多为1.5倍的单字符传输时间。</li>
+</ul>
+<h4>3.5.2 ASCII模式</h4>
+<p>ASCII模式下，数据以ASCII字符形式传输，例如需传输的一个字节是0x5B，实际传输的是0x35（“5”）和0x42（“B”），显然该模式的传输效率比RTU低。通常，只有当设备不满足RTU模式所需的定时器要求时，才使用ASCII模式。ASCII主要包含如下几点约定：</p>
+<ul>
+<li>每个字节都被封装成10位，包含1位起始位、7位数据、1位奇/偶校验位、1位停止位；</li>
+<li>帧结构包含1字符起始字段、2字符从机地址、2字符功能码、0－2x252字符数据、2字符LRC校验、2字符结束字段；</li>
+<li>起始字段是冒号“:”，结束字段是CR和LF。</li>
+</ul>
+<p>注：本文为作者原创，欢迎批评指正，转载请注明出处。</p>
 
 
     <div class="comments">
         <div id="disqus_thread"></div>
             <script type="text/javascript">
                 var disqus_shortname = 'blogwx';
-                var disqus_identifier = 'concepts-for-es.html';
-                var disqus_url = 'https://wang-xinyu.github.io/concepts-for-es.html';
+                var disqus_identifier = 'introduction-to-modbus-over-serial-line.html';
+                var disqus_url = 'https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html';
                 (function() {
                     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
