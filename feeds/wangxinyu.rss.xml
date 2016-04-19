@@ -61,7 +61,7 @@ urname ALL=(ALL) NOPASSWD: ALL
 
 &lt;h2&gt;7. 收尾&lt;/h2&gt;
 &lt;p&gt;修改完之后，可用新用户名登录，最后不要忘了锁定root用户，并禁止SSH登录root用户。&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 19 Apr 2016 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2016-04-19:modify-the-user-name-of-raspbian.html</guid><category>Linux  Raspi</category></item><item><title>Summary of C Traps</title><link>https://wang-xinyu.github.io/summary-of-c-traps.html</link><description>&lt;h1&gt;C陷阱总结&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 19 Apr 2016 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2016-04-19:modify-the-user-name-of-raspbian.html</guid><category>Linux</category><category>Raspi</category></item><item><title>Summary of C Traps</title><link>https://wang-xinyu.github.io/summary-of-c-traps.html</link><description>&lt;h1&gt;C陷阱总结&lt;/h1&gt;
 &lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
 &lt;p&gt;本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。&lt;/p&gt;
 &lt;h2&gt;1. const修饰符&lt;/h2&gt;

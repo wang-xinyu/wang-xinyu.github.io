@@ -61,4 +61,4 @@ urname ALL=(ALL) NOPASSWD: ALL
 
 &lt;h2&gt;7. 收尾&lt;/h2&gt;
 &lt;p&gt;修改完之后，可用新用户名登录，最后不要忘了锁定root用户，并禁止SSH登录root用户。&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</summary><category term="Linux  Raspi"></category></entry></feed>
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</summary><category term="Linux"></category><category term="Raspi"></category></entry></feed>
