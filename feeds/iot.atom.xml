@@ -50,7 +50,7 @@
 &lt;li&gt;帧结构包含1字符起始字段、2字符从机地址、2字符功能码、0－2x252字符数据、2字符LRC校验、2字符结束字段；&lt;/li&gt;
 &lt;li&gt;起始字段是冒号“:”，结束字段是CR和LF。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</summary><category term="IoT"></category></entry><entry><title>Get Started with MQTT</title><link href="https://wang-xinyu.github.io/get-started-with-mqtt.html" rel="alternate"></link><updated>2015-11-27T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-27:get-started-with-mqtt.html</id><summary type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
+&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</summary><category term="MODBUS"></category></entry><entry><title>Get Started with MQTT</title><link href="https://wang-xinyu.github.io/get-started-with-mqtt.html" rel="alternate"></link><updated>2015-11-27T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-27:get-started-with-mqtt.html</id><summary type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
 &lt;p&gt;本文参考&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;，根据个人的理解对MQTT进行入门级的介绍。&lt;/p&gt;
 &lt;h2&gt;1. 概述&lt;/h2&gt;
 &lt;p&gt;MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。&lt;/p&gt;
@@ -78,4 +78,4 @@
 &lt;p&gt;（1）QoS 0: At most once delivery，至多一次传递。发送端仅发送一次，无重传，接收端无响应。消息可能到达接收端一次或零次。&lt;/p&gt;
 &lt;p&gt;（2）QoS 1: At least once delivery，至少一次传递。接收端收到消息后返回PUBACK，消息至少到达接收端一次。&lt;/p&gt;
 &lt;p&gt;（3）QoS 2: Exactly once delivery，消息传且仅传一次。此级别不允许丢包和消息重复。消息要经过两次确认，第一次发送端发送PUBLISH，接收端返回PUBREC；随后第二次发送端发送PUBREL，接收端返回PUBCOMP。&lt;/p&gt;
-&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</summary><category term="IoT"></category></entry></feed>
+&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</summary><category term="MQTT"></category></entry></feed>

@@ -1,5 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2015-12-02T00:00:00+08:00</updated><entry><title>Introduction to MODBUS over Serial Line</title><link href="https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html" rel="alternate"></link><updated>2015-12-02T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-02:introduction-to-modbus-over-serial-line.html</id><summary type="html">&lt;h1&gt;MODBUS over Serial Line介绍&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2016-04-19T00:00:00+08:00</updated><entry><title>Modify the user name of Raspbian</title><link href="https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html" rel="alternate"></link><updated>2016-04-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-04-19:modify-the-user-name-of-raspbian.html</id><summary type="html">&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
+&lt;p&gt;本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。&lt;/p&gt;
+&lt;h2&gt;1. 启用root用户&lt;/h2&gt;
+&lt;p&gt;输入两遍密码解锁root用户，最后通过su验证root用户是否已经启用。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pi@raspberrypi:~ $ sudo passwd root
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+
+pi@raspberrypi:~ $ sudo passwd --unlock root
+passwd: password expiry information changed.
+
+pi@raspberrypi:~ $ su
+Password: 
+root@raspberrypi:/home/pi#
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;2. 允许SSH登录root用户&lt;/h2&gt;
+&lt;p&gt;SSH出于安全考虑，默认不允许登录root用户，需修改配置文件/etc/ssh/sshd_config，将PermitRootLogin的属性改为yes。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;#PermitRootLogin without-password
+PermitRootLogin yes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;3. 修改Boot选项&lt;/h2&gt;
+&lt;p&gt;利用raspi-config工具修改Boot选项，将自动以pi用户登录，改为requiring user to login。修改后重启。&lt;/p&gt;
+&lt;h2&gt;4. SSH登录root用户&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;WangXinyu&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;
+&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="nl"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;programs&lt;/span&gt; &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;Debian&lt;/span&gt; &lt;span class="n"&gt;GNU&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Linux&lt;/span&gt; &lt;span class="n"&gt;system&lt;/span&gt; &lt;span class="n"&gt;are&lt;/span&gt; &lt;span class="n"&gt;free&lt;/span&gt; &lt;span class="n"&gt;software&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;exact&lt;/span&gt; &lt;span class="n"&gt;distribution&lt;/span&gt; &lt;span class="n"&gt;terms&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt; &lt;span class="n"&gt;are&lt;/span&gt; &lt;span class="n"&gt;described&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
+&lt;span class="n"&gt;individual&lt;/span&gt; &lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;share&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;doc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;*/&lt;/span&gt;&lt;span class="n"&gt;copyright&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+
+&lt;span class="n"&gt;Debian&lt;/span&gt; &lt;span class="n"&gt;GNU&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Linux&lt;/span&gt; &lt;span class="n"&gt;comes&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;ABSOLUTELY&lt;/span&gt; &lt;span class="nb"&gt;NO&lt;/span&gt; &lt;span class="n"&gt;WARRANTY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;extent&lt;/span&gt;
+&lt;span class="n"&gt;permitted&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;applicable&lt;/span&gt; &lt;span class="n"&gt;law&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;Last&lt;/span&gt; &lt;span class="nl"&gt;login&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Thu&lt;/span&gt; &lt;span class="n"&gt;Mar&lt;/span&gt; &lt;span class="mi"&gt;31&lt;/span&gt; &lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;31&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;
+&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;raspberrypi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;5. 修改名字&lt;/h2&gt;
+&lt;p&gt;修改user name，group name，home路径名，以及/etc/passwd中的home路径。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;root@raspberrypi:~# usermod -l urname pi
+root@raspberrypi:~# groupmod -n urname pi
+root@raspberrypi:~# mv /home/pi/ /home/urname
+root@raspberrypi:~# usermod -d /home/urname urname
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;6. 配置新用户的sudo权限&lt;/h2&gt;
+&lt;p&gt;修改/etc/sudoers文件，将具有sudo权限的pi改为urname。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pi ALL=(ALL) NOPASSWD: ALL
+改为
+urname ALL=(ALL) NOPASSWD: ALL
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;7. 收尾&lt;/h2&gt;
+&lt;p&gt;修改完之后，可用新用户名登录，最后不要忘了锁定root用户，并禁止SSH登录root用户。&lt;/p&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</summary><category term="Linux  Raspi"></category></entry><entry><title>Summary of C Traps</title><link href="https://wang-xinyu.github.io/summary-of-c-traps.html" rel="alternate"></link><updated>2015-12-08T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-08:summary-of-c-traps.html</id><summary type="html">&lt;h1&gt;C陷阱总结&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
+&lt;p&gt;本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。&lt;/p&gt;
+&lt;h2&gt;1. const修饰符&lt;/h2&gt;
+&lt;p&gt;const指常量、常数。const与#define相比，效率更高。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;const int i;                /* i不可变 */
+int const i;                /* i不可变 */
+int const a[3]={1, 2, 3};   /* 数组不可变 */
+const int a[3]={1, 2, 3};   /* 数组不可变 */
+const int *p;               /* p 可变，p 指向的对象不可变 */
+int const *p;               /* p 可变，p 指向的对象不可变 */
+int *const p;               /* p 不可变，p 指向的对象可变 */
+const int *const p;         /* 指针p 和p 指向的对象都不可变 */
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;2. volatile修饰符&lt;/h2&gt;
+&lt;p&gt;volatile指易变的，比如端口数据等变量应当使用volatile修饰。volatile告诉编译器，这个变量是反复无常的，编译器每次用这个变量时，必须从内存中取它的值，编译器对访问该变量的代码不再进行优化。&lt;/p&gt;
+&lt;h2&gt;3. 可变参数"..."&lt;/h2&gt;
+&lt;p&gt;"..."表示参数的个数和类型是可变的，printf()就用到了可变参数，它的定义如下：&lt;/p&gt;
+&lt;p&gt;int printf( const char* format, ... );&lt;/p&gt;
+&lt;p&gt;在函数内部通过前面固定参数的地址获取可变参数的地址，从而可以在函数内部处理这些可变参数。&lt;/p&gt;
+&lt;h2&gt;4. 语句块&lt;/h2&gt;
+&lt;p&gt;由{}括起来的若干条语句组成一个语句块。如下所示，语句块构成一个作用域，函数内的i和语句块中的i不同，语句块中的j的作用域只是语句块内。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;void foo(void)
+{
+    int i = 0;
+    {
+        int i = 1;
+        int j = 2;
+        printf(&amp;quot;i=%d, j=%d\n&amp;quot;, i, j);
+    }
+    printf(&amp;quot;i=%d\n&amp;quot;, i); /* cannot access j here */
+｝
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;5. 全局变量和局部变量的初始化&lt;/h2&gt;
+&lt;p&gt;局部变量可以用任意类型相符的表达式来初始化，而全局变量只能用常量表达式初始化。全局变量的初始值要求保存在编译生成的目标代码中，所以必须在编译时就能计算出来。&lt;/p&gt;
+&lt;p&gt;如果全局变量在定义时不初始化，则初始值是0，也就是说，整型的就是0，字符型的就是'\0'，浮点型的就是0.0。如果局部变量在定义时不初始化，则初始值是不确定的，所以，局部变量在使用前一定要先赋值，不管是通过初始化还是赋值运算符。&lt;/p&gt;
+&lt;h2&gt;6. 结构体的初始化和赋值&lt;/h2&gt;
+&lt;p&gt;如果Initializer中的数据比结构体的成员多，编译器会报错，但如果只是末尾多个逗号不算错。如果Initializer中的数据比结构体的成员少，未指定的成员将用0来初始化，就像未初始化的全局变量一样。例如以下几种形式的初始化都是合法的，但结构体直接赋值是非法的。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;struct complex_struct { double x, y; };
+struct complex_struct z1 = { x, 4.0, }; /* z1.x=3.0, z1.y=4.0 */
+struct complex_struct z2 = { 3.0, };        /* z2.x=3.0, z2.y=0.0 */
+struct complex_struct z3 = { };             /* z3.x=0.0, z3.y=0.0 */
+
+struct complex_struct z1;
+z1 = { 3.0, 4.0 };                          /* illegal */
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;7. #include的尖括号&amp;lt;&amp;gt;和引号""&lt;/h2&gt;
+&lt;p&gt;对于用尖括号&amp;lt;&amp;gt;包含的头文件，gcc首先查找-I选项指定的目录，然后查找系统的头文件目录（Linux通常是/usr/include）。&lt;/p&gt;
+&lt;p&gt;而对于用引号包含的头文件，gcc首先查找包含头文件的.c文件所在的目录，然后查找-I选项指定的目录，然后查找系统的头文件目录。&lt;/p&gt;
+&lt;h2&gt;8. 指针数组和指向数组的指针&lt;/h2&gt;
+&lt;p&gt;int *a[10]是指针数组，而int (*a)[10]是指向数组的指针。我们可以认为[]比*有更高的优先级，如果a先和*结合则表示a是一个指针，如果a先和[]结合则表示a是一个数组。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* int *a[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+typedef&lt;span class="w"&gt; &lt;/span&gt;int&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;t&lt;span class="err"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+t&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="err"&gt;];&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* int (*a)[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+typedef&lt;span class="w"&gt; &lt;/span&gt;int&lt;span class="w"&gt; &lt;/span&gt;t&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="err"&gt;];&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;span class="err"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;持续更新中......&lt;/p&gt;</summary><category term="C"></category></entry><entry><title>Introduction to MODBUS over Serial Line</title><link href="https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html" rel="alternate"></link><updated>2015-12-02T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-02:introduction-to-modbus-over-serial-line.html</id><summary type="html">&lt;h1&gt;MODBUS over Serial Line介绍&lt;/h1&gt;
 &lt;p&gt;本文参考'MODBUS over Serial Line V1.02'，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问&lt;a href="http://www.modbus.org"&gt;MODBUS官网&lt;/a&gt;。&lt;/p&gt;
 &lt;h2&gt;1. MODBUS简介&lt;/h2&gt;
 &lt;p&gt;MODBUS标准定义了一个应用层的消息传输协议，即位于OSI模型的第七层，它为连接至不同类型总线或网络的设备提供了Client/Server通信机制。此外，MODBUS也标定了一个串行线上的协议，即MODBUS over Serial Line，用于主机与从机之间交换MODBUS请求。&lt;/p&gt;
@@ -50,7 +179,7 @@
 &lt;li&gt;帧结构包含1字符起始字段、2字符从机地址、2字符功能码、0－2x252字符数据、2字符LRC校验、2字符结束字段；&lt;/li&gt;
 &lt;li&gt;起始字段是冒号“:”，结束字段是CR和LF。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</summary><category term="IoT"></category></entry><entry><title>Get Started with MQTT</title><link href="https://wang-xinyu.github.io/get-started-with-mqtt.html" rel="alternate"></link><updated>2015-11-27T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-27:get-started-with-mqtt.html</id><summary type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
+&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</summary><category term="MODBUS"></category></entry><entry><title>Get Started with MQTT</title><link href="https://wang-xinyu.github.io/get-started-with-mqtt.html" rel="alternate"></link><updated>2015-11-27T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-27:get-started-with-mqtt.html</id><summary type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
 &lt;p&gt;本文参考&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;，根据个人的理解对MQTT进行入门级的介绍。&lt;/p&gt;
 &lt;h2&gt;1. 概述&lt;/h2&gt;
 &lt;p&gt;MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。&lt;/p&gt;
@@ -78,7 +207,7 @@
 &lt;p&gt;（1）QoS 0: At most once delivery，至多一次传递。发送端仅发送一次，无重传，接收端无响应。消息可能到达接收端一次或零次。&lt;/p&gt;
 &lt;p&gt;（2）QoS 1: At least once delivery，至少一次传递。接收端收到消息后返回PUBACK，消息至少到达接收端一次。&lt;/p&gt;
 &lt;p&gt;（3）QoS 2: Exactly once delivery，消息传且仅传一次。此级别不允许丢包和消息重复。消息要经过两次确认，第一次发送端发送PUBLISH，接收端返回PUBREC；随后第二次发送端发送PUBREL，接收端返回PUBCOMP。&lt;/p&gt;
-&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</summary><category term="IoT"></category></entry><entry><title>Concepts for ES</title><link href="https://wang-xinyu.github.io/concepts-for-es.html" rel="alternate"></link><updated>2015-11-06T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-06:concepts-for-es.html</id><summary type="html">&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
+&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</summary><category term="MQTT"></category></entry><entry><title>Concepts for ES</title><link href="https://wang-xinyu.github.io/concepts-for-es.html" rel="alternate"></link><updated>2015-11-06T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-06:concepts-for-es.html</id><summary type="html">&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
 &lt;h2&gt;1. 什么是嵌入式系统？&lt;/h2&gt;
 &lt;h3&gt;维基百科的定义&lt;/h3&gt;
 &lt;p&gt;嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。&lt;/p&gt;
