@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 19 Apr 2016 00:00:00 +0800</lastBuildDate><item><title>Modify the user name of Raspbian</title><link>https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html</link><description>&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 19 Aug 2016 00:00:00 +0800</lastBuildDate><item><title>Getting Started with ROS Navigation Stack</title><link>https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html</link><description>&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+&lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
+&lt;h2&gt;1. Install ROS&lt;/h2&gt;
+&lt;p&gt;ROS is not a standalone OS, but based on Ubuntu or other Debian distributions. So first we need to install Ubuntu, or other Debian if you like, but it is recommanded to choose Ubuntu for beginners.&lt;/p&gt;
+&lt;p&gt;At the time of my writing this article, the latest ROS distribution is Kinetic, which &lt;strong&gt;ONLY&lt;/strong&gt; supports Wily (Ubuntu 15.10), Xenial (Ubuntu 16.04) and Jessie (Debian 8) for debian packages. So my choice is &lt;code&gt;Xenial + Kinetic&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="http://wiki.ros.org/kinetic/Installation/Ubuntu"&gt;ROS Kinetic Install Guide&lt;/a&gt; is very helpful. So I just make a brief summary here.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Setup the repositories, sources.list and apt-key. So that you can install ROS packages through &lt;code&gt;apt-get install&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Install the full package &lt;code&gt;ros-kinetic-desktop-full&lt;/code&gt; if you are using a x86 PC. For ARM, such as Raspberry Pi, you may have to install ROS-base, and then install other individual packages.&lt;/li&gt;
+&lt;li&gt;Setup your shell environment. Basically, you need to append &lt;code&gt;source /opt/ros/kinetic/setup.bash&lt;/code&gt; to your &lt;code&gt;~/.bashrc&lt;/code&gt;. After creating your own workspaces, you have to setup extra environments.&lt;/li&gt;
+&lt;li&gt;Besides, there are some settings not that important, you may check the Kinetic Install Guide for details. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2. Create a ROS Workspace&lt;/h2&gt;
+&lt;p&gt;There are two ways to create ROS workspace, i.e. &lt;code&gt;catkin&lt;/code&gt; and &lt;code&gt;rosbuild&lt;/code&gt;. I think &lt;code&gt;catkin&lt;/code&gt; is much more easier.&lt;/p&gt;
+&lt;p&gt;Actually you may follow the &lt;a href="http://wiki.ros.org/ROS/Tutorials"&gt;ROS beginner tutorials&lt;/a&gt; to learn how to create a catkin workspace, and you have to understand ROS packages, nodes, topics, services, parameters, roslaunch, messages, publisher, subscriber and other ROS basics.&lt;/p&gt;
+&lt;h2&gt;3. Get your robot run with RViz&lt;/h2&gt;
+&lt;p&gt;Now we are ready to drive the robot with ROS. Before using ROS, I think you should already have a driver program which can send movement command from PC to your robot and receive odometry and other robot state info. And then you need a bridge program to connect ROS with your driver.&lt;/p&gt;
+&lt;p&gt;My robot is P3DX, the &lt;code&gt;libaria&lt;/code&gt; can communicate with robot, controll it and get its state info. And &lt;code&gt;RosAria&lt;/code&gt; is the bridge between ROS and &lt;code&gt;libaria&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RosAria&lt;/code&gt; subscribes to the &lt;code&gt;cmd_vel&lt;/code&gt; topic, so that I can make P3DX run by publishing &lt;code&gt;geometry_msgs/Twist&lt;/code&gt; message to it.&lt;/p&gt;
+&lt;p&gt;And &lt;code&gt;RosAria&lt;/code&gt; publishes to the topic &lt;code&gt;pose&lt;/code&gt;, &lt;code&gt;sonar&lt;/code&gt;, &lt;code&gt;bumper_state&lt;/code&gt;, &lt;code&gt;motors_state&lt;/code&gt;, etc. I can get info from these topics.&lt;/p&gt;
+&lt;p&gt;Then I want to display my robot on the RViz and teleop it. The &lt;a href="https://github.com/MobileRobots/amr-ros-config"&gt;amr-ros-config&lt;/a&gt; package contains &lt;code&gt;URDF&lt;/code&gt;, &lt;code&gt;.rviz&lt;/code&gt; and &lt;code&gt;launch&lt;/code&gt; files, with all these stuff, I can display the P3DX model on the RViz and teleop it.&lt;/p&gt;
+&lt;h2&gt;4. Setup ROS Navigation Stack&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="ros_nav_stack.png" src="/images/nav_stack.png" /&gt;&lt;/p&gt;
+&lt;p&gt;The blue components are what we need to provide. Fortunately, &lt;code&gt;RosAria&lt;/code&gt; has done most of the work. &lt;code&gt;odometry source&lt;/code&gt;, &lt;code&gt;base controller&lt;/code&gt; and &lt;code&gt;sensor sources&lt;/code&gt; are all fully provided by &lt;code&gt;RosAria&lt;/code&gt;. For &lt;code&gt;sensor transforms&lt;/code&gt;, &lt;code&gt;RosAria&lt;/code&gt; provides the tf &lt;code&gt;odom-&amp;gt;base_link&lt;/code&gt;, other sensor frames transform should be provided by us. I didn't use laser, I just used sonar, so I just provided the tf &lt;code&gt;base_link-&amp;gt;sonar_frame&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The gray components are optional components that are already implemented. Here I didn't use &lt;code&gt;amcl&lt;/code&gt;, I used &lt;code&gt;map_server&lt;/code&gt; with a existing map picture. So I need a YAML file to describe &lt;code&gt;map_server&lt;/code&gt; parameters.&lt;/p&gt;
+&lt;p&gt;The white components are required components that are already implemented. What we have to provide is just four configuration files, i.e. &lt;code&gt;costmap_common_params.yaml&lt;/code&gt;, &lt;code&gt;global_costmap_params.yaml&lt;/code&gt;, &lt;code&gt;local_costmap_params.yaml&lt;/code&gt; and &lt;code&gt;base_local_planner_params.yaml&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, a launch file is needed to launch the ROS navigation stack. The launch sequence is like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RosAria + RViz&lt;/li&gt;
+&lt;li&gt;map_server with map YAML file&lt;/li&gt;
+&lt;li&gt;move_base with those four configuration files.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OK, now set a goal from RViz, there will be a path and local cosmap, then the robot will go down that path until reaching that goal.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 19 Aug 2016 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2016-08-19:getting-started-with-ros-navigation-stack.html</guid><category>ROS</category></item><item><title>Modify the user name of Raspbian</title><link>https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html</link><description>&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
 &lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
 &lt;p&gt;本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。&lt;/p&gt;
 &lt;h2&gt;1. 启用root用户&lt;/h2&gt;
@@ -28,16 +60,8 @@ PermitRootLogin yes
 &lt;h2&gt;3. 修改Boot选项&lt;/h2&gt;
 &lt;p&gt;利用raspi-config工具修改Boot选项，将自动以pi用户登录，改为requiring user to login。修改后重启。&lt;/p&gt;
 &lt;h2&gt;4. SSH登录root用户&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;WangXinyu&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;
-&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="nl"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-
-&lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;programs&lt;/span&gt; &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;Debian&lt;/span&gt; &lt;span class="n"&gt;GNU&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Linux&lt;/span&gt; &lt;span class="n"&gt;system&lt;/span&gt; &lt;span class="n"&gt;are&lt;/span&gt; &lt;span class="n"&gt;free&lt;/span&gt; &lt;span class="n"&gt;software&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;exact&lt;/span&gt; &lt;span class="n"&gt;distribution&lt;/span&gt; &lt;span class="n"&gt;terms&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt; &lt;span class="n"&gt;are&lt;/span&gt; &lt;span class="n"&gt;described&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
-&lt;span class="n"&gt;individual&lt;/span&gt; &lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;share&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;doc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;*/&lt;/span&gt;&lt;span class="n"&gt;copyright&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
-
-&lt;span class="n"&gt;Debian&lt;/span&gt; &lt;span class="n"&gt;GNU&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Linux&lt;/span&gt; &lt;span class="n"&gt;comes&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;ABSOLUTELY&lt;/span&gt; &lt;span class="nb"&gt;NO&lt;/span&gt; &lt;span class="n"&gt;WARRANTY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;extent&lt;/span&gt;
-&lt;span class="n"&gt;permitted&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;applicable&lt;/span&gt; &lt;span class="n"&gt;law&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
-&lt;span class="n"&gt;Last&lt;/span&gt; &lt;span class="nl"&gt;login&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Thu&lt;/span&gt; &lt;span class="n"&gt;Mar&lt;/span&gt; &lt;span class="mi"&gt;31&lt;/span&gt; &lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;31&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;
+&lt;span class="nl"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
 &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;raspberrypi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -179,7 +203,7 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;li&gt;帧结构包含1字符起始字段、2字符从机地址、2字符功能码、0－2x252字符数据、2字符LRC校验、2字符结束字段；&lt;/li&gt;
 &lt;li&gt;起始字段是冒号“:”，结束字段是CR和LF。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Wed, 02 Dec 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-12-02:introduction-to-modbus-over-serial-line.html</guid><category>MODBUS</category></item><item><title>Get Started with MQTT</title><link>https://wang-xinyu.github.io/get-started-with-mqtt.html</link><description>&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
+&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Wed, 02 Dec 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-12-02:introduction-to-modbus-over-serial-line.html</guid><category>MODBUS</category></item><item><title>Getting Started with MQTT</title><link>https://wang-xinyu.github.io/getting-started-with-mqtt.html</link><description>&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
 &lt;p&gt;本文参考&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;，根据个人的理解对MQTT进行入门级的介绍。&lt;/p&gt;
 &lt;h2&gt;1. 概述&lt;/h2&gt;
 &lt;p&gt;MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。&lt;/p&gt;
@@ -207,7 +231,7 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;p&gt;（1）QoS 0: At most once delivery，至多一次传递。发送端仅发送一次，无重传，接收端无响应。消息可能到达接收端一次或零次。&lt;/p&gt;
 &lt;p&gt;（2）QoS 1: At least once delivery，至少一次传递。接收端收到消息后返回PUBACK，消息至少到达接收端一次。&lt;/p&gt;
 &lt;p&gt;（3）QoS 2: Exactly once delivery，消息传且仅传一次。此级别不允许丢包和消息重复。消息要经过两次确认，第一次发送端发送PUBLISH，接收端返回PUBREC；随后第二次发送端发送PUBREL，接收端返回PUBCOMP。&lt;/p&gt;
-&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 27 Nov 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-11-27:get-started-with-mqtt.html</guid><category>MQTT</category></item><item><title>Concepts for ES</title><link>https://wang-xinyu.github.io/concepts-for-es.html</link><description>&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
+&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 27 Nov 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-11-27:getting-started-with-mqtt.html</guid><category>MQTT</category></item><item><title>Concepts for ES</title><link>https://wang-xinyu.github.io/concepts-for-es.html</link><description>&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
 &lt;h2&gt;1. 什么是嵌入式系统？&lt;/h2&gt;
 &lt;h3&gt;维基百科的定义&lt;/h3&gt;
 &lt;p&gt;嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。&lt;/p&gt;

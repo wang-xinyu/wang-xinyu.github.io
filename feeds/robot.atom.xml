@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/robot.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2016-08-19T00:00:00+08:00</updated><entry><title>Getting Started with ROS Navigation Stack</title><link href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html" rel="alternate"></link><updated>2016-08-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-08-19:getting-started-with-ros-navigation-stack.html</id><summary type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+&lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
+&lt;h2&gt;1. Install ROS&lt;/h2&gt;
+&lt;p&gt;ROS is not a standalone OS, but based on Ubuntu or other Debian distributions. So first we need to install Ubuntu, or other Debian if you like, but it is recommanded to choose Ubuntu for beginners.&lt;/p&gt;
+&lt;p&gt;At the time of my writing this article, the latest ROS distribution is Kinetic, which &lt;strong&gt;ONLY&lt;/strong&gt; supports Wily (Ubuntu 15.10), Xenial (Ubuntu 16.04) and Jessie (Debian 8) for debian packages. So my choice is &lt;code&gt;Xenial + Kinetic&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="http://wiki.ros.org/kinetic/Installation/Ubuntu"&gt;ROS Kinetic Install Guide&lt;/a&gt; is very helpful. So I just make a brief summary here.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Setup the repositories, sources.list and apt-key. So that you can install ROS packages through &lt;code&gt;apt-get install&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Install the full package &lt;code&gt;ros-kinetic-desktop-full&lt;/code&gt; if you are using a x86 PC. For ARM, such as Raspberry Pi, you may have to install ROS-base, and then install other individual packages.&lt;/li&gt;
+&lt;li&gt;Setup your shell environment. Basically, you need to append &lt;code&gt;source /opt/ros/kinetic/setup.bash&lt;/code&gt; to your &lt;code&gt;~/.bashrc&lt;/code&gt;. After creating your own workspaces, you have to setup extra environments.&lt;/li&gt;
+&lt;li&gt;Besides, there are some settings not that important, you may check the Kinetic Install Guide for details. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2. Create a ROS Workspace&lt;/h2&gt;
+&lt;p&gt;There are two ways to create ROS workspace, i.e. &lt;code&gt;catkin&lt;/code&gt; and &lt;code&gt;rosbuild&lt;/code&gt;. I think &lt;code&gt;catkin&lt;/code&gt; is much more easier.&lt;/p&gt;
+&lt;p&gt;Actually you may follow the &lt;a href="http://wiki.ros.org/ROS/Tutorials"&gt;ROS beginner tutorials&lt;/a&gt; to learn how to create a catkin workspace, and you have to understand ROS packages, nodes, topics, services, parameters, roslaunch, messages, publisher, subscriber and other ROS basics.&lt;/p&gt;
+&lt;h2&gt;3. Get your robot run with RViz&lt;/h2&gt;
+&lt;p&gt;Now we are ready to drive the robot with ROS. Before using ROS, I think you should already have a driver program which can send movement command from PC to your robot and receive odometry and other robot state info. And then you need a bridge program to connect ROS with your driver.&lt;/p&gt;
+&lt;p&gt;My robot is P3DX, the &lt;code&gt;libaria&lt;/code&gt; can communicate with robot, controll it and get its state info. And &lt;code&gt;RosAria&lt;/code&gt; is the bridge between ROS and &lt;code&gt;libaria&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RosAria&lt;/code&gt; subscribes to the &lt;code&gt;cmd_vel&lt;/code&gt; topic, so that I can make P3DX run by publishing &lt;code&gt;geometry_msgs/Twist&lt;/code&gt; message to it.&lt;/p&gt;
+&lt;p&gt;And &lt;code&gt;RosAria&lt;/code&gt; publishes to the topic &lt;code&gt;pose&lt;/code&gt;, &lt;code&gt;sonar&lt;/code&gt;, &lt;code&gt;bumper_state&lt;/code&gt;, &lt;code&gt;motors_state&lt;/code&gt;, etc. I can get info from these topics.&lt;/p&gt;
+&lt;p&gt;Then I want to display my robot on the RViz and teleop it. The &lt;a href="https://github.com/MobileRobots/amr-ros-config"&gt;amr-ros-config&lt;/a&gt; package contains &lt;code&gt;URDF&lt;/code&gt;, &lt;code&gt;.rviz&lt;/code&gt; and &lt;code&gt;launch&lt;/code&gt; files, with all these stuff, I can display the P3DX model on the RViz and teleop it.&lt;/p&gt;
+&lt;h2&gt;4. Setup ROS Navigation Stack&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="ros_nav_stack.png" src="/images/nav_stack.png" /&gt;&lt;/p&gt;
+&lt;p&gt;The blue components are what we need to provide. Fortunately, &lt;code&gt;RosAria&lt;/code&gt; has done most of the work. &lt;code&gt;odometry source&lt;/code&gt;, &lt;code&gt;base controller&lt;/code&gt; and &lt;code&gt;sensor sources&lt;/code&gt; are all fully provided by &lt;code&gt;RosAria&lt;/code&gt;. For &lt;code&gt;sensor transforms&lt;/code&gt;, &lt;code&gt;RosAria&lt;/code&gt; provides the tf &lt;code&gt;odom-&amp;gt;base_link&lt;/code&gt;, other sensor frames transform should be provided by us. I didn't use laser, I just used sonar, so I just provided the tf &lt;code&gt;base_link-&amp;gt;sonar_frame&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The gray components are optional components that are already implemented. Here I didn't use &lt;code&gt;amcl&lt;/code&gt;, I used &lt;code&gt;map_server&lt;/code&gt; with a existing map picture. So I need a YAML file to describe &lt;code&gt;map_server&lt;/code&gt; parameters.&lt;/p&gt;
+&lt;p&gt;The white components are required components that are already implemented. What we have to provide is just four configuration files, i.e. &lt;code&gt;costmap_common_params.yaml&lt;/code&gt;, &lt;code&gt;global_costmap_params.yaml&lt;/code&gt;, &lt;code&gt;local_costmap_params.yaml&lt;/code&gt; and &lt;code&gt;base_local_planner_params.yaml&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, a launch file is needed to launch the ROS navigation stack. The launch sequence is like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RosAria + RViz&lt;/li&gt;
+&lt;li&gt;map_server with map YAML file&lt;/li&gt;
+&lt;li&gt;move_base with those four configuration files.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OK, now set a goal from RViz, there will be a path and local cosmap, then the robot will go down that path until reaching that goal.&lt;/p&gt;</summary><category term="ROS"></category></entry></feed>
