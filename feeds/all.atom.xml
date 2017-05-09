@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2016-08-19T00:00:00+08:00</updated><entry><title>Getting Started with ROS Navigation Stack</title><link href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html" rel="alternate"></link><updated>2016-08-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-08-19:getting-started-with-ros-navigation-stack.html</id><summary type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-05-09T00:00:00+08:00</updated><entry><title>Setup Chinese Input Method on Ubuntu</title><link href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html" rel="alternate"></link><updated>2017-05-09T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-05-09:setup-chinese-input-method-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
+&lt;h2&gt;1. 安装语言包&lt;/h2&gt;
+&lt;p&gt;打开System Settings–&amp;gt;Language Support–&amp;gt;Install/Remove Languages，安装Chinese(simplified)。&lt;/p&gt;
+&lt;h2&gt;2. 安裝IBus框架&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;3. 启用IBus框架&lt;/h2&gt;
+&lt;p&gt;运行以下命令，重启电脑。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;im-switch -s ibus     // Ubuntu 14.04
+&lt;span class="nv"&gt;$ &lt;/span&gt;im-config -s ibus     // Ubuntu 16.04
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;4. 安装拼音引擎&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install ibus-pinyin
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;5. 设置IBus框架&lt;/h2&gt;
+&lt;p&gt;运行如下命令，在弹出的窗口中选择Add-&amp;gt;Chinese-&amp;gt;Pinyin&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ibus-setup
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;6. 添加输入法&lt;/h2&gt;
+&lt;p&gt;打开System Settings–&amp;gt;Text Entry-&amp;gt;Add(+)-&amp;gt;Chinese(Pinyin)(IBus)&lt;/p&gt;
+&lt;h2&gt;7. 如果拼音打字不正常&lt;/h2&gt;
+&lt;p&gt;尝试在运行如下命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ibus-daemon -drx
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Linux"></category></entry><entry><title>Getting Started with ROS Navigation Stack</title><link href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html" rel="alternate"></link><updated>2016-08-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-08-19:getting-started-with-ros-navigation-stack.html</id><summary type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
 &lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
 &lt;h2&gt;1. Install ROS&lt;/h2&gt;
 &lt;p&gt;ROS is not a standalone OS, but based on Ubuntu or other Debian distributions. So first we need to install Ubuntu, or other Debian if you like, but it is recommanded to choose Ubuntu for beginners.&lt;/p&gt;
