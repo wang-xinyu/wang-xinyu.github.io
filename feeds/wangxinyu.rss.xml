@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 09 May 2017 00:00:00 +0800</lastBuildDate><item><title>Setup Chinese Input Method on Ubuntu</title><link>https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html</link><description>&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 12 Jun 2017 00:00:00 +0800</lastBuildDate><item><title>Total Probability Applied to Conditional Probability</title><link>https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html</link><description>&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+&lt;h2&gt;公式&lt;/h2&gt;
+&lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
+&lt;p&gt;$$
+P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+P(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+$$&lt;/p&gt;
+&lt;h2&gt;证明&lt;/h2&gt;
+&lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;
+&lt;p&gt;\begin{equation}\begin{split}
+P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i)\
+&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(B,C_i)\
+&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)
+\end{split}\end{equation}&lt;/p&gt;
+&lt;p&gt;\begin{equation}\begin{split}
+P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\
+&amp;amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\
+&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+\end{split}\end{equation}&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Mon, 12 Jun 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-06-12:total-probability-applied-to-conditional-probability.html</guid><category>Math</category></item><item><title>Setup Chinese Input Method on Ubuntu</title><link>https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html</link><description>&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
 &lt;h2&gt;1. 安装语言包&lt;/h2&gt;
 &lt;p&gt;打开System Settings–&amp;gt;Language Support–&amp;gt;Install/Remove Languages，安装Chinese(simplified)。&lt;/p&gt;
 &lt;h2&gt;2. 安裝IBus框架&lt;/h2&gt;

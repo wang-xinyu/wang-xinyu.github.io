@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="BlogWX, ">
-        <meta name="keywords" content="">
+        <meta name="description" content="使用全概率公式计算条件概率 公式 先给出公式，然后证明。 $$ P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) $$ $$ P(x|y) = \int p(x|y,z) \cdot p(z|y)dz $$ 证明 这里以离散概率为例进行证明，连续型与之类似。 \begin{equation}\begin{split} P(A,B) &amp;= ...">
+        <meta name="keywords" content="Math">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
-        <title>BlogWX</title>
+        <title>Total Probability Applied to Conditional Probability - BlogWX</title>
 
         <!-- Stylesheets -->
         <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
 
         <!-- RSS Feeds -->
         <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/math.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
         <!-- /RSS Feeds -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,7 +58,7 @@
     <body>
 
         <!-- Header -->
-    <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wang-xinyu.github.io/images/homepage.png'); background-position: center; ">
+    <div class="header-container gradient">
 
             <!-- Static navbar -->
             <div class="container">
@@ -75,17 +76,23 @@
             <!-- /Static navbar -->
 
             <!-- Header -->
+    <!-- Header -->
     <div class="container header-wrapper">
         <div class="row">
               <div class="col-lg-12">
                   <div class="header-content">
-                      <h1 class="header-title">Blog Wang Xinyu</h1>
+                      <h1 class="header-title">Total Probability Applied to Conditional Probability</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Mon 12 June 2017, in category <a href="https://wang-xinyu.github.io/category/math.html">Math</a></p>
                       <div class="header-underline"></div>
-                      <p class="header-subtitle header-subtitle-homepage">Whatever is worth doing is worth doing well.</p>
+                      <div class="clearfix"></div>
+                      <p class="pull-right header-tags">
+                          <span class="glyphicon glyphicon-tags mr5" aria-hidden="true"></span>
+<a href="https://wang-xinyu.github.io/tag/math.html">Math</a>                      </p>
                   </div>
               </div>
         </div>
     </div>
+    <!-- /Header -->
             <!-- /Header -->
 
         </div>
@@ -93,28 +100,45 @@
 
 
         <!-- Content -->
-    <div class="archive-container">
-        <div class="container content archive">
-            <h2><a href="https://wang-xinyu.github.io/">Last Posts</a></h2>
-            <dl class="dl-horizontal">
-                <dt>Mon 12 June 2017</dt>
-                <dd><a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html">Total Probability Applied to Conditional Probability</a></dd>
-                <dt>Tue 09 May 2017</dt>
-                <dd><a href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html">Setup Chinese Input Method on Ubuntu</a></dd>
-                <dt>Fri 19 August 2016</dt>
-                <dd><a href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html">Getting Started with ROS Navigation Stack</a></dd>
-                <dt>Tue 19 April 2016</dt>
-                <dd><a href="https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html">Modify the user name of Raspbian</a></dd>
-                <dt>Tue 08 December 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/summary-of-c-traps.html">Summary of C Traps</a></dd>
-                <dt>Wed 02 December 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html">Introduction to MODBUS over Serial Line</a></dd>
-                <dt>Fri 27 November 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/getting-started-with-mqtt.html">Getting Started with MQTT</a></dd>
-                <dt>Fri 06 November 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/concepts-for-es.html">Concepts for ES</a></dd>
-            </dl>
-        </div>
+    <div class="container content">
+        <h1>使用全概率公式计算条件概率</h1>
+<h2>公式</h2>
+<p>先给出公式，然后证明。</p>
+<p>$$
+P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+$$</p>
+<p>$$
+P(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+$$</p>
+<h2>证明</h2>
+<p>这里以离散概率为例进行证明，连续型与之类似。</p>
+<p>\begin{equation}\begin{split}
+P(A,B) &amp;= \sum_{i=1}^n P(A,B,C_i)\
+&amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(B,C_i)\
+&amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)
+\end{split}\end{equation}</p>
+<p>\begin{equation}\begin{split}
+P(A|B)&amp;=  {P(A,B) \over P(B)}\
+&amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\
+&amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+\end{split}\end{equation}</p>
+
+
+    <div class="comments">
+        <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'blogwx';
+                var disqus_identifier = 'total-probability-applied-to-conditional-probability.html';
+                var disqus_url = 'https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+        
     </div>
         <!-- /Content --> 
 

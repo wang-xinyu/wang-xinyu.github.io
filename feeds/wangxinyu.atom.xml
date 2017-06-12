@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/wangxinyu.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-05-09T00:00:00+08:00</updated><entry><title>Setup Chinese Input Method on Ubuntu</title><link href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html" rel="alternate"></link><updated>2017-05-09T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-05-09:setup-chinese-input-method-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/wangxinyu.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-06-12T00:00:00+08:00</updated><entry><title>Total Probability Applied to Conditional Probability</title><link href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html" rel="alternate"></link><updated>2017-06-12T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-12:total-probability-applied-to-conditional-probability.html</id><summary type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+&lt;h2&gt;公式&lt;/h2&gt;
+&lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
+&lt;p&gt;$$
+P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+P(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+$$&lt;/p&gt;
+&lt;h2&gt;证明&lt;/h2&gt;
+&lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;
+&lt;p&gt;\begin{equation}\begin{split}
+P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i)\
+&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(B,C_i)\
+&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)
+\end{split}\end{equation}&lt;/p&gt;
+&lt;p&gt;\begin{equation}\begin{split}
+P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\
+&amp;amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\
+&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+\end{split}\end{equation}&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>Setup Chinese Input Method on Ubuntu</title><link href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html" rel="alternate"></link><updated>2017-05-09T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-05-09:setup-chinese-input-method-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
 &lt;h2&gt;1. 安装语言包&lt;/h2&gt;
 &lt;p&gt;打开System Settings–&amp;gt;Language Support–&amp;gt;Install/Remove Languages，安装Chinese(simplified)。&lt;/p&gt;
 &lt;h2&gt;2. 安裝IBus框架&lt;/h2&gt;
