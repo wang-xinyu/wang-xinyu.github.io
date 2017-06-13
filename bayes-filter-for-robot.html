@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="BlogWX, ">
-        <meta name="keywords" content="">
+        <meta name="description" content="概率机器人的贝叶斯滤波器 模型 $x_t$表示$t$时刻机器人的状态向量 $z_t$表示$t$时刻的测量向量 $u_t$表示$t$时刻的控制向量 $bel(x_t)$表示状态向量的置信分布（Belief ...">
+        <meta name="keywords" content="Math">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
-        <title>BlogWX</title>
+        <title>Bayes Filter for Robot - BlogWX</title>
 
         <!-- Stylesheets -->
         <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
 
         <!-- RSS Feeds -->
         <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/robot.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
         <!-- /RSS Feeds -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,7 +58,7 @@
     <body>
 
         <!-- Header -->
-    <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wang-xinyu.github.io/images/homepage.png'); background-position: center; ">
+    <div class="header-container gradient">
 
             <!-- Static navbar -->
             <div class="container">
@@ -75,17 +76,23 @@
             <!-- /Static navbar -->
 
             <!-- Header -->
+    <!-- Header -->
     <div class="container header-wrapper">
         <div class="row">
               <div class="col-lg-12">
                   <div class="header-content">
-                      <h1 class="header-title">Blog Wang Xinyu</h1>
+                      <h1 class="header-title">Bayes Filter for Robot</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Tue 13 June 2017, in category <a href="https://wang-xinyu.github.io/category/robot.html">Robot</a></p>
                       <div class="header-underline"></div>
-                      <p class="header-subtitle header-subtitle-homepage">Whatever is worth doing is worth doing well.</p>
+                      <div class="clearfix"></div>
+                      <p class="pull-right header-tags">
+                          <span class="glyphicon glyphicon-tags mr5" aria-hidden="true"></span>
+<a href="https://wang-xinyu.github.io/tag/math.html">Math</a>                      </p>
                   </div>
               </div>
         </div>
     </div>
+    <!-- /Header -->
             <!-- /Header -->
 
         </div>
@@ -93,30 +100,83 @@
 
 
         <!-- Content -->
-    <div class="archive-container">
-        <div class="container content archive">
-            <h2><a href="https://wang-xinyu.github.io/">Last Posts</a></h2>
-            <dl class="dl-horizontal">
-                <dt>Tue 13 June 2017</dt>
-                <dd><a href="https://wang-xinyu.github.io/bayes-filter-for-robot.html">Bayes Filter for Robot</a></dd>
-                <dt>Mon 12 June 2017</dt>
-                <dd><a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html">Total Probability Applied to Conditional Probability</a></dd>
-                <dt>Tue 09 May 2017</dt>
-                <dd><a href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html">Setup Chinese Input Method on Ubuntu</a></dd>
-                <dt>Fri 19 August 2016</dt>
-                <dd><a href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html">Getting Started with ROS Navigation Stack</a></dd>
-                <dt>Tue 19 April 2016</dt>
-                <dd><a href="https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html">Modify the user name of Raspbian</a></dd>
-                <dt>Tue 08 December 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/summary-of-c-traps.html">Summary of C Traps</a></dd>
-                <dt>Wed 02 December 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html">Introduction to MODBUS over Serial Line</a></dd>
-                <dt>Fri 27 November 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/getting-started-with-mqtt.html">Getting Started with MQTT</a></dd>
-                <dt>Fri 06 November 2015</dt>
-                <dd><a href="https://wang-xinyu.github.io/concepts-for-es.html">Concepts for ES</a></dd>
-            </dl>
-        </div>
+    <div class="container content">
+        <h1>概率机器人的贝叶斯滤波器</h1>
+<h2>模型</h2>
+<ul>
+<li>$x_t$表示$t$时刻机器人的状态向量</li>
+<li>$z_t$表示$t$时刻的测量向量</li>
+<li>$u_t$表示$t$时刻的控制向量</li>
+<li>$bel(x_t)$表示状态向量的置信分布（Belief Distributions），根据它我们就可以确定$t$时刻机器人的状态，贝叶斯滤波器最终的输出结果就是它。它的定义如下，即在已知1到$t$时刻的测量向量和控制向量的条件下，机器人处于状态$x_t$的概率。</li>
+</ul>
+<p>$$
+bel(x_t) = p(x_t|z_{1:t},u_{1:t})
+$$</p>
+<ul>
+<li>$\overline {bel}(x_t)$是计算$bel(x_t)$的一个中间值，称为预测（Prediction）。它的定义如下，即在得到$t$时刻的测量向量$z_t$之前获取的置信概率，因此称为预测。而得到$z_t$后，由$\overline {bel}(x_t)$计算$bel(x_t)$的过程称为纠正或更新。</li>
+</ul>
+<p>$$
+\overline {bel}(x_t) = p(x_t|z_{1:t-1},u_{1:t})
+$$</p>
+<h2>递推公式</h2>
+<p>先给出贝叶斯滤波器的递推公式，然后证明。</p>
+<p>$$
+\overline {bel}(x_t) = \int p(x_t|u_{t},x_{t-1}) \cdot bef(x_{t-1})dx_{t-1}
+$$</p>
+<p>$$
+bel(x_t) = \eta \cdot p(z_t|x_{t}) \cdot \overline {bel}(x_t)
+$$</p>
+<ul>
+<li>
+<p>$p(x_t|u_{t},x_{t-1})$是机器人的状态转移概率</p>
+</li>
+<li>
+<p>$p(z_t|x_{t})$是测量概率</p>
+</li>
+<li>
+<p>$\eta$是概率归一化常量</p>
+</li>
+</ul>
+<p>根据这个公式我们可以看出来，只要知道状态转移概率分布，测量概率以及前一时刻的置信概率，就可以递归求得当前机器人状态的置信概率。</p>
+<h2>证明</h2>
+<p>\begin{split}
+bel(x_t) &amp;= p(x_t|z_{1:t},u_{1:t})\\
+&amp;= {p(x_t,z_{1:t},u_{1:t}) \over p(z_{1:t},u_{1:t})}条件概率\\
+&amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t, z_{1:t-1},u_{1:t}) \over p(z_{1:t},u_{1:t})}条件概率\\
+&amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t}) \cdot p(z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t}) \cdot p(z_{1:t-1},u_{1:t})} 条件概率\\
+&amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} 约分\\
+&amp;= {p(z_t|x_t) \cdot p(x_t|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} Markov假设\\
+&amp;= \eta \cdot p(z_t|x_t) \cdot \overline {bel}(x_t) 替换
+\end{split}</p>
+<p>\begin{split}
+\overline {bel}(x_t) &amp;= p(x_t|z_{1:t-1},u_{1:t})\\
+&amp;= \int p(x_t|x_{t-1}, z_{1:t-1},u_{1:t}) \cdot p(x_{t-1}|z_{1:t-1},u_{1:t})dx_{t-1} 用全概率计算条件概率\\
+&amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot p(x_{t-1}|z_{1:t-1},u_{1:t-1})dx_{t-1} Markov假设并去掉u_t\\
+&amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot bel(x_{t-1})dx_{t-1} 替换
+\end{split}</p>
+<p>这里的$\eta = {p(z_t|z_{1:t-1},u_{1:t})}^{-1}$，可以看作概率的归一化因子。</p>
+<p>Markov假设当前状态是完整的，若已知当前状态$x_t$，则$t$时刻及其之前的测量$z_{1:t}$和控制向量$u_{1:t}$对未来状态没有影响。</p>
+<h3>参考文献</h3>
+<p>Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.</p>
+<p>使用全概率公式计算条件概率. 我的博文，<a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html">Link</a>.</p>
+<h4>版权声明：本文为作者原创，转载请注明出处<a href="https://wang-xinyu.github.io">https://wang-xinyu.github.io</a></h4>
+
+
+    <div class="comments">
+        <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'blogwx';
+                var disqus_identifier = 'bayes-filter-for-robot.html';
+                var disqus_url = 'https://wang-xinyu.github.io/bayes-filter-for-robot.html';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+        
     </div>
         <!-- /Content --> 
 

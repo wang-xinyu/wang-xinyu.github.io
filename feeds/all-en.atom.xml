@@ -1,5 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all-en.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-06-12T00:00:00+08:00</updated><entry><title>Total Probability Applied to Conditional Probability</title><link href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html" rel="alternate"></link><updated>2017-06-12T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-12:total-probability-applied-to-conditional-probability.html</id><summary type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all-en.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-06-13T00:00:00+08:00</updated><entry><title>Bayes Filter for Robot</title><link href="https://wang-xinyu.github.io/bayes-filter-for-robot.html" rel="alternate"></link><updated>2017-06-13T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-13:bayes-filter-for-robot.html</id><summary type="html">&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;$x_t$表示$t$时刻机器人的状态向量&lt;/li&gt;
+&lt;li&gt;$z_t$表示$t$时刻的测量向量&lt;/li&gt;
+&lt;li&gt;$u_t$表示$t$时刻的控制向量&lt;/li&gt;
+&lt;li&gt;$bel(x_t)$表示状态向量的置信分布（Belief Distributions），根据它我们就可以确定$t$时刻机器人的状态，贝叶斯滤波器最终的输出结果就是它。它的定义如下，即在已知1到$t$时刻的测量向量和控制向量的条件下，机器人处于状态$x_t$的概率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+bel(x_t) = p(x_t|z_{1:t},u_{1:t})
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\overline {bel}(x_t)$是计算$bel(x_t)$的一个中间值，称为预测（Prediction）。它的定义如下，即在得到$t$时刻的测量向量$z_t$之前获取的置信概率，因此称为预测。而得到$z_t$后，由$\overline {bel}(x_t)$计算$bel(x_t)$的过程称为纠正或更新。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\overline {bel}(x_t) = p(x_t|z_{1:t-1},u_{1:t})
+$$&lt;/p&gt;
+&lt;h2&gt;递推公式&lt;/h2&gt;
+&lt;p&gt;先给出贝叶斯滤波器的递推公式，然后证明。&lt;/p&gt;
+&lt;p&gt;$$
+\overline {bel}(x_t) = \int p(x_t|u_{t},x_{t-1}) \cdot bef(x_{t-1})dx_{t-1}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+bel(x_t) = \eta \cdot p(z_t|x_{t}) \cdot \overline {bel}(x_t)
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$p(x_t|u_{t},x_{t-1})$是机器人的状态转移概率&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$p(z_t|x_{t})$是测量概率&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\eta$是概率归一化常量&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;根据这个公式我们可以看出来，只要知道状态转移概率分布，测量概率以及前一时刻的置信概率，就可以递归求得当前机器人状态的置信概率。&lt;/p&gt;
+&lt;h2&gt;证明&lt;/h2&gt;
+&lt;p&gt;\begin{split}
+bel(x_t) &amp;amp;= p(x_t|z_{1:t},u_{1:t})\\
+&amp;amp;= {p(x_t,z_{1:t},u_{1:t}) \over p(z_{1:t},u_{1:t})}条件概率\\
+&amp;amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t, z_{1:t-1},u_{1:t}) \over p(z_{1:t},u_{1:t})}条件概率\\
+&amp;amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t}) \cdot p(z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t}) \cdot p(z_{1:t-1},u_{1:t})} 条件概率\\
+&amp;amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} 约分\\
+&amp;amp;= {p(z_t|x_t) \cdot p(x_t|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} Markov假设\\
+&amp;amp;= \eta \cdot p(z_t|x_t) \cdot \overline {bel}(x_t) 替换
+\end{split}&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\overline {bel}(x_t) &amp;amp;= p(x_t|z_{1:t-1},u_{1:t})\\
+&amp;amp;= \int p(x_t|x_{t-1}, z_{1:t-1},u_{1:t}) \cdot p(x_{t-1}|z_{1:t-1},u_{1:t})dx_{t-1} 用全概率计算条件概率\\
+&amp;amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot p(x_{t-1}|z_{1:t-1},u_{1:t-1})dx_{t-1} Markov假设并去掉u_t\\
+&amp;amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot bel(x_{t-1})dx_{t-1} 替换
+\end{split}&lt;/p&gt;
+&lt;p&gt;这里的$\eta = {p(z_t|z_{1:t-1},u_{1:t})}^{-1}$，可以看作概率的归一化因子。&lt;/p&gt;
+&lt;p&gt;Markov假设当前状态是完整的，若已知当前状态$x_t$，则$t$时刻及其之前的测量$z_{1:t}$和控制向量$u_{1:t}$对未来状态没有影响。&lt;/p&gt;
+&lt;h3&gt;参考文献&lt;/h3&gt;
+&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
+&lt;p&gt;使用全概率公式计算条件概率. 我的博文，&lt;a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</summary><category term="Math"></category></entry><entry><title>Total Probability Applied to Conditional Probability</title><link href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html" rel="alternate"></link><updated>2017-06-12T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-12:total-probability-applied-to-conditional-probability.html</id><summary type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
 &lt;h2&gt;公式&lt;/h2&gt;
 &lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
 &lt;p&gt;$$
@@ -11,13 +69,13 @@ $$&lt;/p&gt;
 &lt;h2&gt;证明&lt;/h2&gt;
 &lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;
 &lt;p&gt;\begin{equation}\begin{split}
-P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i)\
-&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(B,C_i)\
+P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i)\\
+&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(B,C_i)\\
 &amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)
 \end{split}\end{equation}&lt;/p&gt;
 &lt;p&gt;\begin{equation}\begin{split}
-P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\
-&amp;amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\
+P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\\
+&amp;amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\\
 &amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
 \end{split}\end{equation}&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>Setup Chinese Input Method on Ubuntu</title><link href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html" rel="alternate"></link><updated>2017-05-09T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-05-09:setup-chinese-input-method-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
 &lt;h2&gt;1. 安装语言包&lt;/h2&gt;
