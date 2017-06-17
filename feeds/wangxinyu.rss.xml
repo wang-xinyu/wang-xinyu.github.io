@@ -1,5 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 13 Jun 2017 00:00:00 +0800</lastBuildDate><item><title>Bayes Filter for Robot</title><link>https://wang-xinyu.github.io/bayes-filter-for-robot.html</link><description>&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 17 Jun 2017 00:00:00 +0800</lastBuildDate><item><title>The Derivation of Kalman Filter from Bayes Filter</title><link>https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html</link><description>&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
+&lt;h2&gt;卡尔曼滤波的三个假设&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。&lt;/p&gt;
+&lt;p&gt;$$
+\epsilon_t \sim N(0, R_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+x_t = A_t x_{t-1} + B_t u_t + \epsilon_t
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x_t|u_t, x_{t-1}) \sim N(A_t x_{t-1} + B_t u_t, R_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x_t|u_t, x_{t-1}) = det(2 \pi R_t)^{- \frac 1 2}exp{{- \frac 1 2}(x_t-A_t x_{t-1} - B_t u_t)^T R_t^{-1}(x_t-A_t x_{t-1} - B_t u_t)}
+$$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; 测量方程是线性的，噪声服从均值为$0$，协方差为$Q_t$的多元高斯分布。因此，测量概率服从均值$C_t x_t$，协方差为$Q_t$的多元高斯分布。&lt;/p&gt;
+&lt;p&gt;$$
+\delta_t \sim N(0, Q_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+z_t = C_t x_t + \delta_t
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(z_t|x_t) \sim N(C_t x_t, Q_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(z_t|x_t) = det(2 \pi Q_t)^{- \frac 1 2}exp{{- \frac 1 2}(z_t-C_t x_t)^T Q_t^{-1}(z_t-C_t x_t)}
+$$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3.&lt;/strong&gt; 初始置信$bel(x_0)$概率服从均值为$\mu_0$，协方差为$\Sigma_0$的多元高斯分布。&lt;/p&gt;
+&lt;p&gt;$$
+bel(x_0) = p(x_0) = det(2 \pi \Sigma_0)^{- \frac 1 2}exp{{- \frac 1 2}(x_0- \mu_0)^T \Sigma_0^{-1}(x_0- \mu_0)}
+$$&lt;/p&gt;
+&lt;h2&gt;递推公式&lt;/h2&gt;
+&lt;p&gt;只要满足以上三个假设，即可证明$bel(x_t)$也满足高斯分布。即：&lt;/p&gt;
+&lt;p&gt;$$
+bel(x_t) \sim N(\mu_t, \Sigma_t)
+$$
+$$
+\overline {bel}(x_t) \sim N(\overline \mu_t, \overline \Sigma_t)
+$$&lt;/p&gt;
+&lt;p&gt;根据贝叶斯滤波的递推公式和以上的假设，即可推导出卡尔曼滤波的递推公式。因为满足高斯分布，所以我们只需递推均值和协方差。&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\overline \mu_t &amp;amp;= A_t \mu_{t-1} + B_t u_t\\
+\overline \Sigma_t &amp;amp;= A_t \Sigma_{t-1} A_t^T+ R_t\\
+K_t &amp;amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1} \\
+\mu_t &amp;amp;= \overline \mu_t + K_t(z_t - C_t \overline \mu_t) \\
+\Sigma_t &amp;amp;= (I - K_t C_t) \overline \Sigma_t
+\end{split}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$K_t$称为Kalman增益&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$I$是单位矩阵&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;简略推导&lt;/h2&gt;
+&lt;p&gt;由贝叶斯滤波器可知$\overline {bel}(x_t)$的公式如下，在卡尔曼滤波中，$p(x_t|x_{t-1}, u_t)$和$bel(x_{t-1})$都服从高斯分布。&lt;/p&gt;
+&lt;p&gt;$$
+\overline {bel}(x_t) = \int p(x_t|x_{t-1}, u_t) \cdot bel(x_{t-1})dx_{t-1}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x_t|x_{t-1}, u_t) \sim N(x_t; A_t x_{t-1} + B_t u_t, R_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+bel(x_{t-1}) \sim N(x_{t-1};\mu_{t-1}, \Sigma_{t-1})
+$$&lt;/p&gt;
+&lt;p&gt;这里$\overline {bel}(x_t)$可以看作两个高斯分布的卷积。省略中间步骤，最终推导出$\overline {bel}(x_t)$也是高斯分布，均值和协方差如下：&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\overline \mu_t &amp;amp;= A_t \mu_{t-1} + B_t u_t\\
+\overline \Sigma_t &amp;amp;= A_t \Sigma_{t-1} A_t^T+ R_t
+\end{split}&lt;/p&gt;
+&lt;p&gt;由贝叶斯滤波器可知$bel(x_t)$的公式如下，在卡尔曼滤波中，$p(z_t|x_t)$也服从高斯分布，上面已证明$\overline {bel}(x_t)$也服从高斯分布。&lt;/p&gt;
+&lt;p&gt;$$
+bel(x_t) = \eta \cdot p(z_t|x_{t}) \cdot \overline {bel}(x_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(z_t|x_t) \sim N(z_t; C_t x_t, Q_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+bel(x_t) \sim N(x_t; \overline \mu_t, \overline \Sigma_t)
+$$&lt;/p&gt;
+&lt;p&gt;因此$bel(x_t)$可以看作两个高斯分布的乘积，结果也是高斯分布。省略中间推导，最终得到的均值和协方差如下：&lt;/p&gt;
+&lt;p&gt;\begin{split}
+K_t &amp;amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1} \\
+\mu_t &amp;amp;= \overline \mu_t + K_t(z_t - C_t \overline \mu_t) \\
+\Sigma_t &amp;amp;= (I - K_t C_t) \overline \Sigma_t
+\end{split}&lt;/p&gt;
+&lt;h3&gt;参考文献&lt;/h3&gt;
+&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
+&lt;p&gt;概率机器人的贝叶斯滤波器. 我的博文，&lt;a href="https://wang-xinyu.github.io/bayes-filter-for-robot.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Sat, 17 Jun 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-06-17:the-derivation-of-kalman-filter-from-bayes-filter.html</guid><category>Math</category></item><item><title>Bayes Filter for Robot</title><link>https://wang-xinyu.github.io/bayes-filter-for-robot.html</link><description>&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
 &lt;h2&gt;模型&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;$x_t$表示$t$时刻机器人的状态向量&lt;/li&gt;
@@ -64,7 +155,7 @@ bel(x_t) &amp;amp;= p(x_t|z_{1:t},u_{1:t})\\
 P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
 $$&lt;/p&gt;
 &lt;p&gt;$$
-P(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+p(x|y) = \int p(x|y,z) \cdot p(z|y)dz
 $$&lt;/p&gt;
 &lt;h2&gt;证明&lt;/h2&gt;
 &lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;

@@ -6,7 +6,7 @@
 P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
 $$&lt;/p&gt;
 &lt;p&gt;$$
-P(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+p(x|y) = \int p(x|y,z) \cdot p(z|y)dz
 $$&lt;/p&gt;
 &lt;h2&gt;证明&lt;/h2&gt;
 &lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;

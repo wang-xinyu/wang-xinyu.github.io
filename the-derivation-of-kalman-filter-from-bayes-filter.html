@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="使用全概率公式计算条件概率 公式 先给出公式，然后证明。 $$ P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) $$ $$ p(x|y) = \int p(x|y,z) \cdot p(z|y)dz $$ 证明 这里以离散概率为例进行证明，连续型与之类似。 \begin{equation}\begin{split} P(A,B) &amp;= ...">
+        <meta name="description" content="从贝叶斯滤波到卡尔曼滤波 卡尔曼滤波的三个假设 1. 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。 $$ \epsilon_t \sim N(0, R_t) $$ $$ x_t = A_t x_{t-1} + B_t u_t + \epsilon_t ...">
         <meta name="keywords" content="Math">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
-        <title>Total Probability Applied to Conditional Probability - BlogWX</title>
+        <title>The Derivation of Kalman Filter from Bayes Filter - BlogWX</title>
 
         <!-- Stylesheets -->
         <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 
         <!-- RSS Feeds -->
         <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
-        <link href="https://wang-xinyu.github.io/feeds/math.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/robot.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
         <!-- /RSS Feeds -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -81,8 +81,8 @@
         <div class="row">
               <div class="col-lg-12">
                   <div class="header-content">
-                      <h1 class="header-title">Total Probability Applied to Conditional Probability</h1>
-                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Mon 12 June 2017, in category <a href="https://wang-xinyu.github.io/category/math.html">Math</a></p>
+                      <h1 class="header-title">The Derivation of Kalman Filter from Bayes Filter</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Sat 17 June 2017, in category <a href="https://wang-xinyu.github.io/category/robot.html">Robot</a></p>
                       <div class="header-underline"></div>
                       <div class="clearfix"></div>
                       <p class="pull-right header-tags">
@@ -101,35 +101,106 @@
 
         <!-- Content -->
     <div class="container content">
-        <h1>使用全概率公式计算条件概率</h1>
-<h2>公式</h2>
-<p>先给出公式，然后证明。</p>
+        <h1>从贝叶斯滤波到卡尔曼滤波</h1>
+<h2>卡尔曼滤波的三个假设</h2>
+<p><strong>1.</strong> 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。</p>
 <p>$$
-P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+\epsilon_t \sim N(0, R_t)
 $$</p>
 <p>$$
-p(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+x_t = A_t x_{t-1} + B_t u_t + \epsilon_t
 $$</p>
-<h2>证明</h2>
-<p>这里以离散概率为例进行证明，连续型与之类似。</p>
-<p>\begin{equation}\begin{split}
-P(A,B) &amp;= \sum_{i=1}^n P(A,B,C_i)\\
-&amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(B,C_i)\\
-&amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)
-\end{split}\end{equation}</p>
-<p>\begin{equation}\begin{split}
-P(A|B)&amp;=  {P(A,B) \over P(B)}\\
-&amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\\
-&amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
-\end{split}\end{equation}</p>
+<p>$$
+p(x_t|u_t, x_{t-1}) \sim N(A_t x_{t-1} + B_t u_t, R_t)
+$$</p>
+<p>$$
+p(x_t|u_t, x_{t-1}) = det(2 \pi R_t)^{- \frac 1 2}exp{{- \frac 1 2}(x_t-A_t x_{t-1} - B_t u_t)^T R_t^{-1}(x_t-A_t x_{t-1} - B_t u_t)}
+$$</p>
+<p><strong>2.</strong> 测量方程是线性的，噪声服从均值为$0$，协方差为$Q_t$的多元高斯分布。因此，测量概率服从均值$C_t x_t$，协方差为$Q_t$的多元高斯分布。</p>
+<p>$$
+\delta_t \sim N(0, Q_t)
+$$</p>
+<p>$$
+z_t = C_t x_t + \delta_t
+$$</p>
+<p>$$
+p(z_t|x_t) \sim N(C_t x_t, Q_t)
+$$</p>
+<p>$$
+p(z_t|x_t) = det(2 \pi Q_t)^{- \frac 1 2}exp{{- \frac 1 2}(z_t-C_t x_t)^T Q_t^{-1}(z_t-C_t x_t)}
+$$</p>
+<p><strong>3.</strong> 初始置信$bel(x_0)$概率服从均值为$\mu_0$，协方差为$\Sigma_0$的多元高斯分布。</p>
+<p>$$
+bel(x_0) = p(x_0) = det(2 \pi \Sigma_0)^{- \frac 1 2}exp{{- \frac 1 2}(x_0- \mu_0)^T \Sigma_0^{-1}(x_0- \mu_0)}
+$$</p>
+<h2>递推公式</h2>
+<p>只要满足以上三个假设，即可证明$bel(x_t)$也满足高斯分布。即：</p>
+<p>$$
+bel(x_t) \sim N(\mu_t, \Sigma_t)
+$$
+$$
+\overline {bel}(x_t) \sim N(\overline \mu_t, \overline \Sigma_t)
+$$</p>
+<p>根据贝叶斯滤波的递推公式和以上的假设，即可推导出卡尔曼滤波的递推公式。因为满足高斯分布，所以我们只需递推均值和协方差。</p>
+<p>\begin{split}
+\overline \mu_t &amp;= A_t \mu_{t-1} + B_t u_t\\
+\overline \Sigma_t &amp;= A_t \Sigma_{t-1} A_t^T+ R_t\\
+K_t &amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1} \\
+\mu_t &amp;= \overline \mu_t + K_t(z_t - C_t \overline \mu_t) \\
+\Sigma_t &amp;= (I - K_t C_t) \overline \Sigma_t
+\end{split}</p>
+<ul>
+<li>
+<p>$K_t$称为Kalman增益</p>
+</li>
+<li>
+<p>$I$是单位矩阵</p>
+</li>
+</ul>
+<h2>简略推导</h2>
+<p>由贝叶斯滤波器可知$\overline {bel}(x_t)$的公式如下，在卡尔曼滤波中，$p(x_t|x_{t-1}, u_t)$和$bel(x_{t-1})$都服从高斯分布。</p>
+<p>$$
+\overline {bel}(x_t) = \int p(x_t|x_{t-1}, u_t) \cdot bel(x_{t-1})dx_{t-1}
+$$</p>
+<p>$$
+p(x_t|x_{t-1}, u_t) \sim N(x_t; A_t x_{t-1} + B_t u_t, R_t)
+$$</p>
+<p>$$
+bel(x_{t-1}) \sim N(x_{t-1};\mu_{t-1}, \Sigma_{t-1})
+$$</p>
+<p>这里$\overline {bel}(x_t)$可以看作两个高斯分布的卷积。省略中间步骤，最终推导出$\overline {bel}(x_t)$也是高斯分布，均值和协方差如下：</p>
+<p>\begin{split}
+\overline \mu_t &amp;= A_t \mu_{t-1} + B_t u_t\\
+\overline \Sigma_t &amp;= A_t \Sigma_{t-1} A_t^T+ R_t
+\end{split}</p>
+<p>由贝叶斯滤波器可知$bel(x_t)$的公式如下，在卡尔曼滤波中，$p(z_t|x_t)$也服从高斯分布，上面已证明$\overline {bel}(x_t)$也服从高斯分布。</p>
+<p>$$
+bel(x_t) = \eta \cdot p(z_t|x_{t}) \cdot \overline {bel}(x_t)
+$$</p>
+<p>$$
+p(z_t|x_t) \sim N(z_t; C_t x_t, Q_t)
+$$</p>
+<p>$$
+bel(x_t) \sim N(x_t; \overline \mu_t, \overline \Sigma_t)
+$$</p>
+<p>因此$bel(x_t)$可以看作两个高斯分布的乘积，结果也是高斯分布。省略中间推导，最终得到的均值和协方差如下：</p>
+<p>\begin{split}
+K_t &amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1} \\
+\mu_t &amp;= \overline \mu_t + K_t(z_t - C_t \overline \mu_t) \\
+\Sigma_t &amp;= (I - K_t C_t) \overline \Sigma_t
+\end{split}</p>
+<h3>参考文献</h3>
+<p>Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.</p>
+<p>概率机器人的贝叶斯滤波器. 我的博文，<a href="https://wang-xinyu.github.io/bayes-filter-for-robot.html">Link</a>.</p>
+<h4>版权声明：本文为作者原创，转载请注明出处<a href="https://wang-xinyu.github.io">https://wang-xinyu.github.io</a></h4>
 
 
     <div class="comments">
         <div id="disqus_thread"></div>
             <script type="text/javascript">
                 var disqus_shortname = 'blogwx';
-                var disqus_identifier = 'total-probability-applied-to-conditional-probability.html';
-                var disqus_url = 'https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html';
+                var disqus_identifier = 'the-derivation-of-kalman-filter-from-bayes-filter.html';
+                var disqus_url = 'https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html';
                 (function() {
                     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
