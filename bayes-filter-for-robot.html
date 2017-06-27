@@ -121,7 +121,7 @@ $$</p>
 <h2>递推公式</h2>
 <p>先给出贝叶斯滤波器的递推公式，然后证明。</p>
 <p>$$
-\overline {bel}(x_t) = \int p(x_t|u_{t},x_{t-1}) \cdot bef(x_{t-1})dx_{t-1}
+\overline {bel}(x_t) = \int p(x_t|u_{t},x_{t-1}) \cdot bel(x_{t-1})dx_{t-1}
 $$</p>
 <p>$$
 bel(x_t) = \eta \cdot p(z_t|x_{t}) \cdot \overline {bel}(x_t)
@@ -154,10 +154,15 @@ bel(x_t) &amp;= p(x_t|z_{1:t},u_{1:t})\\
 &amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot p(x_{t-1}|z_{1:t-1},u_{1:t-1})dx_{t-1} Markov假设并去掉u_t\\
 &amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot bel(x_{t-1})dx_{t-1} 替换
 \end{split}</p>
-<p>这里的$\eta = {p(z_t|z_{1:t-1},u_{1:t})}^{-1}$，可以看作概率的归一化因子。</p>
+<p>这里的$\eta = {p(z_t|z_{1:t-1},u_{1:t})}^{-1}$，可以看作概率的归一化因子。因为它等于分子中两个PDF的乘积的积分：</p>
+<p>\begin{split}
+p(z_t|z_{1:t-1},u_{1:t}) &amp;＝ \int p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t})dx_t用全概率计算条件概率\\
+&amp;= \int p(z_t|x_t) \cdot p(x_t|z_{1:t-1},u_{1:t})dx_t \; Markov假设
+\end{split}</p>
 <p>Markov假设当前状态是完整的，若已知当前状态$x_t$，则$t$时刻及其之前的测量$z_{1:t}$和控制向量$u_{1:t}$对未来状态没有影响。</p>
 <h3>参考文献</h3>
 <p>Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.</p>
+<p>M. Sanjeev Arulampalam, Simon Maskell, Neil Gordon, and Tim Clapp. A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 50, NO. 2, FEBRUARY 2002.</p>
 <p>使用全概率公式计算条件概率. 我的博文，<a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html">Link</a>.</p>
 <h4>版权声明：本文为作者原创，转载请注明出处<a href="https://wang-xinyu.github.io">https://wang-xinyu.github.io</a></h4>
 

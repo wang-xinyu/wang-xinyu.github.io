@@ -114,7 +114,7 @@ $$</p>
 p(x_t|u_t, x_{t-1}) \sim N(A_t x_{t-1} + B_t u_t, R_t)
 $$</p>
 <p>$$
-p(x_t|u_t, x_{t-1}) = det(2 \pi R_t)^{- \frac 1 2}exp{{- \frac 1 2}(x_t-A_t x_{t-1} - B_t u_t)^T R_t^{-1}(x_t-A_t x_{t-1} - B_t u_t)}
+p(x_t|u_t, x_{t-1}) = det(2 \pi R_t)^{- \frac 1 2}exp\lbrace {- \frac 1 2}(x_t-A_t x_{t-1} - B_t u_t)^T R_t^{-1}(x_t-A_t x_{t-1} - B_t u_t)\rbrace
 $$</p>
 <p><strong>2.</strong> 测量方程是线性的，噪声服从均值为$0$，协方差为$Q_t$的多元高斯分布。因此，测量概率服从均值$C_t x_t$，协方差为$Q_t$的多元高斯分布。</p>
 <p>$$
@@ -127,11 +127,11 @@ $$</p>
 p(z_t|x_t) \sim N(C_t x_t, Q_t)
 $$</p>
 <p>$$
-p(z_t|x_t) = det(2 \pi Q_t)^{- \frac 1 2}exp{{- \frac 1 2}(z_t-C_t x_t)^T Q_t^{-1}(z_t-C_t x_t)}
+p(z_t|x_t) = det(2 \pi Q_t)^{- \frac 1 2}exp\lbrace {- \frac 1 2}(z_t-C_t x_t)^T Q_t^{-1}(z_t-C_t x_t)\rbrace
 $$</p>
 <p><strong>3.</strong> 初始置信$bel(x_0)$概率服从均值为$\mu_0$，协方差为$\Sigma_0$的多元高斯分布。</p>
 <p>$$
-bel(x_0) = p(x_0) = det(2 \pi \Sigma_0)^{- \frac 1 2}exp{{- \frac 1 2}(x_0- \mu_0)^T \Sigma_0^{-1}(x_0- \mu_0)}
+bel(x_0) = p(x_0) = det(2 \pi \Sigma_0)^{- \frac 1 2}exp\lbrace {- \frac 1 2}(x_0- \mu_0)^T \Sigma_0^{-1}(x_0- \mu_0)\rbrace
 $$</p>
 <h2>递推公式</h2>
 <p>只要满足以上三个假设，即可证明$bel(x_t)$也满足高斯分布。即：</p>
@@ -181,7 +181,7 @@ $$</p>
 p(z_t|x_t) \sim N(z_t; C_t x_t, Q_t)
 $$</p>
 <p>$$
-bel(x_t) \sim N(x_t; \overline \mu_t, \overline \Sigma_t)
+\overline {bel}(x_t) \sim N(x_t; \overline \mu_t, \overline \Sigma_t)
 $$</p>
 <p>因此$bel(x_t)$可以看作两个高斯分布的乘积，结果也是高斯分布。省略中间推导，最终得到的均值和协方差如下：</p>
 <p>\begin{split}
