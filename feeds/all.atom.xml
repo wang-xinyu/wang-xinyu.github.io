@@ -1,5 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-06-26T00:00:00+08:00</updated><entry><title>The Derivation of Generic Particle Filter for Robot</title><link href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html" rel="alternate"></link><updated>2017-06-26T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-26:the-derivation-of-generic-particle-filter-for-robot.html</id><summary type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-08-17T00:00:00+08:00</updated><entry><title>EKF SLAM-The Most Primitive SLAM</title><link href="https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html" rel="alternate"></link><updated>2017-08-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-17:ekf-slam-the-most-primitive-slam.html</id><summary type="html">&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current pose along with he map:&lt;/p&gt;
+&lt;p&gt;$$
+p(x_{t}, m | z_{1:t}, u_{1:t})
+$$&lt;/p&gt;
+&lt;h2&gt;Assumptions&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The maps in EKF SLAM are feature-based, they are composed of point landmarks.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;With known correspondences or data associations between observations and landmarks.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;All the noises are Gaussian.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;State Vector&lt;/h2&gt;
+&lt;p&gt;$$
+y_t = (x,y,\theta,m_{1,x},m_{1,y},...,m_{n,x},m_{n,y})^T
+$$&lt;/p&gt;
+&lt;p&gt;The state vector includes robot pose and landmark positions. The dimension of this state vector is $2N+3$, where $N$ denotes the number of landmarks in the map. In robot localization problem, the state vector only contains robot pose, but for this EKF SLAM problem, we need to update the position of landmarks also. So now the posterior can be denoted as:&lt;/p&gt;
+&lt;p&gt;$$
+p(y_{t}| z_{1:t}, u_{1:t})
+$$&lt;/p&gt;
+&lt;h2&gt;Algorithm&lt;/h2&gt;
+&lt;p&gt;——————————————&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Algorithm EKF_SLAM_known_correspondences($\mu_{t-1}$, $\Sigma_{t-1}$, $u_{t}$, $z_{t}$)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\bar \mu_t = g(u_t, \mu_{t-1})$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\bar \Sigma_t = G_t \Sigma_{t-1} G_t^T+ R_t$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$K_t = \bar \Sigma_t H_t^T(H_t \bar \Sigma_t H_t^T + Q_t)^{-1}$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;$\mu_t = \bar \mu_t + K_t(z_t - \hat z_t)$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\Sigma_t = (I - K_t H_t) \bar \Sigma_t$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;return $\mu_t$, $\Sigma_t$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;——————————————&lt;/p&gt;
+&lt;p&gt;Basically, we are using EKF to estimate the belief of robot pose and landmark positions. The filter cycle is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;State prediction, line 2 and 3, to predict the next state based on a motion model.&lt;/li&gt;
+&lt;li&gt;Measurement prediction, for each observed landmark, we calculate its predicted measurement using the predicted robot pose and this landmark's position. We record the landmark's position the first time we see it. With this value, we can calculate $H_t$, $K_t$, $\hat z_t$ and $\Sigma_t$&lt;/li&gt;
+&lt;li&gt;Measurement, after incorporating the measurement, we can calculate $\mu_t$&lt;/li&gt;
+&lt;li&gt;Data association, we can skip this step, because the correspondences are known, but we need this step, if they are unknown.&lt;/li&gt;
+&lt;li&gt;Update, update the belief.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;State Prediction&lt;/h2&gt;
+&lt;p&gt;$
+F_x = \begin{pmatrix} 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 \\ 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp;\cdots &amp;amp; 0 \end{pmatrix}_{3 \times (2N+3)}
+$&lt;/p&gt;
+&lt;p&gt;$
+y_t = y_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix} + \mathcal{N} \left(0, F_x^T R_t F_x \right)
+$&lt;/p&gt;
+&lt;p&gt;As robot moves, the state changes according to the Velocity Motion Model. Because the motion only affects the robot pose and all landmarks remain where they are, only the first three elements in the update are non-zero.&lt;/p&gt;
+&lt;p&gt;$
+\bar \mu_t = \mu_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix}
+$&lt;/p&gt;
+&lt;h3&gt;References&lt;/h3&gt;
+&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
+&lt;p&gt;Cyrill Stachniss. EKF SLAM, YouTube.com&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>The Derivation of Generic Particle Filter for Robot</title><link href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html" rel="alternate"></link><updated>2017-06-26T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-26:the-derivation-of-generic-particle-filter-for-robot.html</id><summary type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
 &lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;我这里所说的普通粒子滤波也叫SIR（Sampling Importance Resampling）粒子滤波。因为时至今日已产生了很多粒子滤波的变种，例如：regularized particle filter，Rao-Blackwellized particle filter等等，这些都使用了某种方法对基本的粒子滤波进行了优化。&lt;/p&gt;
 &lt;p&gt;粒子滤波可以说是使用Monte Carlo方法的贝叶斯滤波的实现。这是因为SIS（Sequential Importance Sampling）是一种Monte Carlo方法，而粒子滤波、bootstap filter、condensation算法等，都可以基于SIS推导出来。&lt;/p&gt;

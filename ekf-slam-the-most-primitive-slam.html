@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Tags List">
-        <meta name="keywords" content="">
+        <meta name="description" content="EKF SLAM-The Most Primitive SLAM Introduction In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing ...">
+        <meta name="keywords" content="Math">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
-        <title>Tags - BlogWX</title>
+        <title>EKF SLAM-The Most Primitive SLAM - BlogWX</title>
 
         <!-- Stylesheets -->
         <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
 
         <!-- RSS Feeds -->
         <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/robot.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
         <!-- /RSS Feeds -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,7 +58,7 @@
     <body>
 
         <!-- Header -->
-    <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wang-xinyu.github.io/images/homepage.png'); background-position: center; ">
+    <div class="header-container gradient">
 
             <!-- Static navbar -->
             <div class="container">
@@ -75,17 +76,23 @@
             <!-- /Static navbar -->
 
             <!-- Header -->
+    <!-- Header -->
     <div class="container header-wrapper">
         <div class="row">
               <div class="col-lg-12">
                   <div class="header-content">
-                      <h1 class="header-title text-uppercase">Tags</h1>
+                      <h1 class="header-title">EKF SLAM-The Most Primitive SLAM</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Thu 17 August 2017, in category <a href="https://wang-xinyu.github.io/category/robot.html">Robot</a></p>
                       <div class="header-underline"></div>
-                      <p class="header-subtitle header-subtitle-homepage">Tags List</p>
+                      <div class="clearfix"></div>
+                      <p class="pull-right header-tags">
+                          <span class="glyphicon glyphicon-tags mr5" aria-hidden="true"></span>
+<a href="https://wang-xinyu.github.io/tag/math.html">Math</a>                      </p>
                   </div>
               </div>
         </div>
     </div>
+    <!-- /Header -->
             <!-- /Header -->
 
         </div>
@@ -93,28 +100,96 @@
 
 
         <!-- Content -->
-    <div class="archive-container">
-        <div class="container content archive">
-            <h2><a href="https://wang-xinyu.github.io/tags.html">Tags List</a></h2>
-            <dl class="dl-horizontal">
-            	<dt><span class="label label-default">1</span> article tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/c.html">C</a></dd>
-            	<dt><span class="label label-default">1</span> article tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/es.html">ES</a></dd>
-            	<dt><span class="label label-default">2</span> articles tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/linux.html">Linux</a></dd>
-            	<dt><span class="label label-default">5</span> articles tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/math.html">Math</a></dd>
-            	<dt><span class="label label-default">1</span> article tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/modbus.html">MODBUS</a></dd>
-            	<dt><span class="label label-default">1</span> article tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/mqtt.html">MQTT</a></dd>
-            	<dt><span class="label label-default">1</span> article tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/raspi.html">Raspi</a></dd>
-            	<dt><span class="label label-default">1</span> article tagged</dt>
-            	<dd><a href="https://wang-xinyu.github.io/tag/ros.html">ROS</a></dd>
-            </dl>
-        </div>
+    <div class="container content">
+        <h1>EKF SLAM-The Most Primitive SLAM</h1>
+<h2>Introduction</h2>
+<p>In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current pose along with he map:</p>
+<p>$$
+p(x_{t}, m | z_{1:t}, u_{1:t})
+$$</p>
+<h2>Assumptions</h2>
+<ul>
+<li>
+<p>The maps in EKF SLAM are feature-based, they are composed of point landmarks.</p>
+</li>
+<li>
+<p>With known correspondences or data associations between observations and landmarks.</p>
+</li>
+<li>
+<p>All the noises are Gaussian.</p>
+</li>
+</ul>
+<h2>State Vector</h2>
+<p>$$
+y_t = (x,y,\theta,m_{1,x},m_{1,y},...,m_{n,x},m_{n,y})^T
+$$</p>
+<p>The state vector includes robot pose and landmark positions. The dimension of this state vector is $2N+3$, where $N$ denotes the number of landmarks in the map. In robot localization problem, the state vector only contains robot pose, but for this EKF SLAM problem, we need to update the position of landmarks also. So now the posterior can be denoted as:</p>
+<p>$$
+p(y_{t}| z_{1:t}, u_{1:t})
+$$</p>
+<h2>Algorithm</h2>
+<p>——————————————</p>
+<ol>
+<li>
+<p>Algorithm EKF_SLAM_known_correspondences($\mu_{t-1}$, $\Sigma_{t-1}$, $u_{t}$, $z_{t}$)</p>
+</li>
+<li>
+<p>$\bar \mu_t = g(u_t, \mu_{t-1})$</p>
+</li>
+<li>
+<p>$\bar \Sigma_t = G_t \Sigma_{t-1} G_t^T+ R_t$</p>
+</li>
+<li>
+<p>$K_t = \bar \Sigma_t H_t^T(H_t \bar \Sigma_t H_t^T + Q_t)^{-1}$</p>
+</li>
+<li>$\mu_t = \bar \mu_t + K_t(z_t - \hat z_t)$</li>
+<li>
+<p>$\Sigma_t = (I - K_t H_t) \bar \Sigma_t$</p>
+</li>
+<li>
+<p>return $\mu_t$, $\Sigma_t$</p>
+</li>
+</ol>
+<p>——————————————</p>
+<p>Basically, we are using EKF to estimate the belief of robot pose and landmark positions. The filter cycle is:</p>
+<ul>
+<li>State prediction, line 2 and 3, to predict the next state based on a motion model.</li>
+<li>Measurement prediction, for each observed landmark, we calculate its predicted measurement using the predicted robot pose and this landmark's position. We record the landmark's position the first time we see it. With this value, we can calculate $H_t$, $K_t$, $\hat z_t$ and $\Sigma_t$</li>
+<li>Measurement, after incorporating the measurement, we can calculate $\mu_t$</li>
+<li>Data association, we can skip this step, because the correspondences are known, but we need this step, if they are unknown.</li>
+<li>Update, update the belief.</li>
+</ul>
+<h2>State Prediction</h2>
+<p>$
+F_x = \begin{pmatrix} 1 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 &amp;\cdots &amp; 0 \end{pmatrix}_{3 \times (2N+3)}
+$</p>
+<p>$
+y_t = y_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix} + \mathcal{N} \left(0, F_x^T R_t F_x \right)
+$</p>
+<p>As robot moves, the state changes according to the Velocity Motion Model. Because the motion only affects the robot pose and all landmarks remain where they are, only the first three elements in the update are non-zero.</p>
+<p>$
+\bar \mu_t = \mu_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix}
+$</p>
+<h3>References</h3>
+<p>Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.</p>
+<p>Cyrill Stachniss. EKF SLAM, YouTube.com</p>
+
+
+    <div class="comments">
+        <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'blogwx';
+                var disqus_identifier = 'ekf-slam-the-most-primitive-slam.html';
+                var disqus_url = 'https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+        
     </div>
         <!-- /Content --> 
 
