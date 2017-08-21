@@ -160,16 +160,98 @@ $$</p>
 <li>Update, update the belief.</li>
 </ul>
 <h2>State Prediction</h2>
+<p>As robot moves, the state changes according to the Velocity Motion Model. Because the motion only affects the robot pose and all landmarks remain where they are, only the first three elements in the update are non-zero.</p>
 <p>$
 F_x = \begin{pmatrix} 1 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 &amp;\cdots &amp; 0 \end{pmatrix}_{3 \times (2N+3)}
 $</p>
 <p>$
-y_t = y_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix} + \mathcal{N} \left(0, F_x^T R_t F_x \right)
+y_t = \underbrace {
+  y_{t-1} + F_x^T \begin{pmatrix}
+    - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t}) \\
+    \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\
+    \omega_t \Delta t \end{pmatrix}
+}_{g}
+ + \mathcal{N} \left(0, F_x^T R_t F_x \right)
 $</p>
-<p>As robot moves, the state changes according to the Velocity Motion Model. Because the motion only affects the robot pose and all landmarks remain where they are, only the first three elements in the update are non-zero.</p>
+<p>The motion function $g$ is approximated using a first degree Taylor expansion.</p>
+<p>$
+g(y_{t-1}, u_t) \approx g(\mu_{t-1}, u_t) + G_t(y_{t-1} - \mu_{t-1})
+$</p>
+<p>Jacobian $G_t$ is the derivative of $g$ with respect to $y_{t-1}$ at $u_t$ and $\mu_{t-1}$.</p>
+<p>$
+G_t = \frac {\partial g} {\partial (x, y, \theta, m_{1,x}, m_{1,y}, ... , m_{n,x}, m_{n,y})} = \begin{pmatrix} 1 &amp; 0 &amp; -\frac {v_t}{\omega_t}cos\mu_{t-1, \theta} + \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) &amp;  &amp;  &amp;  \\ 0 &amp; 1 &amp; \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} - \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t}) &amp;  &amp; 0 &amp;  \\ 0 &amp; 0 &amp; 1 &amp;  &amp;  &amp; \\  &amp; 0 &amp; &amp; &amp; I &amp; \end{pmatrix}_{(2N+3) \times (2N+3)}
+$</p>
+<p>So the predicted mean $\bar \mu_t$ and covariance $\bar \Sigma_t$ is the mean and covariance of Gaussian distribution $y_t$.</p>
 <p>$
 \bar \mu_t = \mu_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix}
 $</p>
+<p>$\bar \Sigma_t = G_t \Sigma_{t-1} G_t^T+ F_x^T R_t F_x$</p>
+<h2>Measurement Prediction</h2>
+<p>We can predicte the measurement using the following measurement model.</p>
+<p>$
+z_t^i = \underbrace {
+  \begin{pmatrix}
+    \sqrt{(m_{j,x} - x)^2 + (m_{j,y} - y)^2} \\
+    atan2(m_{j,y} - y, m_{j,x} - x) - \theta
+  \end{pmatrix}
+}_{h} + \mathcal{N} (0, Q_t)
+$</p>
+<p>$
+Q_t = 
+  \begin{pmatrix}
+    \sigma_r &amp; 0 \\
+    0 &amp; \sigma_\phi
+  \end{pmatrix}
+$</p>
+<p>$i$ is the index of landmark observation in $z_t$, $j = c_t^i$ is the index of landmark at time $t$.</p>
+<p>The measurement function $h$ is also approximated using a first degree Taylor expansion.</p>
+<p>$
+h(y_{t}, j) \approx h(\bar \mu_{t}, j) + H_t^i(y_{t} - \bar \mu_{t})
+$</p>
+<p>Jacobian $H_t^i$ is the derivative of $h$ with respect to the full state vector $y_{t}$ at $\bar \mu_{t}$ and $j$. And we use $\delta$ and $q$ to make the formulas simpler.</p>
+<p>$
+\delta = \begin{pmatrix} \delta_x \\ \delta_y \end{pmatrix} = \begin{pmatrix}  \bar \mu_{j,x} - \bar \mu_{t, x} \\ \bar \mu_{j,y} - \bar \mu_{t, y} \end{pmatrix}
+$</p>
+<p>$
+q = \delta_x^2 + \delta_y^2
+$</p>
+<p>$
+H_t^i = \frac {\partial h} {\partial (x, y, \theta, m_{1,x}, m_{1,y}, ... , m_{n,x}, m_{n,y})} = 
+{\begin{pmatrix}
+  - \frac {\delta_x} {\sqrt{q}} &amp; - \frac {\delta_y} {\sqrt{q}} &amp; 0 &amp; 0_{1 \times (2j-2)} &amp; \frac {\delta_x} {\sqrt{q}} &amp; \frac {\delta_y} {\sqrt{q}} &amp; 0_{1 \times (2N-2j)} \\
+  \frac {\delta_y} {q} &amp; - \frac {\delta_x} {q} &amp; -1 &amp; 0_{1 \times (2j-2)} &amp; -\frac {\delta_y} {q} &amp; \frac {\delta_x} {q} &amp; 0_{1 \times (2N-2j)} \end{pmatrix}}_{2 \times (2N+3)}
+$</p>
+<p>The position of landmark $j$ is $\bar \mu_{j}$, which is cached the first time this landmark is observed.</p>
+<p>$
+\begin{pmatrix}
+\bar \mu_{j,x} \\
+\bar \mu_{j,y}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\bar \mu_{t,x} \\
+\bar \mu_{t,y}
+\end{pmatrix}
++
+\begin{pmatrix}
+r_t^i cos(\phi_t^i + \bar \mu_{t,\theta}) \\
+r_t^i sin(\phi_t^i + \bar \mu_{t,\theta})
+\end{pmatrix}
+$</p>
+<p>So now we can calcute $\hat z_t^i$, $K_t^i$ and further $\mu_t$ and $\Sigma_t$.</p>
+<p>$
+\hat z_t^i = 
+\begin{pmatrix}
+\sqrt{q} \\
+atan2(\delta_y, \delta_x) - \bar \mu_{t, \theta}
+\end{pmatrix}
+$</p>
+<p>$K_t^i = \bar \Sigma_t H_t^{iT}(H_t^i \bar \Sigma_t H_t^{iT} + Q_t)^{-1}$</p>
+<p>$\bar \mu_t = \bar \mu_t + K_t^i(z_t^i - \hat z_t^i)$</p>
+<p>$\bar \Sigma_t = (I - K_t^i H_t^i) \bar \Sigma_t$</p>
+<p>When processing the $i_{th}$ observation in the loop, we update the predicted mean and covariance using the values we got from $(i-1)_{th}$ observation. That is we update $\bar \mu_t$ and $\bar \Sigma_t$ iteratively. And after the for loop, the updated $\bar \mu_t$ and $\bar \Sigma_t$ are the final $\mu_t$ and $\Sigma_t$ respectively.</p>
+<p>$\mu_t = \bar \mu_t$</p>
+<p>$\Sigma_t = \bar \Sigma_t $</p>
 <h3>References</h3>
 <p>Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.</p>
 <p>Cyrill Stachniss. EKF SLAM, YouTube.com</p>

@@ -58,16 +58,98 @@ $$&lt;/p&gt;
 &lt;li&gt;Update, update the belief.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;State Prediction&lt;/h2&gt;
+&lt;p&gt;As robot moves, the state changes according to the Velocity Motion Model. Because the motion only affects the robot pose and all landmarks remain where they are, only the first three elements in the update are non-zero.&lt;/p&gt;
 &lt;p&gt;$
 F_x = \begin{pmatrix} 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 \\ 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp;\cdots &amp;amp; 0 \end{pmatrix}_{3 \times (2N+3)}
 $&lt;/p&gt;
 &lt;p&gt;$
-y_t = y_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix} + \mathcal{N} \left(0, F_x^T R_t F_x \right)
+y_t = \underbrace {
+  y_{t-1} + F_x^T \begin{pmatrix}
+    - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t}) \\
+    \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\
+    \omega_t \Delta t \end{pmatrix}
+}_{g}
+ + \mathcal{N} \left(0, F_x^T R_t F_x \right)
 $&lt;/p&gt;
-&lt;p&gt;As robot moves, the state changes according to the Velocity Motion Model. Because the motion only affects the robot pose and all landmarks remain where they are, only the first three elements in the update are non-zero.&lt;/p&gt;
+&lt;p&gt;The motion function $g$ is approximated using a first degree Taylor expansion.&lt;/p&gt;
+&lt;p&gt;$
+g(y_{t-1}, u_t) \approx g(\mu_{t-1}, u_t) + G_t(y_{t-1} - \mu_{t-1})
+$&lt;/p&gt;
+&lt;p&gt;Jacobian $G_t$ is the derivative of $g$ with respect to $y_{t-1}$ at $u_t$ and $\mu_{t-1}$.&lt;/p&gt;
+&lt;p&gt;$
+G_t = \frac {\partial g} {\partial (x, y, \theta, m_{1,x}, m_{1,y}, ... , m_{n,x}, m_{n,y})} = \begin{pmatrix} 1 &amp;amp; 0 &amp;amp; -\frac {v_t}{\omega_t}cos\mu_{t-1, \theta} + \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) &amp;amp;  &amp;amp;  &amp;amp;  \\ 0 &amp;amp; 1 &amp;amp; \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} - \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t}) &amp;amp;  &amp;amp; 0 &amp;amp;  \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp;  &amp;amp;  &amp;amp; \\  &amp;amp; 0 &amp;amp; &amp;amp; &amp;amp; I &amp;amp; \end{pmatrix}_{(2N+3) \times (2N+3)}
+$&lt;/p&gt;
+&lt;p&gt;So the predicted mean $\bar \mu_t$ and covariance $\bar \Sigma_t$ is the mean and covariance of Gaussian distribution $y_t$.&lt;/p&gt;
 &lt;p&gt;$
 \bar \mu_t = \mu_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix}
 $&lt;/p&gt;
+&lt;p&gt;$\bar \Sigma_t = G_t \Sigma_{t-1} G_t^T+ F_x^T R_t F_x$&lt;/p&gt;
+&lt;h2&gt;Measurement Prediction&lt;/h2&gt;
+&lt;p&gt;We can predicte the measurement using the following measurement model.&lt;/p&gt;
+&lt;p&gt;$
+z_t^i = \underbrace {
+  \begin{pmatrix}
+    \sqrt{(m_{j,x} - x)^2 + (m_{j,y} - y)^2} \\
+    atan2(m_{j,y} - y, m_{j,x} - x) - \theta
+  \end{pmatrix}
+}_{h} + \mathcal{N} (0, Q_t)
+$&lt;/p&gt;
+&lt;p&gt;$
+Q_t = 
+  \begin{pmatrix}
+    \sigma_r &amp;amp; 0 \\
+    0 &amp;amp; \sigma_\phi
+  \end{pmatrix}
+$&lt;/p&gt;
+&lt;p&gt;$i$ is the index of landmark observation in $z_t$, $j = c_t^i$ is the index of landmark at time $t$.&lt;/p&gt;
+&lt;p&gt;The measurement function $h$ is also approximated using a first degree Taylor expansion.&lt;/p&gt;
+&lt;p&gt;$
+h(y_{t}, j) \approx h(\bar \mu_{t}, j) + H_t^i(y_{t} - \bar \mu_{t})
+$&lt;/p&gt;
+&lt;p&gt;Jacobian $H_t^i$ is the derivative of $h$ with respect to the full state vector $y_{t}$ at $\bar \mu_{t}$ and $j$. And we use $\delta$ and $q$ to make the formulas simpler.&lt;/p&gt;
+&lt;p&gt;$
+\delta = \begin{pmatrix} \delta_x \\ \delta_y \end{pmatrix} = \begin{pmatrix}  \bar \mu_{j,x} - \bar \mu_{t, x} \\ \bar \mu_{j,y} - \bar \mu_{t, y} \end{pmatrix}
+$&lt;/p&gt;
+&lt;p&gt;$
+q = \delta_x^2 + \delta_y^2
+$&lt;/p&gt;
+&lt;p&gt;$
+H_t^i = \frac {\partial h} {\partial (x, y, \theta, m_{1,x}, m_{1,y}, ... , m_{n,x}, m_{n,y})} = 
+{\begin{pmatrix}
+  - \frac {\delta_x} {\sqrt{q}} &amp;amp; - \frac {\delta_y} {\sqrt{q}} &amp;amp; 0 &amp;amp; 0_{1 \times (2j-2)} &amp;amp; \frac {\delta_x} {\sqrt{q}} &amp;amp; \frac {\delta_y} {\sqrt{q}} &amp;amp; 0_{1 \times (2N-2j)} \\
+  \frac {\delta_y} {q} &amp;amp; - \frac {\delta_x} {q} &amp;amp; -1 &amp;amp; 0_{1 \times (2j-2)} &amp;amp; -\frac {\delta_y} {q} &amp;amp; \frac {\delta_x} {q} &amp;amp; 0_{1 \times (2N-2j)} \end{pmatrix}}_{2 \times (2N+3)}
+$&lt;/p&gt;
+&lt;p&gt;The position of landmark $j$ is $\bar \mu_{j}$, which is cached the first time this landmark is observed.&lt;/p&gt;
+&lt;p&gt;$
+\begin{pmatrix}
+\bar \mu_{j,x} \\
+\bar \mu_{j,y}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\bar \mu_{t,x} \\
+\bar \mu_{t,y}
+\end{pmatrix}
++
+\begin{pmatrix}
+r_t^i cos(\phi_t^i + \bar \mu_{t,\theta}) \\
+r_t^i sin(\phi_t^i + \bar \mu_{t,\theta})
+\end{pmatrix}
+$&lt;/p&gt;
+&lt;p&gt;So now we can calcute $\hat z_t^i$, $K_t^i$ and further $\mu_t$ and $\Sigma_t$.&lt;/p&gt;
+&lt;p&gt;$
+\hat z_t^i = 
+\begin{pmatrix}
+\sqrt{q} \\
+atan2(\delta_y, \delta_x) - \bar \mu_{t, \theta}
+\end{pmatrix}
+$&lt;/p&gt;
+&lt;p&gt;$K_t^i = \bar \Sigma_t H_t^{iT}(H_t^i \bar \Sigma_t H_t^{iT} + Q_t)^{-1}$&lt;/p&gt;
+&lt;p&gt;$\bar \mu_t = \bar \mu_t + K_t^i(z_t^i - \hat z_t^i)$&lt;/p&gt;
+&lt;p&gt;$\bar \Sigma_t = (I - K_t^i H_t^i) \bar \Sigma_t$&lt;/p&gt;
+&lt;p&gt;When processing the $i_{th}$ observation in the loop, we update the predicted mean and covariance using the values we got from $(i-1)_{th}$ observation. That is we update $\bar \mu_t$ and $\bar \Sigma_t$ iteratively. And after the for loop, the updated $\bar \mu_t$ and $\bar \Sigma_t$ are the final $\mu_t$ and $\Sigma_t$ respectively.&lt;/p&gt;
+&lt;p&gt;$\mu_t = \bar \mu_t$&lt;/p&gt;
+&lt;p&gt;$\Sigma_t = \bar \Sigma_t $&lt;/p&gt;
 &lt;h3&gt;References&lt;/h3&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
 &lt;p&gt;Cyrill Stachniss. EKF SLAM, YouTube.com&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>The Derivation of Generic Particle Filter for Robot</title><link href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html" rel="alternate"></link><updated>2017-06-26T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-26:the-derivation-of-generic-particle-filter-for-robot.html</id><summary type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
