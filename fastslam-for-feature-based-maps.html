@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="FastSLAM for Feature-Based Maps Introduction FastSLAM applys a version of particle filters to SLAM known as Rao-Blackwellized Particle Filter. Which uses particles to represent the posterior over ...">
+        <meta name="keywords" content="Math">
+        <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
+
+        <title>FastSLAM for Feature-Based Maps - BlogWX</title>
+
+        <!-- Stylesheets -->
+        <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
+        <!-- /Stylesheets -->
+
+        <!-- RSS Feeds -->
+        <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/robot.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
+        <!-- /RSS Feeds -->
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <!-- mathjax config similar to math.stackexchange -->
+        <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            jax: ["input/TeX", "output/HTML-CSS"],
+            tex2jax: {
+                inlineMath: [ ['$', '$'] ],
+                displayMath: [ ['$$', '$$']],
+                processEscapes: true,
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            messageStyle: "none",
+            "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+        });
+        </script>
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Google Analytics -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-100868171-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+        <!-- /Google Analytics -->
+
+
+    </head>
+
+    <body>
+
+        <!-- Header -->
+    <div class="header-container gradient">
+
+            <!-- Static navbar -->
+            <div class="container">
+                <div class="header-nav">
+                    <div class="header-logo">
+                        <a class="pull-left" href="https://wang-xinyu.github.io/"><img class="mr20" src="https://wang-xinyu.github.io/images/logo.png" alt="logo">BlogWX</a>
+                    </div>
+                    <div class="nav pull-right">
+                                <a href="https://wang-xinyu.github.io/">Homepage</a>
+                                <a href="https://wang-xinyu.github.io/categories.html">Categories</a>
+                                <a href="https://wang-xinyu.github.io/aboutme.html">AboutMe</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /Static navbar -->
+
+            <!-- Header -->
+    <!-- Header -->
+    <div class="container header-wrapper">
+        <div class="row">
+              <div class="col-lg-12">
+                  <div class="header-content">
+                      <h1 class="header-title">FastSLAM for Feature-Based Maps</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Fri 25 August 2017, in category <a href="https://wang-xinyu.github.io/category/robot.html">Robot</a></p>
+                      <div class="header-underline"></div>
+                      <div class="clearfix"></div>
+                      <p class="pull-right header-tags">
+                          <span class="glyphicon glyphicon-tags mr5" aria-hidden="true"></span>
+<a href="https://wang-xinyu.github.io/tag/math.html">Math</a>                      </p>
+                  </div>
+              </div>
+        </div>
+    </div>
+    <!-- /Header -->
+            <!-- /Header -->
+
+        </div>
+        <!-- /Header -->
+
+
+        <!-- Content -->
+    <div class="container content">
+        <h1>FastSLAM for Feature-Based Maps</h1>
+<h2>Introduction</h2>
+<p>FastSLAM applys a version of particle filters to SLAM known as Rao-Blackwellized Particle Filter. Which uses particles to represent the posterior over some variables, along with Gaussians to represent all other vaviables. </p>
+<h2>Assumptions</h2>
+<ul>
+<li>
+<p>The maps in EKF SLAM are feature-based, they are composed of point landmarks.</p>
+</li>
+<li>
+<p>With known correspondences or data associations between observations and landmarks.</p>
+</li>
+</ul>
+<h2>Factoring the SLAM Posterior</h2>
+<p>$
+p(x_{1:t}, m| z_{1:t}, u_{1:t}) = p( x_{1:t} | z_{1:t}, u_{1:t}) p(m|x_{1:t},z_{1:t}) = p( x_{1:t} | z_{1:t}, u_{1:t}) \prod_{i=1}^N p(m_i|x_{1:t},z_{1:t})
+$</p>
+<p>FastSLAM uses a particle filter to compute the posterior over robot paths, i.e. $p( x_{1:t} | z_{1:t}, u_{1:t})$. For each of these particles, the individual map errors are conditionally independent. Hence the mapping problem can be factored into separate problems $p(m_i|x_{1:t},z_{1:t})$, one for each feature in the map. FastSLAM estimates these map feature locations by using low-dimensional EKFs.</p>
+<p>The feature estimators are conditioned on the robot path, which means we will have a separate copy of each feature estimator, one for each particle. With $M$ particles and $N$ feature, the total number of filters will be $1+MN$, one particle filter and $MN$ EKFs.</p>
+<h2>Algorithm</h2>
+<p>——————————————</p>
+<ol>
+<li>
+<p>Algorithm FastSLAM_known_correspondences($z_{t}$, $c_{t}$, $u_{t}$, $\mathcal{X}_{t-1}$)</p>
+</li>
+<li>
+<p>$for \ k = 1 \ to \ M \ do$</p>
+</li>
+<li>
+<p>$\ \ \langle  x_{t-1}^{[k]}, \langle \mu_{1,t-1}^{[k]}, \Sigma_{1,t-1}^{[k]}, ... \rangle \rangle, \ Get \ particle \ k \ in \  \mathcal{X}_{t-1}$</p>
+</li>
+<li>
+<p>$\ \ x_t^{[k]} \sim  p(x_t|x_{t-1}^{[k]}, u_t)$</p>
+</li>
+<li>$\ \ j = c_t, \ feature \ j \ is \ observed$</li>
+<li>$\ \ if \ feature \ j \ never \ seen \ before$</li>
+<li>$\ \ \ \ initialize \ \mu_{j,t}^{[k]}, H, \Sigma_{j,t}^{[k]} = H^{-1} Q_t (H^{-1})^T, w^{[k]} = p_0$</li>
+<li>$\ \ else$</li>
+<li>$\ \ \ \ \langle \mu_{j,t}^{[k]}, \Sigma_{j,t}^{[k]} \rangle = \text{EKF-Update()}$</li>
+<li>$\ \ \ \ w^{[k]} = |2 \pi Q|^{- \frac 1 2} exp \lbrace - \frac 1 2 (z_t - \hat z ^{[k]})^T Q^{-1} (z_t - \hat z ^{[k]}) \rbrace $</li>
+<li>$\ \ endif$</li>
+<li>
+<p>$endfor$</p>
+</li>
+<li>
+<p>$\mathcal{X}_t = resample( particle \ 1, \ ..., \ M)$</p>
+</li>
+<li>
+<p>return $\mathcal{X}_t$</p>
+</li>
+</ol>
+<p>——————————————</p>
+<p>Basically, we are using Partilce Filter to estimate the robot path and using EKF to update landmark positions. The filter cycle is:</p>
+<ul>
+<li>Loop over all particles, for each particle, we sample the new pose, update the mean and covariance of landmark according to the observation, and finaly calculate the weight of this particle.</li>
+<li>Resampling.</li>
+</ul>
+<h2>Importance Weight</h2>
+<p>\begin{split}
+w^{[k]} &amp;= {target(x^{[k]}) \over proposal(x^{[k]})} \\
+&amp;= {p(x_{1:t}^{[k]}|z_{1:t},u_{1:t}) \over p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t})} \\
+&amp;= {p(x_{1:t}^{[k]}|z_{1:t},u_{1:t}) \over p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})} \\
+&amp;= {p(z_t|x_{1:t}^{[k]}, z_{1:t-1},u_{1:t}) p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} {1 \over p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})} \\
+&amp;= \eta \cdot p(z_t|x_{1:t}^{[k]}, z_{1:t-1},u_{1:t}) p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t}) {1 \over p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})} \\
+&amp;= \eta \cdot p(z_t|x_{1:t}^{[k]}, z_{1:t-1})
+\end{split}</p>
+<p>Our proposal is $p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t})$, normally we sample from proposal, but since it can be factored into $ p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})$, so we can sample $x_{t}^{[k]}$ from $p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t)$.</p>
+<p>We can't calculate $p(z_t|x_{1:t}^{[k]}, z_{1:t-1})$ directly, it will be necessary to transform it further. The idea is integrating over the position of observed landmark.</p>
+<p>\begin{split}
+w^{[k]} &amp;= \eta \cdot p(z_t|x_{1:t}^{[k]}, z_{1:t-1}) \\
+&amp;= \eta \cdot \int p(z_t|x_{1:t}^{[k]}, z_{1:t-1}, m_j) p(m_j|x_{1:t}^{[k]}, z_{1:t-1})dm_j \\
+&amp;= \eta \cdot \int p(z_t|x_{t}^{[k]}, m_j) p(m_j|x_{1:t-1}^{[k]}, z_{1:t-1})dm_j
+\end{split}</p>
+<p>$$
+p(z_t|x_{t}^{[k]}, m_j) \sim \mathcal{N} \left( z_t; \hat z^{[k]}, Q_t \right)
+$$</p>
+<p>$$
+p(m_j|x_{1:t-1}^{[k]}, z_{1:t-1}) \sim \mathcal{N} \left( m_j; \mu_{j,t-1}^{[k]}, \Sigma_{j,t-1}^{[k]} \right)
+$$</p>
+<p>Thus $w^{[k]}$ actually results from the convolution of two Gaussian.</p>
+<p>$$
+w^{[k]} \approx \eta \cdot |2 \pi Q|^{- \frac 1 2} exp \lbrace - \frac 1 2 (z_t - \hat z ^{[k]})^T Q^{-1} (z_t - \hat z ^{[k]}) \rbrace
+$$</p>
+<p>$$
+Q = H \Sigma_{j,t-1}^{[k]} H^T + Q_t
+$$</p>
+<h3>References</h3>
+<p>Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.</p>
+<p>Cyrill Stachniss. FastSLAM, YouTube.com</p>
+
+
+    <div class="comments">
+        <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'blogwx';
+                var disqus_identifier = 'fastslam-for-feature-based-maps.html';
+                var disqus_url = 'https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+        
+    </div>
+        <!-- /Content --> 
+
+        <!-- Footer -->
+        <div class="footer gradient-2">
+            <div class="container footer-container ">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                        <div class="footer-title">Sitemap</div>
+                        <ul class="list-unstyled">
+                            <li><a href="https://wang-xinyu.github.io/archives.html">Archives</a></li>
+                            <li><a href="https://wang-xinyu.github.io/tags.html">Tags</a></li>
+                            <li><a href="https://wang-xinyu.github.io/authors.html">Authors</a></li>
+                            <li><a href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">Atom Feed</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                        <div class="footer-title">Social</div>
+                        <ul class="list-unstyled">
+                            <li><a href="https://github.com/wang-xinyu" target="_blank">Github</a></li>
+                            <li><a href="http://weibo.com/1954225741" target="_blank">Weibo</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                        <div class="footer-title">Links</div>
+                        <ul class="list-unstyled">
+                            <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+                            <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+                        </ul>
+                    </div> 
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                        <p class="pull-right text-right">
+                            <small><em>Proudly powered by <a href="http://docs.getpelican.com/" target="_blank">pelican</a></em></small><br/>
+                            <small><em>Theme and code by <a href="https://github.com/molivier/nest" target="_blank">molivier</a></em></small><br/>
+                            <small>&copy; BlogWX 2015-2017</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Footer -->
+    </body>
+</html>
