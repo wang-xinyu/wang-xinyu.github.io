@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="MODBUS over Serial Line介绍 本文参考&#39;MODBUS over Serial Line V1.02&#39;，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问MODBUS官网。 1. MODBUS简介 ...">
+        <meta name="description" content="MODBUS over Serial Line介绍 本文参考&#39;MODBUS over Serial Line V1.02&#39;，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问MODBUS官网。 1. MODBUS简介...">
         <meta name="keywords" content="MODBUS">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
@@ -130,12 +130,12 @@
 </ul>
 <h3>3.3 帧结构</h3>
 <p>帧结构图如下，PDU即Protocol Data Unit。主机下达请求时，将从机的地址写入地址字段，从机返回响应时，将自己的地址写入地址字段。功能码用于指示功能，数据字段包含请求或响应的参数。</p>
-<p><img alt="ModbusPDU.png" src="/images/ModbusPDU.png" /></p>
+<p><img alt="ModbusPDU.png" src="/images/ModbusPDU.png"></p>
 <h3>3.4 状态转换图</h3>
 <p>主机状态转换图：</p>
-<p><img alt="ModbusMasterStat.png" src="/images/ModbusMasterStat.png" /></p>
+<p><img alt="ModbusMasterStat.png" src="/images/ModbusMasterStat.png"></p>
 <p>从机状态转换图：</p>
-<p><img alt="ModbusSlaveStat.png" src="/images/ModbusSlaveStat.png" /></p>
+<p><img alt="ModbusSlaveStat.png" src="/images/ModbusSlaveStat.png"></p>
 <h3>3.5 两种串行传输模式——RTU与ASCII</h3>
 <h4>3.5.1 RTU模式</h4>
 <p>RTU即Remote Terminal Unit，该模式下，数据以二进制数字形式传输，例如需传输的一个字节是0x5B，实际传输的数据也是0x5B。RTU模式主要包含如下几点约定：</p>

@@ -1,5 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/math.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-06-12T00:00:00+08:00</updated><entry><title>Total Probability Applied to Conditional Probability</title><link href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html" rel="alternate"></link><updated>2017-06-12T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-12:total-probability-applied-to-conditional-probability.html</id><summary type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX - Math</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/math.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2018-02-25T00:00:00+08:00</updated><entry><title>BP Neural Networks</title><link href="https://wang-xinyu.github.io/bp-neural-networks.html" rel="alternate"></link><published>2018-02-25T00:00:00+08:00</published><updated>2018-02-25T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2018-02-25:/bp-neural-networks.html</id><summary type="html">&lt;h1&gt;BP Neural Networks&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;Feed Forward&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="nn" src="/images/neural_networks.png"&gt;&lt;/p&gt;
+&lt;p&gt;$$
+z_1^{(2)} = w_{11}^{(2)}x_1 + w_{12}^{(2)}x_2 + w_{13}^{(2)}x_3 + b_1^{(2)}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+a_1^{(2)} = f(z_1^{(2)})
+$$&lt;/p&gt;
+&lt;h2&gt;Back Propagation&lt;/h2&gt;
+&lt;p&gt;We got N pairs of training data, and the dimension of output vector is k.&lt;/p&gt;
+&lt;p&gt;$$
+{ (X^{(1)}, Y^{(1)}), (X^{(2)}, Y …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;BP Neural Networks&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;Feed Forward&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="nn" src="/images/neural_networks.png"&gt;&lt;/p&gt;
+&lt;p&gt;$$
+z_1^{(2)} = w_{11}^{(2)}x_1 + w_{12}^{(2)}x_2 + w_{13}^{(2)}x_3 + b_1^{(2)}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+a_1^{(2)} = f(z_1^{(2)})
+$$&lt;/p&gt;
+&lt;h2&gt;Back Propagation&lt;/h2&gt;
+&lt;p&gt;We got N pairs of training data, and the dimension of output vector is k.&lt;/p&gt;
+&lt;p&gt;$$
+{ (X^{(1)}, Y^{(1)}), (X^{(2)}, Y^{(2)}), ... , (X^{(N)}, Y^{(N)}) }
+$$&lt;/p&gt;
+&lt;p&gt;$$
+Y^{(i)} = { y_1^{(i)}, ... , y_k^{(i)} }
+$$&lt;/p&gt;
+&lt;p&gt;The loss function is:&lt;/p&gt;
+&lt;p&gt;$$
+E^{(i)} = \frac 1 2 \sum_{j=1}^k (y_j^{(i)} - a_j^{(i)})^2
+$$&lt;/p&gt;
+&lt;p&gt;We use Gradient Descent to update weights and biases.&lt;/p&gt;
+&lt;p&gt;$$
+w_{ij}^{(l)} = w_{ij}^{(l)} - \mu \frac {\partial E} {\partial w_{ij}}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+b_{i}^{(l)} = b_{i}^{(l)} - \mu \frac {\partial E} {\partial b_{i}}
+$$&lt;/p&gt;
+&lt;p&gt;Calculate the derivative:&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\frac {\partial E} {\partial w_{11}^{(3)}} &amp;amp;= \frac 1 2 \cdot -2 (y_1 - a_1^{(3)}) \cdot \frac {\partial a_{1}^{(3)}} {\partial w_{11}^{(3)}} \\
+&amp;amp;= -(y_1 -a_1^{(3)}) \cdot  f'(z_1^{(3)}) \cdot  \frac {\partial z_{1}^{(3)}} {\partial w_{11}^{(3)}}  \\
+&amp;amp;= -(y_1 -a_1^{(3)}) \cdot  f'(z_1^{(3)}) \cdot  a_1^{(2)}  \\
+\end{split}&lt;/p&gt;
+&lt;p&gt;Introduce $\delta$ to simplify the formula:&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\delta_i^{(l)} &amp;amp;= \frac {\partial E} {\partial a_{i}^{(l)}} \cdot \frac {\partial a_{i}^{(l)}} {\partial z_{i}^{(l)}} \\
+\frac {\partial E} {\partial w_{ij}^{(l)}} &amp;amp;= \delta_i^{(l)} \cdot  \frac {\partial z_{i}^{(l)}} {\partial w_{ij}^{(l)}} =  \delta_i^{(l)} \cdot a_{j}^{(l-1)} \\
+\end{split}&lt;/p&gt;
+&lt;p&gt;Calculate $\delta$ recursively:&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\delta_i^{(l)} &amp;amp;= \frac {\partial E}  {\partial z_{i}^{(l)}} \\
+&amp;amp;= \sum_{j=1}^{n_{l+1}} \frac {\partial E}  {\partial z_{j}^{(l+1)}} \frac {\partial z_{j}^{(l+1)}}  {\partial z_{i}^{(l)}} \\
+&amp;amp;= \sum_{j=1}^{n_{l+1}} \delta_j^{(l+1)} \frac {\partial z_{j}^{(l+1)}}  {\partial z_{i}^{(l)}} \\
+&amp;amp;= \sum_{j=1}^{n_{l+1}} \delta_j^{(l+1)} w_{ji}^{(l+1)} f'(z_i^{(l)}) \\
+\end{split}&lt;/p&gt;</content><category term="Math"></category></entry><entry><title>Total Probability Applied to Conditional Probability</title><link href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html" rel="alternate"></link><published>2017-06-12T00:00:00+08:00</published><updated>2017-06-12T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-12:/total-probability-applied-to-conditional-probability.html</id><summary type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+&lt;h2&gt;公式&lt;/h2&gt;
+&lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
+&lt;p&gt;$$
+P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+$$&lt;/p&gt;
+&lt;h2&gt;证明&lt;/h2&gt;
+&lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;
+&lt;p&gt;\begin{equation}\begin{split}
+P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
 &lt;h2&gt;公式&lt;/h2&gt;
 &lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
 &lt;p&gt;$$
@@ -19,4 +90,4 @@ P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i)\\
 P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\\
 &amp;amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\\
 &amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
-\end{split}\end{equation}&lt;/p&gt;</summary><category term="Math"></category></entry></feed>
+\end{split}\end{equation}&lt;/p&gt;</content><category term="Math"></category></entry></feed>

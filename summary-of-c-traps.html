@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="C陷阱总结 版权声明：本文为作者原创，欢迎批评指正，谢绝转载。 本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。 1. const修饰符 const指常量、常数。const与#define相比，效率更高。 const int i; /* i不可变 */ int const i; /* i不可变 */ int const a[3]={1, 2, 3}; /* 数组不可变 ...">
+        <meta name="description" content="C陷阱总结 版权声明：本文为作者原创，欢迎批评指正，谢绝转载。 本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。 1. const修饰符 const指常量、常数。const与#define相比，效率更高。 const int i; /* i不可变 */ int const i; /* i不可变 */ int const a[3]={1, 2, 3}; /* 数组不可变...">
         <meta name="keywords" content="C">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
@@ -106,7 +106,7 @@
 <p>本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。</p>
 <h2>1. const修饰符</h2>
 <p>const指常量、常数。const与#define相比，效率更高。</p>
-<div class="highlight"><pre>const int i;                /* i不可变 */
+<div class="highlight"><pre><span></span>const int i;                /* i不可变 */
 int const i;                /* i不可变 */
 int const a[3]={1, 2, 3};   /* 数组不可变 */
 const int a[3]={1, 2, 3};   /* 数组不可变 */
@@ -125,7 +125,7 @@ const int *const p;         /* 指针p 和p 指向的对象都不可变 */
 <p>在函数内部通过前面固定参数的地址获取可变参数的地址，从而可以在函数内部处理这些可变参数。</p>
 <h2>4. 语句块</h2>
 <p>由{}括起来的若干条语句组成一个语句块。如下所示，语句块构成一个作用域，函数内的i和语句块中的i不同，语句块中的j的作用域只是语句块内。</p>
-<div class="highlight"><pre>void foo(void)
+<div class="highlight"><pre><span></span>void foo(void)
 {
     int i = 0;
     {
@@ -143,7 +143,7 @@ const int *const p;         /* 指针p 和p 指向的对象都不可变 */
 <p>如果全局变量在定义时不初始化，则初始值是0，也就是说，整型的就是0，字符型的就是'\0'，浮点型的就是0.0。如果局部变量在定义时不初始化，则初始值是不确定的，所以，局部变量在使用前一定要先赋值，不管是通过初始化还是赋值运算符。</p>
 <h2>6. 结构体的初始化和赋值</h2>
 <p>如果Initializer中的数据比结构体的成员多，编译器会报错，但如果只是末尾多个逗号不算错。如果Initializer中的数据比结构体的成员少，未指定的成员将用0来初始化，就像未初始化的全局变量一样。例如以下几种形式的初始化都是合法的，但结构体直接赋值是非法的。</p>
-<div class="highlight"><pre>struct complex_struct { double x, y; };
+<div class="highlight"><pre><span></span>struct complex_struct { double x, y; };
 struct complex_struct z1 = { x, 4.0, }; /* z1.x=3.0, z1.y=4.0 */
 struct complex_struct z2 = { 3.0, };        /* z2.x=3.0, z2.y=0.0 */
 struct complex_struct z3 = { };             /* z3.x=0.0, z3.y=0.0 */
@@ -158,7 +158,7 @@ z1 = { 3.0, 4.0 };                          /* illegal */
 <p>而对于用引号包含的头文件，gcc首先查找包含头文件的.c文件所在的目录，然后查找-I选项指定的目录，然后查找系统的头文件目录。</p>
 <h2>8. 指针数组和指向数组的指针</h2>
 <p>int *a[10]是指针数组，而int (*a)[10]是指向数组的指针。我们可以认为[]比*有更高的优先级，如果a先和*结合则表示a是一个指针，如果a先和[]结合则表示a是一个数组。</p>
-<div class="highlight"><pre><span class="cm">/* int *a[10];可以拆成以下两句 */</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="cm">/* int *a[10];可以拆成以下两句 */</span><span class="w"></span>
 typedef<span class="w"> </span>int<span class="w"> </span><span class="o">*</span>t<span class="err">;</span><span class="w"></span>
 t<span class="w"> </span>a<span class="err">[</span><span class="m">10</span><span class="err">];</span><span class="w"></span>
 

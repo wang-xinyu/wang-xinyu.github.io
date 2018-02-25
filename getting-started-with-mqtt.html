@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="MQTT入门介绍 本文参考MQTT Version 3.1.1，根据个人的理解对MQTT进行入门级的介绍。 1. 概述 MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。 ...">
+        <meta name="description" content="MQTT入门介绍 本文参考MQTT Version 3.1.1，根据个人的理解对MQTT进行入门级的介绍。 1. 概述 MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。...">
         <meta name="keywords" content="MQTT">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
@@ -117,13 +117,13 @@
 <p>（4）加密问题。</p>
 <h2>3. 控制包格式</h2>
 <p>MQTT控制包只有三部分，固定头、可选头、净荷，如下图所示：</p>
-<p><img alt="MQTTctrlPktStruc.png" src="/images/MQTTctrlPktStruc.png" /></p>
+<p><img alt="MQTTctrlPktStruc.png" src="/images/MQTTctrlPktStruc.png"></p>
 <p>固定头是每一种控制包都有的，大小为2Byte，包括控制包类型、标志和剩余长度三个字段，如下图所示：</p>
-<p><img alt="MQTTfixHead.png" src="/images/MQTTfixHead.png" /></p>
+<p><img alt="MQTTfixHead.png" src="/images/MQTTfixHead.png"></p>
 <p>可选头和净荷都存在于其中几种类型的控制包中，内容取决于包类型。</p>
 <h2>4. 控制包类型</h2>
 <p>下表是MQTT控制包的14种类型，C2S代表客户端到服务器，S2C反之。各类型控制包的具体内容请参阅<a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html">MQTT Version 3.1.1</a>。</p>
-<p><img alt="MQTTctrlPktCtgry.png" src="/images/MQTTctrlPktCtgry.png" /></p>
+<p><img alt="MQTTctrlPktCtgry.png" src="/images/MQTTctrlPktCtgry.png"></p>
 <h2>5. QoS等级和消息传递流程</h2>
 <p>MQTT应用消息的传递有3个保障级别，即3个QoS等级。不同QoS等级对应着不同的消息传递流程。</p>
 <p>（1）QoS 0: At most once delivery，至多一次传递。发送端仅发送一次，无重传，接收端无响应。消息可能到达接收端一次或零次。</p>

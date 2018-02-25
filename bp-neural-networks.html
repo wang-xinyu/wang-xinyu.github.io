@@ -4,11 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Posts by WangXinyu">
-        <meta name="keywords" content="">
+        <meta name="description" content="BP Neural Networks Feed Forward $$ z_1^{(2)} = w_{11}^{(2)}x_1 + w_{12}^{(2)}x_2 + w_{13}^{(2)}x_3 + b_1^{(2)} $$ $$ a_1^{(2)} = f(z_1^{(2)}) $$ Back Propagation We got N pairs of training data,...">
+        <meta name="keywords" content="Math">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
-        <title>Posts by WangXinyu - BlogWX</title>
+        <title>BP Neural Networks - BlogWX</title>
 
         <!-- Stylesheets -->
         <link href="https://wang-xinyu.github.io/theme/css/all.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
 
         <!-- RSS Feeds -->
         <link href="https://wang-xinyu.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Full Atom Feed" />
+        <link href="https://wang-xinyu.github.io/feeds/math.atom.xml" type="application/atom+xml" rel="alternate" title="BlogWX Categories Atom Feed" />
         <!-- /RSS Feeds -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,7 +58,7 @@
     <body>
 
         <!-- Header -->
-    <div class="header-container" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wang-xinyu.github.io/images/homepage.png'); background-position: center; ">
+    <div class="header-container gradient">
 
             <!-- Static navbar -->
             <div class="container">
@@ -75,17 +76,23 @@
             <!-- /Static navbar -->
 
             <!-- Header -->
+    <!-- Header -->
     <div class="container header-wrapper">
         <div class="row">
               <div class="col-lg-12">
                   <div class="header-content">
-                      <h1 class="header-title text-uppercase">WangXinyu</h1>
+                      <h1 class="header-title">BP Neural Networks</h1>
+                      <p class="header-date">By <a href="https://wang-xinyu.github.io/author/wangxinyu.html">WangXinyu</a>, Sun 25 February 2018, in category <a href="https://wang-xinyu.github.io/category/math.html">Math</a></p>
                       <div class="header-underline"></div>
-                      <p class="header-subtitle header-subtitle-homepage">Posts archives</p>
+                      <div class="clearfix"></div>
+                      <p class="pull-right header-tags">
+                          <span class="glyphicon glyphicon-tags mr5" aria-hidden="true"></span>
+<a href="https://wang-xinyu.github.io/tag/math.html">Math</a>                      </p>
                   </div>
               </div>
         </div>
     </div>
+    <!-- /Header -->
             <!-- /Header -->
 
         </div>
@@ -93,40 +100,71 @@
 
 
         <!-- Content -->
-    <div class="archive-container">
-        <div class="container content archive">
-            <h2><a href="https://wang-xinyu.github.io/author/wangxinyu.html">Posts</a></h2>
-            <dl class="dl-horizontal">
-            	<dt>Sun 25 February 2018</dt>
-            	<dd><a href="https://wang-xinyu.github.io/bp-neural-networks.html">BP Neural Networks</a></dd>
-            	<dt>Fri 25 August 2017</dt>
-            	<dd><a href="https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html">FastSLAM for Feature-Based Maps</a></dd>
-            	<dt>Thu 17 August 2017</dt>
-            	<dd><a href="https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html">EKF SLAM-The Most Primitive SLAM</a></dd>
-            	<dt>Mon 26 June 2017</dt>
-            	<dd><a href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html">The Derivation of Generic Particle Filter for Robot</a></dd>
-            	<dt>Sat 17 June 2017</dt>
-            	<dd><a href="https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html">The Derivation of Kalman Filter from Bayes Filter</a></dd>
-            	<dt>Tue 13 June 2017</dt>
-            	<dd><a href="https://wang-xinyu.github.io/bayes-filter-for-robot.html">Bayes Filter for Robot</a></dd>
-            	<dt>Mon 12 June 2017</dt>
-            	<dd><a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html">Total Probability Applied to Conditional Probability</a></dd>
-            	<dt>Tue 09 May 2017</dt>
-            	<dd><a href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html">Setup Chinese Input Method on Ubuntu</a></dd>
-            	<dt>Fri 19 August 2016</dt>
-            	<dd><a href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html">Getting Started with ROS Navigation Stack</a></dd>
-            	<dt>Tue 19 April 2016</dt>
-            	<dd><a href="https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html">Modify the user name of Raspbian</a></dd>
-            	<dt>Tue 08 December 2015</dt>
-            	<dd><a href="https://wang-xinyu.github.io/summary-of-c-traps.html">Summary of C Traps</a></dd>
-            	<dt>Wed 02 December 2015</dt>
-            	<dd><a href="https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html">Introduction to MODBUS over Serial Line</a></dd>
-            	<dt>Fri 27 November 2015</dt>
-            	<dd><a href="https://wang-xinyu.github.io/getting-started-with-mqtt.html">Getting Started with MQTT</a></dd>
-            	<dt>Fri 06 November 2015</dt>
-            	<dd><a href="https://wang-xinyu.github.io/concepts-for-es.html">Concepts for ES</a></dd>
-            </dl>
-        </div>
+    <div class="container content">
+        <h1>BP Neural Networks</h1>
+<hr>
+<h2>Feed Forward</h2>
+<p><img alt="nn" src="/images/neural_networks.png"></p>
+<p>$$
+z_1^{(2)} = w_{11}^{(2)}x_1 + w_{12}^{(2)}x_2 + w_{13}^{(2)}x_3 + b_1^{(2)}
+$$</p>
+<p>$$
+a_1^{(2)} = f(z_1^{(2)})
+$$</p>
+<h2>Back Propagation</h2>
+<p>We got N pairs of training data, and the dimension of output vector is k.</p>
+<p>$$
+{ (X^{(1)}, Y^{(1)}), (X^{(2)}, Y^{(2)}), ... , (X^{(N)}, Y^{(N)}) }
+$$</p>
+<p>$$
+Y^{(i)} = { y_1^{(i)}, ... , y_k^{(i)} }
+$$</p>
+<p>The loss function is:</p>
+<p>$$
+E^{(i)} = \frac 1 2 \sum_{j=1}^k (y_j^{(i)} - a_j^{(i)})^2
+$$</p>
+<p>We use Gradient Descent to update weights and biases.</p>
+<p>$$
+w_{ij}^{(l)} = w_{ij}^{(l)} - \mu \frac {\partial E} {\partial w_{ij}}
+$$</p>
+<p>$$
+b_{i}^{(l)} = b_{i}^{(l)} - \mu \frac {\partial E} {\partial b_{i}}
+$$</p>
+<p>Calculate the derivative:</p>
+<p>\begin{split}
+\frac {\partial E} {\partial w_{11}^{(3)}} &amp;= \frac 1 2 \cdot -2 (y_1 - a_1^{(3)}) \cdot \frac {\partial a_{1}^{(3)}} {\partial w_{11}^{(3)}} \\
+&amp;= -(y_1 -a_1^{(3)}) \cdot  f'(z_1^{(3)}) \cdot  \frac {\partial z_{1}^{(3)}} {\partial w_{11}^{(3)}}  \\
+&amp;= -(y_1 -a_1^{(3)}) \cdot  f'(z_1^{(3)}) \cdot  a_1^{(2)}  \\
+\end{split}</p>
+<p>Introduce $\delta$ to simplify the formula:</p>
+<p>\begin{split}
+\delta_i^{(l)} &amp;= \frac {\partial E} {\partial a_{i}^{(l)}} \cdot \frac {\partial a_{i}^{(l)}} {\partial z_{i}^{(l)}} \\
+\frac {\partial E} {\partial w_{ij}^{(l)}} &amp;= \delta_i^{(l)} \cdot  \frac {\partial z_{i}^{(l)}} {\partial w_{ij}^{(l)}} =  \delta_i^{(l)} \cdot a_{j}^{(l-1)} \\
+\end{split}</p>
+<p>Calculate $\delta$ recursively:</p>
+<p>\begin{split}
+\delta_i^{(l)} &amp;= \frac {\partial E}  {\partial z_{i}^{(l)}} \\
+&amp;= \sum_{j=1}^{n_{l+1}} \frac {\partial E}  {\partial z_{j}^{(l+1)}} \frac {\partial z_{j}^{(l+1)}}  {\partial z_{i}^{(l)}} \\
+&amp;= \sum_{j=1}^{n_{l+1}} \delta_j^{(l+1)} \frac {\partial z_{j}^{(l+1)}}  {\partial z_{i}^{(l)}} \\
+&amp;= \sum_{j=1}^{n_{l+1}} \delta_j^{(l+1)} w_{ji}^{(l+1)} f'(z_i^{(l)}) \\
+\end{split}</p>
+
+
+    <div class="comments">
+        <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'blogwx';
+                var disqus_identifier = 'bp-neural-networks.html';
+                var disqus_url = 'https://wang-xinyu.github.io/bp-neural-networks.html';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+        
     </div>
         <!-- /Content --> 
 

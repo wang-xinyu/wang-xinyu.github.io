@@ -1,364 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BlogWX</title><link>https://wang-xinyu.github.io/</link><description></description><atom:link href="https://wang-xinyu.github.io/feeds/wangxinyu.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 25 Aug 2017 00:00:00 +0800</lastBuildDate><item><title>FastSLAM for Feature-Based Maps</title><link>https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html</link><description>&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
+<rss version="2.0"><channel><title>BlogWX - WangXinyu</title><link>https://wang-xinyu.github.io/</link><description></description><lastBuildDate>Sun, 25 Feb 2018 00:00:00 +0800</lastBuildDate><item><title>BP Neural Networks</title><link>https://wang-xinyu.github.io/bp-neural-networks.html</link><description>&lt;h1&gt;BP Neural Networks&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;Feed Forward&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="nn" src="/images/neural_networks.png"&gt;&lt;/p&gt;
+&lt;p&gt;$$
+z_1^{(2)} = w_{11}^{(2)}x_1 + w_{12}^{(2)}x_2 + w_{13}^{(2)}x_3 + b_1^{(2)}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+a_1^{(2)} = f(z_1^{(2)})
+$$&lt;/p&gt;
+&lt;h2&gt;Back Propagation&lt;/h2&gt;
+&lt;p&gt;We got N pairs of training data, and the dimension of output vector is k.&lt;/p&gt;
+&lt;p&gt;$$
+{ (X^{(1)}, Y^{(1)}), (X^{(2)}, Y …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Sun, 25 Feb 2018 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2018-02-25:/bp-neural-networks.html</guid><category>Math</category></item><item><title>FastSLAM for Feature-Based Maps</title><link>https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html</link><description>&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;FastSLAM applys a version of particle filters to SLAM known as Rao-Blackwellized Particle Filter. Which uses particles to represent the posterior over some variables, along with Gaussians to represent all other vaviables. &lt;/p&gt;
 &lt;h2&gt;Assumptions&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;The maps in EKF SLAM are feature-based, they are composed of point landmarks.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;With known correspondences or data associations between observations and landmarks.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Factoring the SLAM Posterior&lt;/h2&gt;
-&lt;p&gt;$
-p(x_{1:t}, m| z_{1:t}, u_{1:t}) = p( x_{1:t} | z_{1:t}, u_{1:t}) p(m|x_{1:t},z_{1:t}) = p( x_{1:t} | z_{1:t}, u_{1:t}) \prod_{i=1}^N p(m_i|x_{1:t},z_{1:t})
-$&lt;/p&gt;
-&lt;p&gt;FastSLAM uses a particle filter to compute the posterior over robot paths, i.e. $p( x_{1:t} | z_{1:t}, u_{1:t})$. For each of these particles, the individual map errors are conditionally independent. Hence the mapping problem can be factored into separate problems $p(m_i|x_{1:t},z_{1:t})$, one for each feature in the map. FastSLAM estimates these map feature locations by using low-dimensional EKFs.&lt;/p&gt;
-&lt;p&gt;The feature estimators are conditioned on the robot path, which means we will have a separate copy of each feature estimator, one for each particle. With $M$ particles and $N$ feature, the total number of filters will be $1+MN$, one particle filter and $MN$ EKFs.&lt;/p&gt;
-&lt;h2&gt;Algorithm&lt;/h2&gt;
-&lt;p&gt;——————————————&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Algorithm FastSLAM_known_correspondences($z_{t}$, $c_{t}$, $u_{t}$, $\mathcal{X}_{t-1}$)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$for \ k = 1 \ to \ M \ do$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\ \ \langle  x_{t-1}^{[k]}, \langle \mu_{1,t-1}^{[k]}, \Sigma_{1,t-1}^{[k]}, ... \rangle \rangle, \ Get \ particle \ k \ in \  \mathcal{X}_{t-1}$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\ \ x_t^{[k]} \sim  p(x_t|x_{t-1}^{[k]}, u_t)$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;$\ \ j = c_t, \ feature \ j \ is \ observed$&lt;/li&gt;
-&lt;li&gt;$\ \ if \ feature \ j \ never \ seen \ before$&lt;/li&gt;
-&lt;li&gt;$\ \ \ \ initialize \ \mu_{j,t}^{[k]}, H, \Sigma_{j,t}^{[k]} = H^{-1} Q_t (H^{-1})^T, w^{[k]} = p_0$&lt;/li&gt;
-&lt;li&gt;$\ \ else$&lt;/li&gt;
-&lt;li&gt;$\ \ \ \ \langle \mu_{j,t}^{[k]}, \Sigma_{j,t}^{[k]} \rangle = \text{EKF-Update()}$&lt;/li&gt;
-&lt;li&gt;$\ \ \ \ w^{[k]} = |2 \pi Q|^{- \frac 1 2} exp \lbrace - \frac 1 2 (z_t - \hat z ^{[k]})^T Q^{-1} (z_t - \hat z ^{[k]}) \rbrace $&lt;/li&gt;
-&lt;li&gt;$\ \ endif$&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$endfor$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\mathcal{X}_t = resample( particle \ 1, \ ..., \ M)$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;return $\mathcal{X}_t$&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;——————————————&lt;/p&gt;
-&lt;p&gt;Basically, we are using Partilce Filter to estimate the robot path and using EKF to update landmark positions. The filter cycle is:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Loop over all particles, for each particle, we sample the new pose, update the mean and covariance of landmark according to the observation, and finaly calculate the weight of this particle.&lt;/li&gt;
-&lt;li&gt;Resampling.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Importance Weight&lt;/h2&gt;
-&lt;p&gt;\begin{split}
-w^{[k]} &amp;amp;= {target(x^{[k]}) \over proposal(x^{[k]})} \\
-&amp;amp;= {p(x_{1:t}^{[k]}|z_{1:t},u_{1:t}) \over p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t})} \\
-&amp;amp;= {p(x_{1:t}^{[k]}|z_{1:t},u_{1:t}) \over p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})} \\
-&amp;amp;= {p(z_t|x_{1:t}^{[k]}, z_{1:t-1},u_{1:t}) p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} {1 \over p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})} \\
-&amp;amp;= \eta \cdot p(z_t|x_{1:t}^{[k]}, z_{1:t-1},u_{1:t}) p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t}) {1 \over p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})} \\
-&amp;amp;= \eta \cdot p(z_t|x_{1:t}^{[k]}, z_{1:t-1})
-\end{split}&lt;/p&gt;
-&lt;p&gt;Our proposal is $p(x_{1:t}^{[k]}|z_{1:t-1},u_{1:t})$, normally we sample from proposal, but since it can be factored into $ p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t) p(x_{1:t-1}^{[k]}|z_{1:t-1},u_{1:t-1})$, so we can sample $x_{t}^{[k]}$ from $p(x_{t}^{[k]}| x_{t-1}^{[k]}, u_t)$.&lt;/p&gt;
-&lt;p&gt;We can't calculate $p(z_t|x_{1:t}^{[k]}, z_{1:t-1})$ directly, it will be necessary to transform it further. The idea is integrating over the position of observed landmark.&lt;/p&gt;
-&lt;p&gt;\begin{split}
-w^{[k]} &amp;amp;= \eta \cdot p(z_t|x_{1:t}^{[k]}, z_{1:t-1}) \\
-&amp;amp;= \eta \cdot \int p(z_t|x_{1:t}^{[k]}, z_{1:t-1}, m_j) p(m_j|x_{1:t}^{[k]}, z_{1:t-1})dm_j \\
-&amp;amp;= \eta \cdot \int p(z_t|x_{t}^{[k]}, m_j) p(m_j|x_{1:t-1}^{[k]}, z_{1:t-1})dm_j
-\end{split}&lt;/p&gt;
-&lt;p&gt;$$
-p(z_t|x_{t}^{[k]}, m_j) \sim \mathcal{N} \left( z_t; \hat z^{[k]}, Q_t \right)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-p(m_j|x_{1:t-1}^{[k]}, z_{1:t-1}) \sim \mathcal{N} \left( m_j; \mu_{j,t-1}^{[k]}, \Sigma_{j,t-1}^{[k]} \right)
-$$&lt;/p&gt;
-&lt;p&gt;Thus $w^{[k]}$ actually results from the convolution of two Gaussian.&lt;/p&gt;
-&lt;p&gt;$$
-w^{[k]} \approx \eta \cdot |2 \pi Q|^{- \frac 1 2} exp \lbrace - \frac 1 2 (z_t - \hat z ^{[k]})^T Q^{-1} (z_t - \hat z ^{[k]}) \rbrace
-$$&lt;/p&gt;
-&lt;p&gt;$$
-Q = H \Sigma_{j,t-1}^{[k]} H^T + Q_t
-$$&lt;/p&gt;
-&lt;h3&gt;References&lt;/h3&gt;
-&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;Cyrill Stachniss. FastSLAM, YouTube.com&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 25 Aug 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-08-25:fastslam-for-feature-based-maps.html</guid><category>Math</category></item><item><title>EKF SLAM-The Most Primitive SLAM</title><link>https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html</link><description>&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
+&lt;p&gt;The maps in EKF SLAM are feature-based, they are composed of point …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 25 Aug 2017 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2017-08-25:/fastslam-for-feature-based-maps.html</guid><category>Math</category></item><item><title>EKF SLAM-The Most Primitive SLAM</title><link>https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html</link><description>&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current pose along with he map:&lt;/p&gt;
-&lt;p&gt;$$
-p(x_{t}, m | z_{1:t}, u_{1:t})
-$$&lt;/p&gt;
-&lt;h2&gt;Assumptions&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;The maps in EKF SLAM are feature-based, they are composed of point landmarks.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;With known correspondences or data associations between observations and landmarks.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;All the noises are Gaussian.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;State Vector&lt;/h2&gt;
-&lt;p&gt;$$
-y_t = (x,y,\theta,m_{1,x},m_{1,y},...,m_{n,x},m_{n,y})^T
-$$&lt;/p&gt;
-&lt;p&gt;The state vector includes robot pose and landmark positions. The dimension of this state vector is $2N+3$, where $N$ denotes the number of landmarks in the map. In robot localization problem, the state vector only contains robot pose, but for this EKF SLAM problem, we need to update the position of landmarks also. So now the posterior can be denoted as:&lt;/p&gt;
-&lt;p&gt;$$
-p(y_{t}| z_{1:t}, u_{1:t})
-$$&lt;/p&gt;
-&lt;h2&gt;Algorithm&lt;/h2&gt;
-&lt;p&gt;——————————————&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;Algorithm EKF_SLAM_known_correspondences($\mu_{t-1}$, $\Sigma_{t-1}$, $u_{t}$, $z_{t}$)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\bar \mu_t = g(u_t, \mu_{t-1})$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\bar \Sigma_t = G_t \Sigma_{t-1} G_t^T+ R_t$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$K_t = \bar \Sigma_t H_t^T(H_t \bar \Sigma_t H_t^T + Q_t)^{-1}$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;$\mu_t = \bar \mu_t + K_t(z_t - \hat z_t)$&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\Sigma_t = (I - K_t H_t) \bar \Sigma_t$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;return $\mu_t$, $\Sigma_t$&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;——————————————&lt;/p&gt;
-&lt;p&gt;Basically, we are using EKF to estimate the belief of robot pose and landmark positions. The filter cycle is:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;State prediction, line 2 and 3, to predict the next state based on a motion model.&lt;/li&gt;
-&lt;li&gt;Measurement prediction, for each observed landmark, we calculate its predicted measurement using the predicted robot pose and this landmark's position. We record the landmark's position the first time we see it. With this value, we can calculate $H_t$, $K_t$, $\hat z_t$ and $\Sigma_t$&lt;/li&gt;
-&lt;li&gt;Measurement, after incorporating the measurement, we can calculate $\mu_t$&lt;/li&gt;
-&lt;li&gt;Data association, we can skip this step, because the correspondences are known, but we need this step, if they are unknown.&lt;/li&gt;
-&lt;li&gt;Update, update the belief.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;State Prediction&lt;/h2&gt;
-&lt;p&gt;As robot moves, the state changes according to the Velocity Motion Model. Because the motion only affects the robot pose and all landmarks remain where they are, only the first three elements in the update are non-zero.&lt;/p&gt;
-&lt;p&gt;$
-F_x = \begin{pmatrix} 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 \\ 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp;\cdots &amp;amp; 0 \end{pmatrix}_{3 \times (2N+3)}
-$&lt;/p&gt;
-&lt;p&gt;$
-y_t = \underbrace {
-  y_{t-1} + F_x^T \begin{pmatrix}
-    - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t}) \\
-    \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\
-    \omega_t \Delta t \end{pmatrix}
-}_{g}
- + \mathcal{N} \left(0, F_x^T R_t F_x \right)
-$&lt;/p&gt;
-&lt;p&gt;The motion function $g$ is approximated using a first degree Taylor expansion.&lt;/p&gt;
-&lt;p&gt;$
-g(y_{t-1}, u_t) \approx g(\mu_{t-1}, u_t) + G_t(y_{t-1} - \mu_{t-1})
-$&lt;/p&gt;
-&lt;p&gt;Jacobian $G_t$ is the derivative of $g$ with respect to $y_{t-1}$ at $u_t$ and $\mu_{t-1}$.&lt;/p&gt;
-&lt;p&gt;$
-G_t = \frac {\partial g} {\partial (x, y, \theta, m_{1,x}, m_{1,y}, ... , m_{n,x}, m_{n,y})} = \begin{pmatrix} 1 &amp;amp; 0 &amp;amp; -\frac {v_t}{\omega_t}cos\mu_{t-1, \theta} + \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) &amp;amp;  &amp;amp;  &amp;amp;  \\ 0 &amp;amp; 1 &amp;amp; \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} - \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t}) &amp;amp;  &amp;amp; 0 &amp;amp;  \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp;  &amp;amp;  &amp;amp; \\  &amp;amp; 0 &amp;amp; &amp;amp; &amp;amp; I &amp;amp; \end{pmatrix}_{(2N+3) \times (2N+3)}
-$&lt;/p&gt;
-&lt;p&gt;So the predicted mean $\bar \mu_t$ and covariance $\bar \Sigma_t$ is the mean and covariance of Gaussian distribution $y_t$.&lt;/p&gt;
-&lt;p&gt;$
-\bar \mu_t = \mu_{t-1} + F_x^T \begin{pmatrix} - \frac {v_t}{\omega_t}sin\mu_{t-1, \theta} + \frac {v_t}{\omega_t}sin(\mu_{t-1,\theta + \omega_t \Delta t})\\ \frac {v_t}{\omega_t}cos\mu_{t-1, \theta} - \frac {v_t}{\omega_t}cos(\mu_{t-1,\theta + \omega_t \Delta t}) \\ \omega_t \Delta t \end{pmatrix}
-$&lt;/p&gt;
-&lt;p&gt;$\bar \Sigma_t = G_t \Sigma_{t-1} G_t^T+ F_x^T R_t F_x$&lt;/p&gt;
-&lt;h2&gt;Measurement Prediction&lt;/h2&gt;
-&lt;p&gt;We can predicte the measurement using the following measurement model.&lt;/p&gt;
-&lt;p&gt;$
-z_t^i = \underbrace {
-  \begin{pmatrix}
-    \sqrt{(m_{j,x} - x)^2 + (m_{j,y} - y)^2} \\
-    atan2(m_{j,y} - y, m_{j,x} - x) - \theta
-  \end{pmatrix}
-}_{h} + \mathcal{N} (0, Q_t)
-$&lt;/p&gt;
-&lt;p&gt;$
-Q_t = 
-  \begin{pmatrix}
-    \sigma_r &amp;amp; 0 \\
-    0 &amp;amp; \sigma_\phi
-  \end{pmatrix}
-$&lt;/p&gt;
-&lt;p&gt;$i$ is the index of landmark observation in $z_t$, $j = c_t^i$ is the index of landmark at time $t$.&lt;/p&gt;
-&lt;p&gt;The measurement function $h$ is also approximated using a first degree Taylor expansion.&lt;/p&gt;
-&lt;p&gt;$
-h(y_{t}, j) \approx h(\bar \mu_{t}, j) + H_t^i(y_{t} - \bar \mu_{t})
-$&lt;/p&gt;
-&lt;p&gt;Jacobian $H_t^i$ is the derivative of $h$ with respect to the full state vector $y_{t}$ at $\bar \mu_{t}$ and $j$. And we use $\delta$ and $q$ to make the formulas simpler.&lt;/p&gt;
-&lt;p&gt;$
-\delta = \begin{pmatrix} \delta_x \\ \delta_y \end{pmatrix} = \begin{pmatrix}  \bar \mu_{j,x} - \bar \mu_{t, x} \\ \bar \mu_{j,y} - \bar \mu_{t, y} \end{pmatrix}
-$&lt;/p&gt;
-&lt;p&gt;$
-q = \delta_x^2 + \delta_y^2
-$&lt;/p&gt;
-&lt;p&gt;$
-H_t^i = \frac {\partial h} {\partial (x, y, \theta, m_{1,x}, m_{1,y}, ... , m_{n,x}, m_{n,y})} = 
-{\begin{pmatrix}
-  - \frac {\delta_x} {\sqrt{q}} &amp;amp; - \frac {\delta_y} {\sqrt{q}} &amp;amp; 0 &amp;amp; 0_{1 \times (2j-2)} &amp;amp; \frac {\delta_x} {\sqrt{q}} &amp;amp; \frac {\delta_y} {\sqrt{q}} &amp;amp; 0_{1 \times (2N-2j)} \\
-  \frac {\delta_y} {q} &amp;amp; - \frac {\delta_x} {q} &amp;amp; -1 &amp;amp; 0_{1 \times (2j-2)} &amp;amp; -\frac {\delta_y} {q} &amp;amp; \frac {\delta_x} {q} &amp;amp; 0_{1 \times (2N-2j)} \end{pmatrix}}_{2 \times (2N+3)}
-$&lt;/p&gt;
-&lt;p&gt;The position of landmark $j$ is $\bar \mu_{j}$, which is cached the first time this landmark is observed.&lt;/p&gt;
-&lt;p&gt;$
-\begin{pmatrix}
-\bar \mu_{j,x} \\
-\bar \mu_{j,y}
-\end{pmatrix}
-=
-\begin{pmatrix}
-\bar \mu_{t,x} \\
-\bar \mu_{t,y}
-\end{pmatrix}
-+
-\begin{pmatrix}
-r_t^i cos(\phi_t^i + \bar \mu_{t,\theta}) \\
-r_t^i sin(\phi_t^i + \bar \mu_{t,\theta})
-\end{pmatrix}
-$&lt;/p&gt;
-&lt;p&gt;So now we can calcute $\hat z_t^i$, $K_t^i$ and further $\mu_t$ and $\Sigma_t$.&lt;/p&gt;
-&lt;p&gt;$
-\hat z_t^i = 
-\begin{pmatrix}
-\sqrt{q} \\
-atan2(\delta_y, \delta_x) - \bar \mu_{t, \theta}
-\end{pmatrix}
-$&lt;/p&gt;
-&lt;p&gt;$K_t^i = \bar \Sigma_t H_t^{iT}(H_t^i \bar \Sigma_t H_t^{iT} + Q_t)^{-1}$&lt;/p&gt;
-&lt;p&gt;$\bar \mu_t = \bar \mu_t + K_t^i(z_t^i - \hat z_t^i)$&lt;/p&gt;
-&lt;p&gt;$\bar \Sigma_t = (I - K_t^i H_t^i) \bar \Sigma_t$&lt;/p&gt;
-&lt;p&gt;When processing the $i_{th}$ observation in the loop, we update the predicted mean and covariance using the values we got from $(i-1)_{th}$ observation. That is we update $\bar \mu_t$ and $\bar \Sigma_t$ iteratively. And after the for loop, the updated $\bar \mu_t$ and $\bar \Sigma_t$ are the final $\mu_t$ and $\Sigma_t$ respectively.&lt;/p&gt;
-&lt;p&gt;$\mu_t = \bar \mu_t$&lt;/p&gt;
-&lt;p&gt;$\Sigma_t = \bar \Sigma_t $&lt;/p&gt;
-&lt;h3&gt;References&lt;/h3&gt;
-&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;Cyrill Stachniss. EKF SLAM, YouTube.com&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Thu, 17 Aug 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-08-17:ekf-slam-the-most-primitive-slam.html</guid><category>Math</category></item><item><title>The Derivation of Generic Particle Filter for Robot</title><link>https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html</link><description>&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
+&lt;p&gt;In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Thu, 17 Aug 2017 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2017-08-17:/ekf-slam-the-most-primitive-slam.html</guid><category>Math</category></item><item><title>The Derivation of Generic Particle Filter for Robot</title><link>https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html</link><description>&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
 &lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;我这里所说的普通粒子滤波也叫SIR（Sampling Importance Resampling）粒子滤波。因为时至今日已产生了很多粒子滤波的变种，例如：regularized particle filter，Rao-Blackwellized particle filter等等，这些都使用了某种方法对基本的粒子滤波进行了优化。&lt;/p&gt;
 &lt;p&gt;粒子滤波可以说是使用Monte Carlo方法的贝叶斯滤波的实现。这是因为SIS（Sequential Importance Sampling）是一种Monte Carlo方法，而粒子滤波、bootstap filter、condensation算法等，都可以基于SIS推导出来。&lt;/p&gt;
 &lt;p&gt;Kalman滤波只能处理高斯分布，且状态转移方程和测量方程都必须线性。EKF是通过Taylor级数展开，把状态转移方程和测量方程线性化，仍假设噪声是高斯分布。而粒子滤波就可以处理非线性、任意分布的问题了。&lt;/p&gt;
 &lt;h2&gt;模型&lt;/h2&gt;
-&lt;p&gt;与Kalman滤波不同，粒子滤波不是估计$t$时刻状态向量的置信分布$bel(x_t)$，而是$0:t$时刻所有状态向量序列的置信分布$bel(x_{0:t})$，可以看作是一个轨迹。&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_{0:t}) = p(x_{0:t}|z_{1:t},u_{1:t})
-$$&lt;/p&gt;
-&lt;p&gt;我们可以用一堆粒子来表示这个分布，每个粒子都有一个状态$x_{0:t}^i$和一个权重$w_t^i$，权重是归一化的，因此，$bel(x_{0:t})$可由如下的方程近似表示，$\delta(x)$是Dirac delta函数：&lt;/p&gt;
-&lt;p&gt;$$
-particle:\; \lbrace x_{0:t}^i, w_t^i \rbrace_{i=1}^N
-$$&lt;/p&gt;
-&lt;p&gt;$$
-\sum_{i=1}^N w_t^i = 1
-$$&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_{0:t}) \approx \sum_{i=1}^N w_t^i \delta (x_{0:t} - x_{0:t}^i)
-$$&lt;/p&gt;
-&lt;h2&gt;Importance Sampling&lt;/h2&gt;
-&lt;p&gt;计算权重$w$，需要使用Importance Sampling。&lt;/p&gt;
-&lt;p&gt;一般情况下，计算一个目标函数$f(x)$的期望，我们需要知道$x$的概率分布$p(x)$，然后积分求得期望，但实际中可能求积分比较困难，所以可以根据$p(x)$采样，然后用Monte Carlo方法近似计算：&lt;/p&gt;
-&lt;p&gt;$$
-E(f(x)) = \int f(x)p(x)dx \approx \frac 1 N \sum_{i=1}^N f(x_i)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-x_{0:N} \sim p(x)
-$$&lt;/p&gt;
-&lt;p&gt;但是，有时候我们不知道$p(x)$什么样，我们这里$p(x)$就是想求的target distribution是$bel(x_{0:t})$，所以没办法直接对它进行采样。这时就要用Importance Sampling了，引入一个新的分布$q(x)$，做如下变换，然后就可以根据$q(x)$采样，进而计算期望：&lt;/p&gt;
-&lt;p&gt;$$
-E(f(x)) = \int {f(x)p(x) \over q(x)} q(x) dx \approx \frac 1 N \sum_{i=1}^N f(x_i) {p(x_i) \over q(x_i)}
-$$&lt;/p&gt;
-&lt;p&gt;$$
-x_{0:N} \sim q(x)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-Importance \, Weights: \; w_i = {p(x_i) \over q(x_i)}
-$$&lt;/p&gt;
-&lt;p&gt;那么回到我们的问题上，权重$w_t^i$如下，因为我们这里用权重表示概率，需要归一化，所以省略了归一化系数，用了一个正比符号。&lt;/p&gt;
-&lt;p&gt;$$
-w_t^i \propto {p(x_{0:t}^i|z_{1:t}, u_{1:t}) \over q(x_{0:t}^i|z_{1:t}, u_{1:t})}
-$$&lt;/p&gt;
-&lt;h2&gt;权重的递推公式&lt;/h2&gt;
-&lt;p&gt;\begin{split}
-p(x_{0:t}|z_{1:t}, u_{1:t}) &amp;amp;＝ {p(z_t|x_{0:t}, z_{1:t-1}, u_{1:t})p(x_t|x_{0:t-1}, z_{1:t-1}, u_{1:t})p(x_{0:t-1}, z_{1:t-1}, u_{1:t}) \over p(z_{1:t}, u_{1:t})} \; Bayes\\
-&amp;amp;= {p(z_t|x_{t})p(x_t|x_{t-1}, u_{t})p(x_{0:t-1}, z_{1:t-1}, u_{1:t}) \over p(z_{1:t}, u_{1:t})} \; Markov假设\\
-&amp;amp;= {p(z_t|x_{t})p(x_t|x_{t-1}, u_{t})p(x_{0:t-1}|z_{1:t-1}, u_{1:t}) \over p(z_t|z_{1:t-1}, u_{1:t})} \; Bayes\\
-&amp;amp;= {p(z_t|x_{t})p(x_t|x_{t-1}, u_{t})p(x_{0:t-1}|z_{1:t-1}, u_{1:t-1}) \over p(z_t|z_{1:t-1}, u_{1:t})} \; 忽略u_t \\
-&amp;amp;\propto p(z_t|x_{t})p(x_t|x_{t-1}, u_{t})p(x_{0:t-1}|z_{1:t-1}, u_{1:t-1})
-\end{split}&lt;/p&gt;
-&lt;p&gt;$$
-q(x_{0:t}|z_{1:t}, u_{1:t}) ＝ q(x_t|x_{0:t-1}, z_{1:t}, u_{1:t})q(x_{0:t-1}|z_{1:t-1}, u_{1:t-1}) \; Bayes, 忽略z_t, u_t
-$$&lt;/p&gt;
-&lt;p&gt;\begin{split}
-w_t^i &amp;amp;\propto {p(z_t|x_{t}^i)p(x_t^i|x_{t-1}^i, u_{t})p(x_{0:t-1}^i|z_{1:t-1}, u_{1:t-1}) \over q(x_t^i|x_{0:t-1}^i, z_{1:t}, u_{1:t})q(x_{0:t-1}^i|z_{1:t-1}, u_{1:t-1})}\\
-&amp;amp;= w_{t-1}^i {p(z_t|x_{t}^i)p(x_t^i|x_{t-1}^i, u_{t}) \over q(x_t^i|x_{0:t-1}^i, z_{1:t}, u_{1:t})}
-\end{split}&lt;/p&gt;
-&lt;p&gt;如果根据Markov假设进一步做如下简化，则$t$时刻的状态估计至于$t-1$时刻的状态和当前的测量向量和控制向量有关，与$0:t-1$时刻的状态路径以及历史测量值都无关。&lt;/p&gt;
-&lt;p&gt;$$
-w_t^i \propto w_{t-1}^i {p(z_t|x_{t}^i)p(x_t^i|x_{t-1}^i, u_{t}) \over q(x_t^i|x_{t-1}^i, z_{t}, u_{t})}
-$$&lt;/p&gt;
-&lt;p&gt;因此我们可以近似认为路径估计等于当前状态估计：&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_{0:t}) = p(x_{0:t}|z_{1:t},u_{1:t}) \approx p(x_{t}|z_{1:t},u_{1:t})
-$$&lt;/p&gt;
-&lt;p&gt;即：&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_{t}) \approx \sum_{i=1}^N w_t^i \delta (x_{0:t} - x_{0:t}^i)
-$$&lt;/p&gt;
-&lt;h2&gt;选择Proposal Distribution&lt;/h2&gt;
-&lt;p&gt;至此我们可以递归地计算权重了，但是权重的递推公式里面有一个proposal distribution－$q(x_t|x_{t-1}, z_{t}, u_{t})$还不知道是什么。&lt;/p&gt;
-&lt;p&gt;$q(x_t|x_{t-1}, z_{t}, u_{t})$的最优解是$p(x_t|x_{t-1}, z_{t}, u_{t})$，为什么是最优我还没搞清楚-_-!&lt;/p&gt;
-&lt;p&gt;我们通常会选择$p(x_t|x_{t-1}, u_{t})$作为$q(x_t|x_{t-1}, z_{t}, u_{t})$，如此一来，我们的权重递推公式可以进一步得到简化：&lt;/p&gt;
-&lt;p&gt;$$
-w_t^i \propto w_{t-1}^i p(z_t|x_{t}^i)
-$$&lt;/p&gt;
-&lt;h2&gt;Resampling&lt;/h2&gt;
-&lt;p&gt;然后还有重要的一个步骤Resampling，Resampling是为了解决Degeneracy的问题。Degeneracy简单来说就是，经过若干次迭代后，权重都集中在了一个粒子的身上，其他粒子的权重都变得很小。&lt;/p&gt;
-&lt;p&gt;Resampling就是对下面的离散分布进行重采样，用新的粒子集$\lbrace x_t^{i*}\rbrace_{i=1}^N$替换旧的粒子集$\lbrace x_t^i\rbrace_{i=1}^N$。采样时，旧的粒子是否保留的概率与权重$w_t^i$成正比。&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_{t}) \approx \sum_{i=1}^N w_t^i \delta (x_{0:t} - x_{0:t}^i)
-$$&lt;/p&gt;
-&lt;p&gt;Resampling后每个粒子的权重被置为$\frac 1 N$。如果每一次迭代都进行Resampling的话（SIR粒子滤波就是这样做的），那我们的权重可以进一步简化为：&lt;/p&gt;
-&lt;p&gt;$$
-w_t^i \propto p(z_t|x_{t}^i)
-$$&lt;/p&gt;
-&lt;h2&gt;算法&lt;/h2&gt;
-&lt;p&gt;——————————————&lt;/p&gt;
-&lt;p&gt;Algorithm SIR Particle Filter($x_{t-1}$, $u_{t}$, $z_{t}$)&lt;/p&gt;
-&lt;p&gt;for i = 1:N&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Sample $x_t^i$ from $p(x_t|x_{t-1}^i, u_{t})$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$w_t^i = p(z_t|x_t^i)$&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;end for&lt;/p&gt;
-&lt;p&gt;Normalize $\lbrace w_t^i\rbrace_{i=1}^N$&lt;/p&gt;
-&lt;p&gt;Resampling:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Sample from $x_t^i$ with probability $\propto w_t^i$&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\lbrace w_t^i\rbrace_{i=1}^N = \frac 1 N$&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;end for&lt;/p&gt;
-&lt;p&gt;——————————————&lt;/p&gt;
-&lt;h2&gt;扩展&lt;/h2&gt;
-&lt;p&gt;粒子滤波是个很大的研究课题，基于SIS框架，可以利用很多优化方法得到粒子滤波的各种变种。例如：选择不同的proposal，使用不同的Resampling方法等等。&lt;/p&gt;
-&lt;p&gt;粒子滤波有两个主要问题，一个是Degeneracy，可以通过逼近最优的proposal，或者Resampling来缓解。二是Resampling造成的sampling impoverishment。通过不同的方法优化这些问题，可产生很多粒子滤波的变种。针对具体的问题和应用场景，在传统粒子滤波的基础上优化某个点，也许会产生更好的效果。&lt;/p&gt;
-&lt;h3&gt;参考文献&lt;/h3&gt;
-&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;M. Sanjeev Arulampalam, Simon Maskell, Neil Gordon, and Tim Clapp. A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 50, NO. 2, FEBRUARY 2002.&lt;/p&gt;
-&lt;p&gt;徐亦达. Particle Filter Part1-8, YouTube.com&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Mon, 26 Jun 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-06-26:the-derivation-of-generic-particle-filter-for-robot.html</guid><category>Math</category></item><item><title>The Derivation of Kalman Filter from Bayes Filter</title><link>https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html</link><description>&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
+&lt;p&gt;与Kalman滤波不同，粒子滤波不是估计$t$时刻状态向量的置信分布$bel(x_t)$，而是$0:t$时刻所有状态向量序列的置信分布$bel(x_{0 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Mon, 26 Jun 2017 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2017-06-26:/the-derivation-of-generic-particle-filter-for-robot.html</guid><category>Math</category></item><item><title>The Derivation of Kalman Filter from Bayes Filter</title><link>https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html</link><description>&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
 &lt;h2&gt;卡尔曼滤波的三个假设&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。&lt;/p&gt;
 &lt;p&gt;$$
@@ -371,85 +39,7 @@ $$&lt;/p&gt;
 p(x_t|u_t, x_{t-1}) \sim N(A_t x_{t-1} + B_t u_t, R_t)
 $$&lt;/p&gt;
 &lt;p&gt;$$
-p(x_t|u_t, x_{t-1}) = det(2 \pi R_t)^{- \frac 1 2}exp\lbrace {- \frac 1 2}(x_t-A_t x_{t-1} - B_t u_t)^T R_t^{-1}(x_t-A_t x_{t-1} - B_t u_t)\rbrace
-$$&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; 测量方程是线性的，噪声服从均值为$0$，协方差为$Q_t$的多元高斯分布。因此，测量概率服从均值$C_t x_t$，协方差为$Q_t$的多元高斯分布。&lt;/p&gt;
-&lt;p&gt;$$
-\delta_t \sim N(0, Q_t)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-z_t = C_t x_t + \delta_t
-$$&lt;/p&gt;
-&lt;p&gt;$$
-p(z_t|x_t) \sim N(C_t x_t, Q_t)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-p(z_t|x_t) = det(2 \pi Q_t)^{- \frac 1 2}exp\lbrace {- \frac 1 2}(z_t-C_t x_t)^T Q_t^{-1}(z_t-C_t x_t)\rbrace
-$$&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;3.&lt;/strong&gt; 初始置信$bel(x_0)$概率服从均值为$\mu_0$，协方差为$\Sigma_0$的多元高斯分布。&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_0) = p(x_0) = det(2 \pi \Sigma_0)^{- \frac 1 2}exp\lbrace {- \frac 1 2}(x_0- \mu_0)^T \Sigma_0^{-1}(x_0- \mu_0)\rbrace
-$$&lt;/p&gt;
-&lt;h2&gt;递推公式&lt;/h2&gt;
-&lt;p&gt;只要满足以上三个假设，即可证明$bel(x_t)$也满足高斯分布。即：&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_t) \sim N(\mu_t, \Sigma_t)
-$$
-$$
-\overline {bel}(x_t) \sim N(\overline \mu_t, \overline \Sigma_t)
-$$&lt;/p&gt;
-&lt;p&gt;根据贝叶斯滤波的递推公式和以上的假设，即可推导出卡尔曼滤波的递推公式。因为满足高斯分布，所以我们只需递推均值和协方差。&lt;/p&gt;
-&lt;p&gt;\begin{split}
-\overline \mu_t &amp;amp;= A_t \mu_{t-1} + B_t u_t\\
-\overline \Sigma_t &amp;amp;= A_t \Sigma_{t-1} A_t^T+ R_t\\
-K_t &amp;amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1} \\
-\mu_t &amp;amp;= \overline \mu_t + K_t(z_t - C_t \overline \mu_t) \\
-\Sigma_t &amp;amp;= (I - K_t C_t) \overline \Sigma_t
-\end{split}&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;$K_t$称为Kalman增益&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$I$是单位矩阵&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;简略推导&lt;/h2&gt;
-&lt;p&gt;由贝叶斯滤波器可知$\overline {bel}(x_t)$的公式如下，在卡尔曼滤波中，$p(x_t|x_{t-1}, u_t)$和$bel(x_{t-1})$都服从高斯分布。&lt;/p&gt;
-&lt;p&gt;$$
-\overline {bel}(x_t) = \int p(x_t|x_{t-1}, u_t) \cdot bel(x_{t-1})dx_{t-1}
-$$&lt;/p&gt;
-&lt;p&gt;$$
-p(x_t|x_{t-1}, u_t) \sim N(x_t; A_t x_{t-1} + B_t u_t, R_t)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_{t-1}) \sim N(x_{t-1};\mu_{t-1}, \Sigma_{t-1})
-$$&lt;/p&gt;
-&lt;p&gt;这里$\overline {bel}(x_t)$可以看作两个高斯分布的卷积。省略中间步骤，最终推导出$\overline {bel}(x_t)$也是高斯分布，均值和协方差如下：&lt;/p&gt;
-&lt;p&gt;\begin{split}
-\overline \mu_t &amp;amp;= A_t \mu_{t-1} + B_t u_t\\
-\overline \Sigma_t &amp;amp;= A_t \Sigma_{t-1} A_t^T+ R_t
-\end{split}&lt;/p&gt;
-&lt;p&gt;由贝叶斯滤波器可知$bel(x_t)$的公式如下，在卡尔曼滤波中，$p(z_t|x_t)$也服从高斯分布，上面已证明$\overline {bel}(x_t)$也服从高斯分布。&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_t) = \eta \cdot p(z_t|x_{t}) \cdot \overline {bel}(x_t)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-p(z_t|x_t) \sim N(z_t; C_t x_t, Q_t)
-$$&lt;/p&gt;
-&lt;p&gt;$$
-\overline {bel}(x_t) \sim N(x_t; \overline \mu_t, \overline \Sigma_t)
-$$&lt;/p&gt;
-&lt;p&gt;因此$bel(x_t)$可以看作两个高斯分布的乘积，结果也是高斯分布。省略中间推导，最终得到的均值和协方差如下：&lt;/p&gt;
-&lt;p&gt;\begin{split}
-K_t &amp;amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1} \\
-\mu_t &amp;amp;= \overline \mu_t + K_t(z_t - C_t \overline \mu_t) \\
-\Sigma_t &amp;amp;= (I - K_t C_t) \overline \Sigma_t
-\end{split}&lt;/p&gt;
-&lt;h3&gt;参考文献&lt;/h3&gt;
-&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;概率机器人的贝叶斯滤波器. 我的博文，&lt;a href="https://wang-xinyu.github.io/bayes-filter-for-robot.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Sat, 17 Jun 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-06-17:the-derivation-of-kalman-filter-from-bayes-filter.html</guid><category>Math</category></item><item><title>Bayes Filter for Robot</title><link>https://wang-xinyu.github.io/bayes-filter-for-robot.html</link><description>&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
+p(x_t|u_t, x_{t-1}) = det …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Sat, 17 Jun 2017 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2017-06-17:/the-derivation-of-kalman-filter-from-bayes-filter.html</guid><category>Math</category></item><item><title>Bayes Filter for Robot</title><link>https://wang-xinyu.github.io/bayes-filter-for-robot.html</link><description>&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
 &lt;h2&gt;模型&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;$x_t$表示$t$时刻机器人的状态向量&lt;/li&gt;
@@ -461,58 +51,7 @@ K_t &amp;amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1}
 bel(x_t) = p(x_t|z_{1:t},u_{1:t})
 $$&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;$\overline {bel}(x_t)$是计算$bel(x_t)$的一个中间值，称为预测（Prediction）。它的定义如下，即在得到$t$时刻的测量向量$z_t$之前获取的置信概率，因此称为预测。而得到$z_t$后，由$\overline {bel}(x_t)$计算$bel(x_t)$的过程称为纠正或更新。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;$$
-\overline {bel}(x_t) = p(x_t|z_{1:t-1},u_{1:t})
-$$&lt;/p&gt;
-&lt;h2&gt;递推公式&lt;/h2&gt;
-&lt;p&gt;先给出贝叶斯滤波器的递推公式，然后证明。&lt;/p&gt;
-&lt;p&gt;$$
-\overline {bel}(x_t) = \int p(x_t|u_{t},x_{t-1}) \cdot bel(x_{t-1})dx_{t-1}
-$$&lt;/p&gt;
-&lt;p&gt;$$
-bel(x_t) = \eta \cdot p(z_t|x_{t}) \cdot \overline {bel}(x_t)
-$$&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;$p(x_t|u_{t},x_{t-1})$是机器人的状态转移概率&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$p(z_t|x_{t})$是测量概率&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;$\eta$是概率归一化常量&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;根据这个公式我们可以看出来，只要知道状态转移概率分布，测量概率以及前一时刻的置信概率，就可以递归求得当前机器人状态的置信概率。&lt;/p&gt;
-&lt;h2&gt;证明&lt;/h2&gt;
-&lt;p&gt;\begin{split}
-bel(x_t) &amp;amp;= p(x_t|z_{1:t},u_{1:t})\\
-&amp;amp;= {p(x_t,z_{1:t},u_{1:t}) \over p(z_{1:t},u_{1:t})}条件概率\\
-&amp;amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t, z_{1:t-1},u_{1:t}) \over p(z_{1:t},u_{1:t})}条件概率\\
-&amp;amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t}) \cdot p(z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t}) \cdot p(z_{1:t-1},u_{1:t})} 条件概率\\
-&amp;amp;= {p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} 约分\\
-&amp;amp;= {p(z_t|x_t) \cdot p(x_t|z_{1:t-1},u_{1:t}) \over p(z_t|z_{1:t-1},u_{1:t})} Markov假设\\
-&amp;amp;= \eta \cdot p(z_t|x_t) \cdot \overline {bel}(x_t) 替换
-\end{split}&lt;/p&gt;
-&lt;p&gt;\begin{split}
-\overline {bel}(x_t) &amp;amp;= p(x_t|z_{1:t-1},u_{1:t})\\
-&amp;amp;= \int p(x_t|x_{t-1}, z_{1:t-1},u_{1:t}) \cdot p(x_{t-1}|z_{1:t-1},u_{1:t})dx_{t-1} 用全概率计算条件概率\\
-&amp;amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot p(x_{t-1}|z_{1:t-1},u_{1:t-1})dx_{t-1} Markov假设并去掉u_t\\
-&amp;amp;= \int p(x_t|x_{t-1}, u_{t}) \cdot bel(x_{t-1})dx_{t-1} 替换
-\end{split}&lt;/p&gt;
-&lt;p&gt;这里的$\eta = {p(z_t|z_{1:t-1},u_{1:t})}^{-1}$，可以看作概率的归一化因子。因为它等于分子中两个PDF的乘积的积分：&lt;/p&gt;
-&lt;p&gt;\begin{split}
-p(z_t|z_{1:t-1},u_{1:t}) &amp;amp;＝ \int p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p(x_t|z_{1:t-1},u_{1:t})dx_t用全概率计算条件概率\\
-&amp;amp;= \int p(z_t|x_t) \cdot p(x_t|z_{1:t-1},u_{1:t})dx_t \; Markov假设
-\end{split}&lt;/p&gt;
-&lt;p&gt;Markov假设当前状态是完整的，若已知当前状态$x_t$，则$t$时刻及其之前的测量$z_{1:t}$和控制向量$u_{1:t}$对未来状态没有影响。&lt;/p&gt;
-&lt;h3&gt;参考文献&lt;/h3&gt;
-&lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;M. Sanjeev Arulampalam, Simon Maskell, Neil Gordon, and Tim Clapp. A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 50, NO. 2, FEBRUARY 2002.&lt;/p&gt;
-&lt;p&gt;使用全概率公式计算条件概率. 我的博文，&lt;a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 13 Jun 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-06-13:bayes-filter-for-robot.html</guid><category>Math</category></item><item><title>Total Probability Applied to Conditional Probability</title><link>https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html</link><description>&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+&lt;li&gt;$\overline {bel}(x_t)$是计算$bel(x_t)$的一个中间值，称为预测（Prediction）。它的定义如下 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 13 Jun 2017 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2017-06-13:/bayes-filter-for-robot.html</guid><category>Math</category></item><item><title>Total Probability Applied to Conditional Probability</title><link>https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html</link><description>&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
 &lt;h2&gt;公式&lt;/h2&gt;
 &lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
 &lt;p&gt;$$
@@ -524,83 +63,36 @@ $$&lt;/p&gt;
 &lt;h2&gt;证明&lt;/h2&gt;
 &lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;
 &lt;p&gt;\begin{equation}\begin{split}
-P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i)\\
-&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(B,C_i)\\
-&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)
-\end{split}\end{equation}&lt;/p&gt;
-&lt;p&gt;\begin{equation}\begin{split}
-P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\\
-&amp;amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\\
-&amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
-\end{split}\end{equation}&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Mon, 12 Jun 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-06-12:total-probability-applied-to-conditional-probability.html</guid><category>Math</category></item><item><title>Setup Chinese Input Method on Ubuntu</title><link>https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html</link><description>&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
+P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Mon, 12 Jun 2017 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2017-06-12:/total-probability-applied-to-conditional-probability.html</guid><category>Math</category></item><item><title>Setup Chinese Input Method on Ubuntu</title><link>https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html</link><description>&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
 &lt;h2&gt;1. 安装语言包&lt;/h2&gt;
 &lt;p&gt;打开System Settings–&amp;gt;Language Support–&amp;gt;Install/Remove Languages，安装Chinese(simplified)。&lt;/p&gt;
 &lt;h2&gt;2. 安裝IBus框架&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;3. 启用IBus框架&lt;/h2&gt;
 &lt;p&gt;运行以下命令，重启电脑。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;im-switch -s ibus     // Ubuntu 14.04
-&lt;span class="nv"&gt;$ &lt;/span&gt;im-config -s ibus     // Ubuntu 16.04
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ im-switch -s ibus     // Ubuntu &lt;span class="m"&gt;14&lt;/span&gt;.04
+$ im-config -s ibus     // Ubuntu &lt;span class="m"&gt;16&lt;/span&gt;.04
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;4. 安装拼音引擎&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install ibus-pinyin
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ibus-pinyin
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;5. 设置IBus框架&lt;/h2&gt;
-&lt;p&gt;运行如下命令，在弹出的窗口中选择Add-&amp;gt;Chinese-&amp;gt;Pinyin&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ibus-setup
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;6. 添加输入法&lt;/h2&gt;
-&lt;p&gt;打开System Settings–&amp;gt;Text Entry-&amp;gt;Add(+)-&amp;gt;Chinese(Pinyin)(IBus)&lt;/p&gt;
-&lt;h2&gt;7. 如果拼音打字不正常&lt;/h2&gt;
-&lt;p&gt;尝试在运行如下命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ibus-daemon -drx
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 09 May 2017 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2017-05-09:setup-chinese-input-method-on-ubuntu.html</guid><category>Linux</category></item><item><title>Getting Started with ROS Navigation Stack</title><link>https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html</link><description>&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+&lt;p&gt;运行如下命令，在弹出的窗口中选择Add-&amp;gt;Chinese-&amp;gt;Pinyin …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 09 May 2017 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2017-05-09:/setup-chinese-input-method-on-ubuntu.html</guid><category>Linux</category></item><item><title>Getting Started with ROS Navigation Stack</title><link>https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html</link><description>&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
 &lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
 &lt;h2&gt;1. Install ROS&lt;/h2&gt;
-&lt;p&gt;ROS is not a standalone OS, but based on Ubuntu or other Debian distributions. So first we need to install Ubuntu, or other Debian if you like, but it is recommanded to choose Ubuntu for beginners.&lt;/p&gt;
-&lt;p&gt;At the time of my writing this article, the latest ROS distribution is Kinetic, which &lt;strong&gt;ONLY&lt;/strong&gt; supports Wily (Ubuntu 15.10), Xenial (Ubuntu 16.04) and Jessie (Debian 8) for debian packages. So my choice is &lt;code&gt;Xenial + Kinetic&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The &lt;a href="http://wiki.ros.org/kinetic/Installation/Ubuntu"&gt;ROS Kinetic Install Guide&lt;/a&gt; is very helpful. So I just make a brief summary here.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Setup the repositories, sources.list and apt-key. So that you can install ROS packages through &lt;code&gt;apt-get install&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Install the full package &lt;code&gt;ros-kinetic-desktop-full&lt;/code&gt; if you are using a x86 PC. For ARM, such as Raspberry Pi, you may have to install ROS-base, and then install other individual packages.&lt;/li&gt;
-&lt;li&gt;Setup your shell environment. Basically, you need to append &lt;code&gt;source /opt/ros/kinetic/setup.bash&lt;/code&gt; to your &lt;code&gt;~/.bashrc&lt;/code&gt;. After creating your own workspaces, you have to setup extra environments.&lt;/li&gt;
-&lt;li&gt;Besides, there are some settings not that important, you may check the Kinetic Install Guide for details. &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2. Create a ROS Workspace&lt;/h2&gt;
-&lt;p&gt;There are two ways to create ROS workspace, i.e. &lt;code&gt;catkin&lt;/code&gt; and &lt;code&gt;rosbuild&lt;/code&gt;. I think &lt;code&gt;catkin&lt;/code&gt; is much more easier.&lt;/p&gt;
-&lt;p&gt;Actually you may follow the &lt;a href="http://wiki.ros.org/ROS/Tutorials"&gt;ROS beginner tutorials&lt;/a&gt; to learn how to create a catkin workspace, and you have to understand ROS packages, nodes, topics, services, parameters, roslaunch, messages, publisher, subscriber and other ROS basics.&lt;/p&gt;
-&lt;h2&gt;3. Get your robot run with RViz&lt;/h2&gt;
-&lt;p&gt;Now we are ready to drive the robot with ROS. Before using ROS, I think you should already have a driver program which can send movement command from PC to your robot and receive odometry and other robot state info. And then you need a bridge program to connect ROS with your driver.&lt;/p&gt;
-&lt;p&gt;My robot is P3DX, the &lt;code&gt;libaria&lt;/code&gt; can communicate with robot, controll it and get its state info. And &lt;code&gt;RosAria&lt;/code&gt; is the bridge between ROS and &lt;code&gt;libaria&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;RosAria&lt;/code&gt; subscribes to the &lt;code&gt;cmd_vel&lt;/code&gt; topic, so that I can make P3DX run by publishing &lt;code&gt;geometry_msgs/Twist&lt;/code&gt; message to it.&lt;/p&gt;
-&lt;p&gt;And &lt;code&gt;RosAria&lt;/code&gt; publishes to the topic &lt;code&gt;pose&lt;/code&gt;, &lt;code&gt;sonar&lt;/code&gt;, &lt;code&gt;bumper_state&lt;/code&gt;, &lt;code&gt;motors_state&lt;/code&gt;, etc. I can get info from these topics.&lt;/p&gt;
-&lt;p&gt;Then I want to display my robot on the RViz and teleop it. The &lt;a href="https://github.com/MobileRobots/amr-ros-config"&gt;amr-ros-config&lt;/a&gt; package contains &lt;code&gt;URDF&lt;/code&gt;, &lt;code&gt;.rviz&lt;/code&gt; and &lt;code&gt;launch&lt;/code&gt; files, with all these stuff, I can display the P3DX model on the RViz and teleop it.&lt;/p&gt;
-&lt;h2&gt;4. Setup ROS Navigation Stack&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="ros_nav_stack.png" src="/images/nav_stack.png" /&gt;&lt;/p&gt;
-&lt;p&gt;The blue components are what we need to provide. Fortunately, &lt;code&gt;RosAria&lt;/code&gt; has done most of the work. &lt;code&gt;odometry source&lt;/code&gt;, &lt;code&gt;base controller&lt;/code&gt; and &lt;code&gt;sensor sources&lt;/code&gt; are all fully provided by &lt;code&gt;RosAria&lt;/code&gt;. For &lt;code&gt;sensor transforms&lt;/code&gt;, &lt;code&gt;RosAria&lt;/code&gt; provides the tf &lt;code&gt;odom-&amp;gt;base_link&lt;/code&gt;, other sensor frames transform should be provided by us. I didn't use laser, I just used sonar, so I just provided the tf &lt;code&gt;base_link-&amp;gt;sonar_frame&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The gray components are optional components that are already implemented. Here I didn't use &lt;code&gt;amcl&lt;/code&gt;, I used &lt;code&gt;map_server&lt;/code&gt; with a existing map picture. So I need a YAML file to describe &lt;code&gt;map_server&lt;/code&gt; parameters.&lt;/p&gt;
-&lt;p&gt;The white components are required components that are already implemented. What we have to provide is just four configuration files, i.e. &lt;code&gt;costmap_common_params.yaml&lt;/code&gt;, &lt;code&gt;global_costmap_params.yaml&lt;/code&gt;, &lt;code&gt;local_costmap_params.yaml&lt;/code&gt; and &lt;code&gt;base_local_planner_params.yaml&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Finally, a launch file is needed to launch the ROS navigation stack. The launch sequence is like:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;RosAria + RViz&lt;/li&gt;
-&lt;li&gt;map_server with map YAML file&lt;/li&gt;
-&lt;li&gt;move_base with those four configuration files.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;OK, now set a goal from RViz, there will be a path and local cosmap, then the robot will go down that path until reaching that goal.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 19 Aug 2016 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2016-08-19:getting-started-with-ros-navigation-stack.html</guid><category>ROS</category></item><item><title>Modify the user name of Raspbian</title><link>https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html</link><description>&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
+&lt;p&gt;ROS is not a standalone OS, but based …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 19 Aug 2016 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2016-08-19:/getting-started-with-ros-navigation-stack.html</guid><category>ROS</category></item><item><title>Modify the user name of Raspbian</title><link>https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html</link><description>&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
 &lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
 &lt;p&gt;本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。&lt;/p&gt;
 &lt;h2&gt;1. 启用root用户&lt;/h2&gt;
 &lt;p&gt;输入两遍密码解锁root用户，最后通过su验证root用户是否已经启用。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;pi@raspberrypi:~ $ sudo passwd root
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pi@raspberrypi:~ $ sudo passwd root
 Enter new UNIX password: 
 Retype new UNIX password: 
 passwd: password updated successfully
@@ -615,159 +107,23 @@ root@raspberrypi:/home/pi#
 
 
 &lt;h2&gt;2. 允许SSH登录root用户&lt;/h2&gt;
-&lt;p&gt;SSH出于安全考虑，默认不允许登录root用户，需修改配置文件/etc/ssh/sshd_config，将PermitRootLogin的属性改为yes。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;#PermitRootLogin without-password
-PermitRootLogin yes
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;3. 修改Boot选项&lt;/h2&gt;
-&lt;p&gt;利用raspi-config工具修改Boot选项，将自动以pi用户登录，改为requiring user to login。修改后重启。&lt;/p&gt;
-&lt;h2&gt;4. SSH登录root用户&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;
-&lt;span class="nl"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
-&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;raspberrypi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;5. 修改名字&lt;/h2&gt;
-&lt;p&gt;修改user name，group name，home路径名，以及/etc/passwd中的home路径。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;root@raspberrypi:~# usermod -l urname pi
-root@raspberrypi:~# groupmod -n urname pi
-root@raspberrypi:~# mv /home/pi/ /home/urname
-root@raspberrypi:~# usermod -d /home/urname urname
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;6. 配置新用户的sudo权限&lt;/h2&gt;
-&lt;p&gt;修改/etc/sudoers文件，将具有sudo权限的pi改为urname。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;pi ALL=(ALL) NOPASSWD: ALL
-改为
-urname ALL=(ALL) NOPASSWD: ALL
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;7. 收尾&lt;/h2&gt;
-&lt;p&gt;修改完之后，可用新用户名登录，最后不要忘了锁定root用户，并禁止SSH登录root用户。&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 19 Apr 2016 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2016-04-19:modify-the-user-name-of-raspbian.html</guid><category>Linux</category><category>Raspi</category></item><item><title>Summary of C Traps</title><link>https://wang-xinyu.github.io/summary-of-c-traps.html</link><description>&lt;h1&gt;C陷阱总结&lt;/h1&gt;
+&lt;p&gt;SSH出于安全考虑，默认不允许登录root用户 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 19 Apr 2016 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2016-04-19:/modify-the-user-name-of-raspbian.html</guid><category>Linux</category><category>Raspi</category></item><item><title>Summary of C Traps</title><link>https://wang-xinyu.github.io/summary-of-c-traps.html</link><description>&lt;h1&gt;C陷阱总结&lt;/h1&gt;
 &lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
 &lt;p&gt;本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。&lt;/p&gt;
 &lt;h2&gt;1. const修饰符&lt;/h2&gt;
 &lt;p&gt;const指常量、常数。const与#define相比，效率更高。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;const int i;                /* i不可变 */
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;const int i;                /* i不可变 */
 int const i;                /* i不可变 */
 int const a[3]={1, 2, 3};   /* 数组不可变 */
 const int a[3]={1, 2, 3};   /* 数组不可变 */
 const int *p;               /* p 可变，p 指向的对象不可变 */
-int const *p;               /* p 可变，p 指向的对象不可变 */
-int *const p;               /* p 不可变，p 指向的对象可变 */
-const int *const p;         /* 指针p 和p 指向的对象都不可变 */
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;2. volatile修饰符&lt;/h2&gt;
-&lt;p&gt;volatile指易变的，比如端口数据等变量应当使用volatile修饰。volatile告诉编译器，这个变量是反复无常的，编译器每次用这个变量时，必须从内存中取它的值，编译器对访问该变量的代码不再进行优化。&lt;/p&gt;
-&lt;h2&gt;3. 可变参数"..."&lt;/h2&gt;
-&lt;p&gt;"..."表示参数的个数和类型是可变的，printf()就用到了可变参数，它的定义如下：&lt;/p&gt;
-&lt;p&gt;int printf( const char* format, ... );&lt;/p&gt;
-&lt;p&gt;在函数内部通过前面固定参数的地址获取可变参数的地址，从而可以在函数内部处理这些可变参数。&lt;/p&gt;
-&lt;h2&gt;4. 语句块&lt;/h2&gt;
-&lt;p&gt;由{}括起来的若干条语句组成一个语句块。如下所示，语句块构成一个作用域，函数内的i和语句块中的i不同，语句块中的j的作用域只是语句块内。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;void foo(void)
-{
-    int i = 0;
-    {
-        int i = 1;
-        int j = 2;
-        printf(&amp;quot;i=%d, j=%d\n&amp;quot;, i, j);
-    }
-    printf(&amp;quot;i=%d\n&amp;quot;, i); /* cannot access j here */
-｝
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;5. 全局变量和局部变量的初始化&lt;/h2&gt;
-&lt;p&gt;局部变量可以用任意类型相符的表达式来初始化，而全局变量只能用常量表达式初始化。全局变量的初始值要求保存在编译生成的目标代码中，所以必须在编译时就能计算出来。&lt;/p&gt;
-&lt;p&gt;如果全局变量在定义时不初始化，则初始值是0，也就是说，整型的就是0，字符型的就是'\0'，浮点型的就是0.0。如果局部变量在定义时不初始化，则初始值是不确定的，所以，局部变量在使用前一定要先赋值，不管是通过初始化还是赋值运算符。&lt;/p&gt;
-&lt;h2&gt;6. 结构体的初始化和赋值&lt;/h2&gt;
-&lt;p&gt;如果Initializer中的数据比结构体的成员多，编译器会报错，但如果只是末尾多个逗号不算错。如果Initializer中的数据比结构体的成员少，未指定的成员将用0来初始化，就像未初始化的全局变量一样。例如以下几种形式的初始化都是合法的，但结构体直接赋值是非法的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;struct complex_struct { double x, y; };
-struct complex_struct z1 = { x, 4.0, }; /* z1.x=3.0, z1.y=4.0 */
-struct complex_struct z2 = { 3.0, };        /* z2.x=3.0, z2.y=0.0 */
-struct complex_struct z3 = { };             /* z3.x=0.0, z3.y=0.0 */
-
-struct complex_struct z1;
-z1 = { 3.0, 4.0 };                          /* illegal */
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;7. #include的尖括号&amp;lt;&amp;gt;和引号""&lt;/h2&gt;
-&lt;p&gt;对于用尖括号&amp;lt;&amp;gt;包含的头文件，gcc首先查找-I选项指定的目录，然后查找系统的头文件目录（Linux通常是/usr/include）。&lt;/p&gt;
-&lt;p&gt;而对于用引号包含的头文件，gcc首先查找包含头文件的.c文件所在的目录，然后查找-I选项指定的目录，然后查找系统的头文件目录。&lt;/p&gt;
-&lt;h2&gt;8. 指针数组和指向数组的指针&lt;/h2&gt;
-&lt;p&gt;int *a[10]是指针数组，而int (*a)[10]是指向数组的指针。我们可以认为[]比*有更高的优先级，如果a先和*结合则表示a是一个指针，如果a先和[]结合则表示a是一个数组。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* int *a[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-typedef&lt;span class="w"&gt; &lt;/span&gt;int&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;t&lt;span class="err"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-t&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="err"&gt;];&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-
-&lt;span class="cm"&gt;/* int (*a)[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-typedef&lt;span class="w"&gt; &lt;/span&gt;int&lt;span class="w"&gt; &lt;/span&gt;t&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="err"&gt;];&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;span class="err"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;持续更新中......&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 08 Dec 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-12-08:summary-of-c-traps.html</guid><category>C</category></item><item><title>Introduction to MODBUS over Serial Line</title><link>https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html</link><description>&lt;h1&gt;MODBUS over Serial Line介绍&lt;/h1&gt;
+int const *p;               /* p 可变 …&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Tue, 08 Dec 2015 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2015-12-08:/summary-of-c-traps.html</guid><category>C</category></item><item><title>Introduction to MODBUS over Serial Line</title><link>https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html</link><description>&lt;h1&gt;MODBUS over Serial Line介绍&lt;/h1&gt;
 &lt;p&gt;本文参考'MODBUS over Serial Line V1.02'，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问&lt;a href="http://www.modbus.org"&gt;MODBUS官网&lt;/a&gt;。&lt;/p&gt;
 &lt;h2&gt;1. MODBUS简介&lt;/h2&gt;
 &lt;p&gt;MODBUS标准定义了一个应用层的消息传输协议，即位于OSI模型的第七层，它为连接至不同类型总线或网络的设备提供了Client/Server通信机制。此外，MODBUS也标定了一个串行线上的协议，即MODBUS over Serial Line，用于主机与从机之间交换MODBUS请求。&lt;/p&gt;
 &lt;h2&gt;2. MODBUS over Serial Line概述&lt;/h2&gt;
 &lt;p&gt;MODBUS over Serial Line也可被称为MODBUS Serial Line protocol，该协议位于OSI模型的第二层，即数据链路层。它是一种主从式的协议，支持的物理层协议是TIA/EIA-485或TIA/EIA-232，即RS485和RS232。&lt;/p&gt;
-&lt;h2&gt;3. MODBUS over Serial Line明细&lt;/h2&gt;
-&lt;h3&gt;3.1 主从式协议的原则&lt;/h3&gt;
-&lt;p&gt;MODBUS over Serial Line主从式系统的特点如下：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;主节点有且仅有一个，从节点有1-247个；&lt;/li&gt;
-&lt;li&gt;主节点向从节点下达命令，并处理从节点的响应；&lt;/li&gt;
-&lt;li&gt;从节点只有在收到主节点的请求后才发送数据，从节点之间不可直接通信；&lt;/li&gt;
-&lt;li&gt;主节点在同一时刻只能进行一项MODBUS交易，即不能同时与多个从节点通信。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;主节点下达的MODBUS请求有如下两种模式：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;unicast mode（单播模式），主机向一个从机下达一条请求，从机的地址是1-247，该从机在收到并处理请求后，返回一条'reply'；&lt;/li&gt;
-&lt;li&gt;broadcast mode（广播模式），主机可将一条请求下达至所有从机，广播请求中地址值为0，从机在收到广播请求后不返回信息。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;3.2 寻址规则&lt;/h3&gt;
-&lt;p&gt;MODBUS的寻址空间包括256个地址，主节点没有地址，一条MODBUS串行总线上的从节点必须有一个独立的地址，具体的地址分配如下：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;0，广播地址；&lt;/li&gt;
-&lt;li&gt;1-247，从节点地址；&lt;/li&gt;
-&lt;li&gt;248-255，保留。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;3.3 帧结构&lt;/h3&gt;
-&lt;p&gt;帧结构图如下，PDU即Protocol Data Unit。主机下达请求时，将从机的地址写入地址字段，从机返回响应时，将自己的地址写入地址字段。功能码用于指示功能，数据字段包含请求或响应的参数。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ModbusPDU.png" src="/images/ModbusPDU.png" /&gt;&lt;/p&gt;
-&lt;h3&gt;3.4 状态转换图&lt;/h3&gt;
-&lt;p&gt;主机状态转换图：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ModbusMasterStat.png" src="/images/ModbusMasterStat.png" /&gt;&lt;/p&gt;
-&lt;p&gt;从机状态转换图：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ModbusSlaveStat.png" src="/images/ModbusSlaveStat.png" /&gt;&lt;/p&gt;
-&lt;h3&gt;3.5 两种串行传输模式——RTU与ASCII&lt;/h3&gt;
-&lt;h4&gt;3.5.1 RTU模式&lt;/h4&gt;
-&lt;p&gt;RTU即Remote Terminal Unit，该模式下，数据以二进制数字形式传输，例如需传输的一个字节是0x5B，实际传输的数据也是0x5B。RTU模式主要包含如下几点约定：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;每个字节都被封装成11位，包含1位起始位、8位数据、1位奇/偶校验位、1位停止位；&lt;/li&gt;
-&lt;li&gt;帧结构包含1字节从机地址、1字节功能码、0－252字节数据、2字节CRC校验；&lt;/li&gt;
-&lt;li&gt;帧间间隔至少为3.5倍的单字符传输时间；&lt;/li&gt;
-&lt;li&gt;帧内的字符间隔至多为1.5倍的单字符传输时间。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4&gt;3.5.2 ASCII模式&lt;/h4&gt;
-&lt;p&gt;ASCII模式下，数据以ASCII字符形式传输，例如需传输的一个字节是0x5B，实际传输的是0x35（“5”）和0x42（“B”），显然该模式的传输效率比RTU低。通常，只有当设备不满足RTU模式所需的定时器要求时，才使用ASCII模式。ASCII主要包含如下几点约定：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;每个字节都被封装成10位，包含1位起始位、7位数据、1位奇/偶校验位、1位停止位；&lt;/li&gt;
-&lt;li&gt;帧结构包含1字符起始字段、2字符从机地址、2字符功能码、0－2x252字符数据、2字符LRC校验、2字符结束字段；&lt;/li&gt;
-&lt;li&gt;起始字段是冒号“:”，结束字段是CR和LF。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Wed, 02 Dec 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-12-02:introduction-to-modbus-over-serial-line.html</guid><category>MODBUS</category></item><item><title>Getting Started with MQTT</title><link>https://wang-xinyu.github.io/getting-started-with-mqtt.html</link><description>&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
+&lt;h2&gt;3. MODBUS …&lt;/h2&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Wed, 02 Dec 2015 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2015-12-02:/introduction-to-modbus-over-serial-line.html</guid><category>MODBUS</category></item><item><title>Getting Started with MQTT</title><link>https://wang-xinyu.github.io/getting-started-with-mqtt.html</link><description>&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
 &lt;p&gt;本文参考&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;，根据个人的理解对MQTT进行入门级的介绍。&lt;/p&gt;
 &lt;h2&gt;1. 概述&lt;/h2&gt;
 &lt;p&gt;MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。&lt;/p&gt;
@@ -776,26 +132,7 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;p&gt;MQTT可基于TCP/IP或其它有序的、丢包率低的、双向的网络协议。&lt;/p&gt;
 &lt;p&gt;MQTT控制包（Control Packet）是网络中传输的MQTT信息的总称，控制包分为14种类型。&lt;/p&gt;
 &lt;h2&gt;2. MQTT内容概况&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;标准内容非常少，整个标准只有81页，包括的主要内容只有：&lt;/p&gt;
-&lt;p&gt;（1）MQTT控制包（Control Packet）的通用格式；&lt;/p&gt;
-&lt;p&gt;（2）14种控制包的具体说明；&lt;/p&gt;
-&lt;p&gt;（3）通信的具体流程；&lt;/p&gt;
-&lt;p&gt;（4）加密问题。&lt;/p&gt;
-&lt;h2&gt;3. 控制包格式&lt;/h2&gt;
-&lt;p&gt;MQTT控制包只有三部分，固定头、可选头、净荷，如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="MQTTctrlPktStruc.png" src="/images/MQTTctrlPktStruc.png" /&gt;&lt;/p&gt;
-&lt;p&gt;固定头是每一种控制包都有的，大小为2Byte，包括控制包类型、标志和剩余长度三个字段，如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="MQTTfixHead.png" src="/images/MQTTfixHead.png" /&gt;&lt;/p&gt;
-&lt;p&gt;可选头和净荷都存在于其中几种类型的控制包中，内容取决于包类型。&lt;/p&gt;
-&lt;h2&gt;4. 控制包类型&lt;/h2&gt;
-&lt;p&gt;下表是MQTT控制包的14种类型，C2S代表客户端到服务器，S2C反之。各类型控制包的具体内容请参阅&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="MQTTctrlPktCtgry.png" src="/images/MQTTctrlPktCtgry.png" /&gt;&lt;/p&gt;
-&lt;h2&gt;5. QoS等级和消息传递流程&lt;/h2&gt;
-&lt;p&gt;MQTT应用消息的传递有3个保障级别，即3个QoS等级。不同QoS等级对应着不同的消息传递流程。&lt;/p&gt;
-&lt;p&gt;（1）QoS 0: At most once delivery，至多一次传递。发送端仅发送一次，无重传，接收端无响应。消息可能到达接收端一次或零次。&lt;/p&gt;
-&lt;p&gt;（2）QoS 1: At least once delivery，至少一次传递。接收端收到消息后返回PUBACK，消息至少到达接收端一次。&lt;/p&gt;
-&lt;p&gt;（3）QoS 2: Exactly once delivery，消息传且仅传一次。此级别不允许丢包和消息重复。消息要经过两次确认，第一次发送端发送PUBLISH，接收端返回PUBREC；随后第二次发送端发送PUBREL，接收端返回PUBCOMP。&lt;/p&gt;
-&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 27 Nov 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-11-27:getting-started-with-mqtt.html</guid><category>MQTT</category></item><item><title>Concepts for ES</title><link>https://wang-xinyu.github.io/concepts-for-es.html</link><description>&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
+&lt;p&gt;&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1 …&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 27 Nov 2015 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2015-11-27:/getting-started-with-mqtt.html</guid><category>MQTT</category></item><item><title>Concepts for ES</title><link>https://wang-xinyu.github.io/concepts-for-es.html</link><description>&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
 &lt;h2&gt;1. 什么是嵌入式系统？&lt;/h2&gt;
 &lt;h3&gt;维基百科的定义&lt;/h3&gt;
 &lt;p&gt;嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。&lt;/p&gt;
@@ -815,6 +152,4 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;h3&gt;安全性Security&lt;/h3&gt;
 &lt;p&gt;系统保护自身不被外界故意或无意攻击的能力。&lt;/p&gt;
 &lt;h3&gt;保险性Safety&lt;/h3&gt;
-&lt;p&gt;系统运行期间不对人身或周边环境带来伤害的能力。&lt;/p&gt;
-&lt;p&gt;未完待续......&lt;/p&gt;
-&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 06 Nov 2015 00:00:00 +0800</pubDate><guid>tag:wang-xinyu.github.io,2015-11-06:concepts-for-es.html</guid><category>ES</category></item></channel></rss>
+&lt;p&gt;系统运行期间不对人身或周边环境带来伤害的能力 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">WangXinyu</dc:creator><pubDate>Fri, 06 Nov 2015 00:00:00 +0800</pubDate><guid isPermaLink="false">tag:wang-xinyu.github.io,2015-11-06:/concepts-for-es.html</guid><category>ES</category></item></channel></rss>

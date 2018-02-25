@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Getting Started with ROS Navigation Stack ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I&#39;ll introduce how to work ...">
+        <meta name="description" content="Getting Started with ROS Navigation Stack ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I&#39;ll introduce how to work...">
         <meta name="keywords" content="ROS">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
@@ -123,7 +123,7 @@
 <p>And <code>RosAria</code> publishes to the topic <code>pose</code>, <code>sonar</code>, <code>bumper_state</code>, <code>motors_state</code>, etc. I can get info from these topics.</p>
 <p>Then I want to display my robot on the RViz and teleop it. The <a href="https://github.com/MobileRobots/amr-ros-config">amr-ros-config</a> package contains <code>URDF</code>, <code>.rviz</code> and <code>launch</code> files, with all these stuff, I can display the P3DX model on the RViz and teleop it.</p>
 <h2>4. Setup ROS Navigation Stack</h2>
-<p><img alt="ros_nav_stack.png" src="/images/nav_stack.png" /></p>
+<p><img alt="ros_nav_stack.png" src="/images/nav_stack.png"></p>
 <p>The blue components are what we need to provide. Fortunately, <code>RosAria</code> has done most of the work. <code>odometry source</code>, <code>base controller</code> and <code>sensor sources</code> are all fully provided by <code>RosAria</code>. For <code>sensor transforms</code>, <code>RosAria</code> provides the tf <code>odom-&gt;base_link</code>, other sensor frames transform should be provided by us. I didn't use laser, I just used sonar, so I just provided the tf <code>base_link-&gt;sonar_frame</code>.</p>
 <p>The gray components are optional components that are already implemented. Here I didn't use <code>amcl</code>, I used <code>map_server</code> with a existing map picture. So I need a YAML file to describe <code>map_server</code> parameters.</p>
 <p>The white components are required components that are already implemented. What we have to provide is just four configuration files, i.e. <code>costmap_common_params.yaml</code>, <code>global_costmap_params.yaml</code>, <code>local_costmap_params.yaml</code> and <code>base_local_planner_params.yaml</code>.</p>

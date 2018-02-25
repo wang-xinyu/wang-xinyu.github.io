@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/robot.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-08-25T00:00:00+08:00</updated><entry><title>FastSLAM for Feature-Based Maps</title><link href="https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html" rel="alternate"></link><updated>2017-08-25T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-25:fastslam-for-feature-based-maps.html</id><summary type="html">&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX - Robot</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/robot.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-08-25T00:00:00+08:00</updated><entry><title>FastSLAM for Feature-Based Maps</title><link href="https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html" rel="alternate"></link><published>2017-08-25T00:00:00+08:00</published><updated>2017-08-25T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-25:/fastslam-for-feature-based-maps.html</id><summary type="html">&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;FastSLAM applys a version of particle filters to SLAM known as Rao-Blackwellized Particle Filter. Which uses particles to represent the posterior over some variables, along with Gaussians to represent all other vaviables. &lt;/p&gt;
+&lt;h2&gt;Assumptions&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The maps in EKF SLAM are feature-based, they are composed of point …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;FastSLAM applys a version of particle filters to SLAM known as Rao-Blackwellized Particle Filter. Which uses particles to represent the posterior over some variables, along with Gaussians to represent all other vaviables. &lt;/p&gt;
 &lt;h2&gt;Assumptions&lt;/h2&gt;
@@ -86,7 +92,9 @@ Q = H \Sigma_{j,t-1}^{[k]} H^T + Q_t
 $$&lt;/p&gt;
 &lt;h3&gt;References&lt;/h3&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;Cyrill Stachniss. FastSLAM, YouTube.com&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>EKF SLAM-The Most Primitive SLAM</title><link href="https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html" rel="alternate"></link><updated>2017-08-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-17:ekf-slam-the-most-primitive-slam.html</id><summary type="html">&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
+&lt;p&gt;Cyrill Stachniss. FastSLAM, YouTube.com&lt;/p&gt;</content><category term="Math"></category></entry><entry><title>EKF SLAM-The Most Primitive SLAM</title><link href="https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html" rel="alternate"></link><published>2017-08-17T00:00:00+08:00</published><updated>2017-08-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-17:/ekf-slam-the-most-primitive-slam.html</id><summary type="html">&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current pose along with he map:&lt;/p&gt;
 &lt;p&gt;$$
@@ -239,7 +247,13 @@ $&lt;/p&gt;
 &lt;p&gt;$\Sigma_t = \bar \Sigma_t $&lt;/p&gt;
 &lt;h3&gt;References&lt;/h3&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;Cyrill Stachniss. EKF SLAM, YouTube.com&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>The Derivation of Generic Particle Filter for Robot</title><link href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html" rel="alternate"></link><updated>2017-06-26T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-26:the-derivation-of-generic-particle-filter-for-robot.html</id><summary type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
+&lt;p&gt;Cyrill Stachniss. EKF SLAM, YouTube.com&lt;/p&gt;</content><category term="Math"></category></entry><entry><title>The Derivation of Generic Particle Filter for Robot</title><link href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html" rel="alternate"></link><published>2017-06-26T00:00:00+08:00</published><updated>2017-06-26T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-26:/the-derivation-of-generic-particle-filter-for-robot.html</id><summary type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
+&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;我这里所说的普通粒子滤波也叫SIR（Sampling Importance Resampling）粒子滤波。因为时至今日已产生了很多粒子滤波的变种，例如：regularized particle filter，Rao-Blackwellized particle filter等等，这些都使用了某种方法对基本的粒子滤波进行了优化。&lt;/p&gt;
+&lt;p&gt;粒子滤波可以说是使用Monte Carlo方法的贝叶斯滤波的实现。这是因为SIS（Sequential Importance Sampling）是一种Monte Carlo方法，而粒子滤波、bootstap filter、condensation算法等，都可以基于SIS推导出来。&lt;/p&gt;
+&lt;p&gt;Kalman滤波只能处理高斯分布，且状态转移方程和测量方程都必须线性。EKF是通过Taylor级数展开，把状态转移方程和测量方程线性化，仍假设噪声是高斯分布。而粒子滤波就可以处理非线性、任意分布的问题了。&lt;/p&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;p&gt;与Kalman滤波不同，粒子滤波不是估计$t$时刻状态向量的置信分布$bel(x_t)$，而是$0:t$时刻所有状态向量序列的置信分布$bel(x_{0 …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
 &lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;我这里所说的普通粒子滤波也叫SIR（Sampling Importance Resampling）粒子滤波。因为时至今日已产生了很多粒子滤波的变种，例如：regularized particle filter，Rao-Blackwellized particle filter等等，这些都使用了某种方法对基本的粒子滤波进行了优化。&lt;/p&gt;
 &lt;p&gt;粒子滤波可以说是使用Monte Carlo方法的贝叶斯滤波的实现。这是因为SIS（Sequential Importance Sampling）是一种Monte Carlo方法，而粒子滤波、bootstap filter、condensation算法等，都可以基于SIS推导出来。&lt;/p&gt;
@@ -358,7 +372,20 @@ $$&lt;/p&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
 &lt;p&gt;M. Sanjeev Arulampalam, Simon Maskell, Neil Gordon, and Tim Clapp. A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 50, NO. 2, FEBRUARY 2002.&lt;/p&gt;
 &lt;p&gt;徐亦达. Particle Filter Part1-8, YouTube.com&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</summary><category term="Math"></category></entry><entry><title>The Derivation of Kalman Filter from Bayes Filter</title><link href="https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html" rel="alternate"></link><updated>2017-06-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-17:the-derivation-of-kalman-filter-from-bayes-filter.html</id><summary type="html">&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</content><category term="Math"></category></entry><entry><title>The Derivation of Kalman Filter from Bayes Filter</title><link href="https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html" rel="alternate"></link><published>2017-06-17T00:00:00+08:00</published><updated>2017-06-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-17:/the-derivation-of-kalman-filter-from-bayes-filter.html</id><summary type="html">&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
+&lt;h2&gt;卡尔曼滤波的三个假设&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。&lt;/p&gt;
+&lt;p&gt;$$
+\epsilon_t \sim N(0, R_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+x_t = A_t x_{t-1} + B_t u_t + \epsilon_t
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x_t|u_t, x_{t-1}) \sim N(A_t x_{t-1} + B_t u_t, R_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x_t|u_t, x_{t-1}) = det …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
 &lt;h2&gt;卡尔曼滤波的三个假设&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。&lt;/p&gt;
 &lt;p&gt;$$
@@ -449,7 +476,19 @@ K_t &amp;amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1}
 &lt;h3&gt;参考文献&lt;/h3&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
 &lt;p&gt;概率机器人的贝叶斯滤波器. 我的博文，&lt;a href="https://wang-xinyu.github.io/bayes-filter-for-robot.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</summary><category term="Math"></category></entry><entry><title>Bayes Filter for Robot</title><link href="https://wang-xinyu.github.io/bayes-filter-for-robot.html" rel="alternate"></link><updated>2017-06-13T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-13:bayes-filter-for-robot.html</id><summary type="html">&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</content><category term="Math"></category></entry><entry><title>Bayes Filter for Robot</title><link href="https://wang-xinyu.github.io/bayes-filter-for-robot.html" rel="alternate"></link><published>2017-06-13T00:00:00+08:00</published><updated>2017-06-13T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-13:/bayes-filter-for-robot.html</id><summary type="html">&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;$x_t$表示$t$时刻机器人的状态向量&lt;/li&gt;
+&lt;li&gt;$z_t$表示$t$时刻的测量向量&lt;/li&gt;
+&lt;li&gt;$u_t$表示$t$时刻的控制向量&lt;/li&gt;
+&lt;li&gt;$bel(x_t)$表示状态向量的置信分布（Belief Distributions），根据它我们就可以确定$t$时刻机器人的状态，贝叶斯滤波器最终的输出结果就是它。它的定义如下，即在已知1到$t$时刻的测量向量和控制向量的条件下，机器人处于状态$x_t$的概率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+bel(x_t) = p(x_t|z_{1:t},u_{1:t})
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\overline {bel}(x_t)$是计算$bel(x_t)$的一个中间值，称为预测（Prediction）。它的定义如下 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
 &lt;h2&gt;模型&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;$x_t$表示$t$时刻机器人的状态向量&lt;/li&gt;
@@ -512,7 +551,10 @@ p(z_t|z_{1:t-1},u_{1:t}) &amp;amp;＝ \int p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
 &lt;p&gt;M. Sanjeev Arulampalam, Simon Maskell, Neil Gordon, and Tim Clapp. A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 50, NO. 2, FEBRUARY 2002.&lt;/p&gt;
 &lt;p&gt;使用全概率公式计算条件概率. 我的博文，&lt;a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</summary><category term="Math"></category></entry><entry><title>Getting Started with ROS Navigation Stack</title><link href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html" rel="alternate"></link><updated>2016-08-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-08-19:getting-started-with-ros-navigation-stack.html</id><summary type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</content><category term="Math"></category></entry><entry><title>Getting Started with ROS Navigation Stack</title><link href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html" rel="alternate"></link><published>2016-08-19T00:00:00+08:00</published><updated>2016-08-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-08-19:/getting-started-with-ros-navigation-stack.html</id><summary type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+&lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
+&lt;h2&gt;1. Install ROS&lt;/h2&gt;
+&lt;p&gt;ROS is not a standalone OS, but based …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
 &lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
 &lt;h2&gt;1. Install ROS&lt;/h2&gt;
 &lt;p&gt;ROS is not a standalone OS, but based on Ubuntu or other Debian distributions. So first we need to install Ubuntu, or other Debian if you like, but it is recommanded to choose Ubuntu for beginners.&lt;/p&gt;
@@ -534,7 +576,7 @@ p(z_t|z_{1:t-1},u_{1:t}) &amp;amp;＝ \int p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p
 &lt;p&gt;And &lt;code&gt;RosAria&lt;/code&gt; publishes to the topic &lt;code&gt;pose&lt;/code&gt;, &lt;code&gt;sonar&lt;/code&gt;, &lt;code&gt;bumper_state&lt;/code&gt;, &lt;code&gt;motors_state&lt;/code&gt;, etc. I can get info from these topics.&lt;/p&gt;
 &lt;p&gt;Then I want to display my robot on the RViz and teleop it. The &lt;a href="https://github.com/MobileRobots/amr-ros-config"&gt;amr-ros-config&lt;/a&gt; package contains &lt;code&gt;URDF&lt;/code&gt;, &lt;code&gt;.rviz&lt;/code&gt; and &lt;code&gt;launch&lt;/code&gt; files, with all these stuff, I can display the P3DX model on the RViz and teleop it.&lt;/p&gt;
 &lt;h2&gt;4. Setup ROS Navigation Stack&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="ros_nav_stack.png" src="/images/nav_stack.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ros_nav_stack.png" src="/images/nav_stack.png"&gt;&lt;/p&gt;
 &lt;p&gt;The blue components are what we need to provide. Fortunately, &lt;code&gt;RosAria&lt;/code&gt; has done most of the work. &lt;code&gt;odometry source&lt;/code&gt;, &lt;code&gt;base controller&lt;/code&gt; and &lt;code&gt;sensor sources&lt;/code&gt; are all fully provided by &lt;code&gt;RosAria&lt;/code&gt;. For &lt;code&gt;sensor transforms&lt;/code&gt;, &lt;code&gt;RosAria&lt;/code&gt; provides the tf &lt;code&gt;odom-&amp;gt;base_link&lt;/code&gt;, other sensor frames transform should be provided by us. I didn't use laser, I just used sonar, so I just provided the tf &lt;code&gt;base_link-&amp;gt;sonar_frame&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;The gray components are optional components that are already implemented. Here I didn't use &lt;code&gt;amcl&lt;/code&gt;, I used &lt;code&gt;map_server&lt;/code&gt; with a existing map picture. So I need a YAML file to describe &lt;code&gt;map_server&lt;/code&gt; parameters.&lt;/p&gt;
 &lt;p&gt;The white components are required components that are already implemented. What we have to provide is just four configuration files, i.e. &lt;code&gt;costmap_common_params.yaml&lt;/code&gt;, &lt;code&gt;global_costmap_params.yaml&lt;/code&gt;, &lt;code&gt;local_costmap_params.yaml&lt;/code&gt; and &lt;code&gt;base_local_planner_params.yaml&lt;/code&gt;.&lt;/p&gt;
@@ -544,4 +586,4 @@ p(z_t|z_{1:t-1},u_{1:t}) &amp;amp;＝ \int p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p
 &lt;li&gt;map_server with map YAML file&lt;/li&gt;
 &lt;li&gt;move_base with those four configuration files.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;OK, now set a goal from RViz, there will be a path and local cosmap, then the robot will go down that path until reaching that goal.&lt;/p&gt;</summary><category term="ROS"></category></entry></feed>
+&lt;p&gt;OK, now set a goal from RViz, there will be a path and local cosmap, then the robot will go down that path until reaching that goal.&lt;/p&gt;</content><category term="ROS"></category></entry></feed>

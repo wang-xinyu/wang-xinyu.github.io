@@ -1,5 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all-en.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2017-08-25T00:00:00+08:00</updated><entry><title>FastSLAM for Feature-Based Maps</title><link href="https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html" rel="alternate"></link><updated>2017-08-25T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-25:fastslam-for-feature-based-maps.html</id><summary type="html">&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/all-en.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2018-02-25T00:00:00+08:00</updated><entry><title>BP Neural Networks</title><link href="https://wang-xinyu.github.io/bp-neural-networks.html" rel="alternate"></link><published>2018-02-25T00:00:00+08:00</published><updated>2018-02-25T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2018-02-25:/bp-neural-networks.html</id><summary type="html">&lt;h1&gt;BP Neural Networks&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;Feed Forward&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="nn" src="/images/neural_networks.png"&gt;&lt;/p&gt;
+&lt;p&gt;$$
+z_1^{(2)} = w_{11}^{(2)}x_1 + w_{12}^{(2)}x_2 + w_{13}^{(2)}x_3 + b_1^{(2)}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+a_1^{(2)} = f(z_1^{(2)})
+$$&lt;/p&gt;
+&lt;h2&gt;Back Propagation&lt;/h2&gt;
+&lt;p&gt;We got N pairs of training data, and the dimension of output vector is k.&lt;/p&gt;
+&lt;p&gt;$$
+{ (X^{(1)}, Y^{(1)}), (X^{(2)}, Y …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;BP Neural Networks&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;Feed Forward&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="nn" src="/images/neural_networks.png"&gt;&lt;/p&gt;
+&lt;p&gt;$$
+z_1^{(2)} = w_{11}^{(2)}x_1 + w_{12}^{(2)}x_2 + w_{13}^{(2)}x_3 + b_1^{(2)}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+a_1^{(2)} = f(z_1^{(2)})
+$$&lt;/p&gt;
+&lt;h2&gt;Back Propagation&lt;/h2&gt;
+&lt;p&gt;We got N pairs of training data, and the dimension of output vector is k.&lt;/p&gt;
+&lt;p&gt;$$
+{ (X^{(1)}, Y^{(1)}), (X^{(2)}, Y^{(2)}), ... , (X^{(N)}, Y^{(N)}) }
+$$&lt;/p&gt;
+&lt;p&gt;$$
+Y^{(i)} = { y_1^{(i)}, ... , y_k^{(i)} }
+$$&lt;/p&gt;
+&lt;p&gt;The loss function is:&lt;/p&gt;
+&lt;p&gt;$$
+E^{(i)} = \frac 1 2 \sum_{j=1}^k (y_j^{(i)} - a_j^{(i)})^2
+$$&lt;/p&gt;
+&lt;p&gt;We use Gradient Descent to update weights and biases.&lt;/p&gt;
+&lt;p&gt;$$
+w_{ij}^{(l)} = w_{ij}^{(l)} - \mu \frac {\partial E} {\partial w_{ij}}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+b_{i}^{(l)} = b_{i}^{(l)} - \mu \frac {\partial E} {\partial b_{i}}
+$$&lt;/p&gt;
+&lt;p&gt;Calculate the derivative:&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\frac {\partial E} {\partial w_{11}^{(3)}} &amp;amp;= \frac 1 2 \cdot -2 (y_1 - a_1^{(3)}) \cdot \frac {\partial a_{1}^{(3)}} {\partial w_{11}^{(3)}} \\
+&amp;amp;= -(y_1 -a_1^{(3)}) \cdot  f'(z_1^{(3)}) \cdot  \frac {\partial z_{1}^{(3)}} {\partial w_{11}^{(3)}}  \\
+&amp;amp;= -(y_1 -a_1^{(3)}) \cdot  f'(z_1^{(3)}) \cdot  a_1^{(2)}  \\
+\end{split}&lt;/p&gt;
+&lt;p&gt;Introduce $\delta$ to simplify the formula:&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\delta_i^{(l)} &amp;amp;= \frac {\partial E} {\partial a_{i}^{(l)}} \cdot \frac {\partial a_{i}^{(l)}} {\partial z_{i}^{(l)}} \\
+\frac {\partial E} {\partial w_{ij}^{(l)}} &amp;amp;= \delta_i^{(l)} \cdot  \frac {\partial z_{i}^{(l)}} {\partial w_{ij}^{(l)}} =  \delta_i^{(l)} \cdot a_{j}^{(l-1)} \\
+\end{split}&lt;/p&gt;
+&lt;p&gt;Calculate $\delta$ recursively:&lt;/p&gt;
+&lt;p&gt;\begin{split}
+\delta_i^{(l)} &amp;amp;= \frac {\partial E}  {\partial z_{i}^{(l)}} \\
+&amp;amp;= \sum_{j=1}^{n_{l+1}} \frac {\partial E}  {\partial z_{j}^{(l+1)}} \frac {\partial z_{j}^{(l+1)}}  {\partial z_{i}^{(l)}} \\
+&amp;amp;= \sum_{j=1}^{n_{l+1}} \delta_j^{(l+1)} \frac {\partial z_{j}^{(l+1)}}  {\partial z_{i}^{(l)}} \\
+&amp;amp;= \sum_{j=1}^{n_{l+1}} \delta_j^{(l+1)} w_{ji}^{(l+1)} f'(z_i^{(l)}) \\
+\end{split}&lt;/p&gt;</content><category term="Math"></category></entry><entry><title>FastSLAM for Feature-Based Maps</title><link href="https://wang-xinyu.github.io/fastslam-for-feature-based-maps.html" rel="alternate"></link><published>2017-08-25T00:00:00+08:00</published><updated>2017-08-25T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-25:/fastslam-for-feature-based-maps.html</id><summary type="html">&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;FastSLAM applys a version of particle filters to SLAM known as Rao-Blackwellized Particle Filter. Which uses particles to represent the posterior over some variables, along with Gaussians to represent all other vaviables. &lt;/p&gt;
+&lt;h2&gt;Assumptions&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The maps in EKF SLAM are feature-based, they are composed of point …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h1&gt;FastSLAM for Feature-Based Maps&lt;/h1&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;FastSLAM applys a version of particle filters to SLAM known as Rao-Blackwellized Particle Filter. Which uses particles to represent the posterior over some variables, along with Gaussians to represent all other vaviables. &lt;/p&gt;
 &lt;h2&gt;Assumptions&lt;/h2&gt;
@@ -86,7 +151,9 @@ Q = H \Sigma_{j,t-1}^{[k]} H^T + Q_t
 $$&lt;/p&gt;
 &lt;h3&gt;References&lt;/h3&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;Cyrill Stachniss. FastSLAM, YouTube.com&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>EKF SLAM-The Most Primitive SLAM</title><link href="https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html" rel="alternate"></link><updated>2017-08-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-17:ekf-slam-the-most-primitive-slam.html</id><summary type="html">&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
+&lt;p&gt;Cyrill Stachniss. FastSLAM, YouTube.com&lt;/p&gt;</content><category term="Math"></category></entry><entry><title>EKF SLAM-The Most Primitive SLAM</title><link href="https://wang-xinyu.github.io/ekf-slam-the-most-primitive-slam.html" rel="alternate"></link><published>2017-08-17T00:00:00+08:00</published><updated>2017-08-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-08-17:/ekf-slam-the-most-primitive-slam.html</id><summary type="html">&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;EKF SLAM-The Most Primitive SLAM&lt;/h1&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In SLAM, the robot is given measurements $z_{1:t}$ and controls $u_{1:t}$, and acquires a map of its environment while simultaneously localizing itself relative to this map. From a probabilistic perspective, the online SLAM involves estimating the posterior over the current pose along with he map:&lt;/p&gt;
 &lt;p&gt;$$
@@ -239,7 +306,13 @@ $&lt;/p&gt;
 &lt;p&gt;$\Sigma_t = \bar \Sigma_t $&lt;/p&gt;
 &lt;h3&gt;References&lt;/h3&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
-&lt;p&gt;Cyrill Stachniss. EKF SLAM, YouTube.com&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>The Derivation of Generic Particle Filter for Robot</title><link href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html" rel="alternate"></link><updated>2017-06-26T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-26:the-derivation-of-generic-particle-filter-for-robot.html</id><summary type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
+&lt;p&gt;Cyrill Stachniss. EKF SLAM, YouTube.com&lt;/p&gt;</content><category term="Math"></category></entry><entry><title>The Derivation of Generic Particle Filter for Robot</title><link href="https://wang-xinyu.github.io/the-derivation-of-generic-particle-filter-for-robot.html" rel="alternate"></link><published>2017-06-26T00:00:00+08:00</published><updated>2017-06-26T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-26:/the-derivation-of-generic-particle-filter-for-robot.html</id><summary type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
+&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;我这里所说的普通粒子滤波也叫SIR（Sampling Importance Resampling）粒子滤波。因为时至今日已产生了很多粒子滤波的变种，例如：regularized particle filter，Rao-Blackwellized particle filter等等，这些都使用了某种方法对基本的粒子滤波进行了优化。&lt;/p&gt;
+&lt;p&gt;粒子滤波可以说是使用Monte Carlo方法的贝叶斯滤波的实现。这是因为SIS（Sequential Importance Sampling）是一种Monte Carlo方法，而粒子滤波、bootstap filter、condensation算法等，都可以基于SIS推导出来。&lt;/p&gt;
+&lt;p&gt;Kalman滤波只能处理高斯分布，且状态转移方程和测量方程都必须线性。EKF是通过Taylor级数展开，把状态转移方程和测量方程线性化，仍假设噪声是高斯分布。而粒子滤波就可以处理非线性、任意分布的问题了。&lt;/p&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;p&gt;与Kalman滤波不同，粒子滤波不是估计$t$时刻状态向量的置信分布$bel(x_t)$，而是$0:t$时刻所有状态向量序列的置信分布$bel(x_{0 …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;机器人的普通粒子滤波推导&lt;/h1&gt;
 &lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;我这里所说的普通粒子滤波也叫SIR（Sampling Importance Resampling）粒子滤波。因为时至今日已产生了很多粒子滤波的变种，例如：regularized particle filter，Rao-Blackwellized particle filter等等，这些都使用了某种方法对基本的粒子滤波进行了优化。&lt;/p&gt;
 &lt;p&gt;粒子滤波可以说是使用Monte Carlo方法的贝叶斯滤波的实现。这是因为SIS（Sequential Importance Sampling）是一种Monte Carlo方法，而粒子滤波、bootstap filter、condensation算法等，都可以基于SIS推导出来。&lt;/p&gt;
@@ -358,7 +431,20 @@ $$&lt;/p&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
 &lt;p&gt;M. Sanjeev Arulampalam, Simon Maskell, Neil Gordon, and Tim Clapp. A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 50, NO. 2, FEBRUARY 2002.&lt;/p&gt;
 &lt;p&gt;徐亦达. Particle Filter Part1-8, YouTube.com&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</summary><category term="Math"></category></entry><entry><title>The Derivation of Kalman Filter from Bayes Filter</title><link href="https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html" rel="alternate"></link><updated>2017-06-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-17:the-derivation-of-kalman-filter-from-bayes-filter.html</id><summary type="html">&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</content><category term="Math"></category></entry><entry><title>The Derivation of Kalman Filter from Bayes Filter</title><link href="https://wang-xinyu.github.io/the-derivation-of-kalman-filter-from-bayes-filter.html" rel="alternate"></link><published>2017-06-17T00:00:00+08:00</published><updated>2017-06-17T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-17:/the-derivation-of-kalman-filter-from-bayes-filter.html</id><summary type="html">&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
+&lt;h2&gt;卡尔曼滤波的三个假设&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。&lt;/p&gt;
+&lt;p&gt;$$
+\epsilon_t \sim N(0, R_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+x_t = A_t x_{t-1} + B_t u_t + \epsilon_t
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x_t|u_t, x_{t-1}) \sim N(A_t x_{t-1} + B_t u_t, R_t)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x_t|u_t, x_{t-1}) = det …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;从贝叶斯滤波到卡尔曼滤波&lt;/h1&gt;
 &lt;h2&gt;卡尔曼滤波的三个假设&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; 状态转移方程是线性的，噪声服从均值为$0$，协方差为$R_t$的多元高斯分布。因此，状态转移概率服从均值$A_t x_{t-1} + B_t u_t$，协方差为$R_t$的多元高斯分布。&lt;/p&gt;
 &lt;p&gt;$$
@@ -449,7 +535,19 @@ K_t &amp;amp;= \overline \Sigma_t C_t^T(C_t \overline \Sigma_t C_t^T + Q_t)^{-1}
 &lt;h3&gt;参考文献&lt;/h3&gt;
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
 &lt;p&gt;概率机器人的贝叶斯滤波器. 我的博文，&lt;a href="https://wang-xinyu.github.io/bayes-filter-for-robot.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</summary><category term="Math"></category></entry><entry><title>Bayes Filter for Robot</title><link href="https://wang-xinyu.github.io/bayes-filter-for-robot.html" rel="alternate"></link><updated>2017-06-13T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-13:bayes-filter-for-robot.html</id><summary type="html">&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</content><category term="Math"></category></entry><entry><title>Bayes Filter for Robot</title><link href="https://wang-xinyu.github.io/bayes-filter-for-robot.html" rel="alternate"></link><published>2017-06-13T00:00:00+08:00</published><updated>2017-06-13T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-13:/bayes-filter-for-robot.html</id><summary type="html">&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;$x_t$表示$t$时刻机器人的状态向量&lt;/li&gt;
+&lt;li&gt;$z_t$表示$t$时刻的测量向量&lt;/li&gt;
+&lt;li&gt;$u_t$表示$t$时刻的控制向量&lt;/li&gt;
+&lt;li&gt;$bel(x_t)$表示状态向量的置信分布（Belief Distributions），根据它我们就可以确定$t$时刻机器人的状态，贝叶斯滤波器最终的输出结果就是它。它的定义如下，即在已知1到$t$时刻的测量向量和控制向量的条件下，机器人处于状态$x_t$的概率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+bel(x_t) = p(x_t|z_{1:t},u_{1:t})
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\overline {bel}(x_t)$是计算$bel(x_t)$的一个中间值，称为预测（Prediction）。它的定义如下 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h1&gt;概率机器人的贝叶斯滤波器&lt;/h1&gt;
 &lt;h2&gt;模型&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;$x_t$表示$t$时刻机器人的状态向量&lt;/li&gt;
@@ -512,7 +610,19 @@ p(z_t|z_{1:t-1},u_{1:t}) &amp;amp;＝ \int p(z_t|x_t, z_{1:t-1},u_{1:t}) \cdot p
 &lt;p&gt;Sebastian THRUN, Wolfram BURGARD, Dieter FOX. PROBABILISTIC ROBOTICS. 2005.&lt;/p&gt;
 &lt;p&gt;M. Sanjeev Arulampalam, Simon Maskell, Neil Gordon, and Tim Clapp. A Tutorial on Particle Filters for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 50, NO. 2, FEBRUARY 2002.&lt;/p&gt;
 &lt;p&gt;使用全概率公式计算条件概率. 我的博文，&lt;a href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html"&gt;Link&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</summary><category term="Math"></category></entry><entry><title>Total Probability Applied to Conditional Probability</title><link href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html" rel="alternate"></link><updated>2017-06-12T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-12:total-probability-applied-to-conditional-probability.html</id><summary type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，转载请注明出处&lt;a href="https://wang-xinyu.github.io"&gt;https://wang-xinyu.github.io&lt;/a&gt;&lt;/h4&gt;</content><category term="Math"></category></entry><entry><title>Total Probability Applied to Conditional Probability</title><link href="https://wang-xinyu.github.io/total-probability-applied-to-conditional-probability.html" rel="alternate"></link><published>2017-06-12T00:00:00+08:00</published><updated>2017-06-12T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-06-12:/total-probability-applied-to-conditional-probability.html</id><summary type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
+&lt;h2&gt;公式&lt;/h2&gt;
+&lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
+&lt;p&gt;$$
+P(A|B) = \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
+$$&lt;/p&gt;
+&lt;p&gt;$$
+p(x|y) = \int p(x|y,z) \cdot p(z|y)dz
+$$&lt;/p&gt;
+&lt;h2&gt;证明&lt;/h2&gt;
+&lt;p&gt;这里以离散概率为例进行证明，连续型与之类似。&lt;/p&gt;
+&lt;p&gt;\begin{equation}\begin{split}
+P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;使用全概率公式计算条件概率&lt;/h1&gt;
 &lt;h2&gt;公式&lt;/h2&gt;
 &lt;p&gt;先给出公式，然后证明。&lt;/p&gt;
 &lt;p&gt;$$
@@ -532,29 +642,50 @@ P(A,B) &amp;amp;= \sum_{i=1}^n P(A,B,C_i)\\
 P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\\
 &amp;amp;= {{\sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B) \cdot P(B)} \over P(B)}\\
 &amp;amp;= \sum_{i=1}^n P(A|B,C_i) \cdot P(C_i|B)
-\end{split}\end{equation}&lt;/p&gt;</summary><category term="Math"></category></entry><entry><title>Setup Chinese Input Method on Ubuntu</title><link href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html" rel="alternate"></link><updated>2017-05-09T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-05-09:setup-chinese-input-method-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
+\end{split}\end{equation}&lt;/p&gt;</content><category term="Math"></category></entry><entry><title>Setup Chinese Input Method on Ubuntu</title><link href="https://wang-xinyu.github.io/setup-chinese-input-method-on-ubuntu.html" rel="alternate"></link><published>2017-05-09T00:00:00+08:00</published><updated>2017-05-09T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2017-05-09:/setup-chinese-input-method-on-ubuntu.html</id><summary type="html">&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
 &lt;h2&gt;1. 安装语言包&lt;/h2&gt;
 &lt;p&gt;打开System Settings–&amp;gt;Language Support–&amp;gt;Install/Remove Languages，安装Chinese(simplified)。&lt;/p&gt;
 &lt;h2&gt;2. 安裝IBus框架&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;3. 启用IBus框架&lt;/h2&gt;
 &lt;p&gt;运行以下命令，重启电脑。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;im-switch -s ibus     // Ubuntu 14.04
-&lt;span class="nv"&gt;$ &lt;/span&gt;im-config -s ibus     // Ubuntu 16.04
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ im-switch -s ibus     // Ubuntu &lt;span class="m"&gt;14&lt;/span&gt;.04
+$ im-config -s ibus     // Ubuntu &lt;span class="m"&gt;16&lt;/span&gt;.04
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;4. 安装拼音引擎&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install ibus-pinyin
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ibus-pinyin
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;5. 设置IBus框架&lt;/h2&gt;
+&lt;p&gt;运行如下命令，在弹出的窗口中选择Add-&amp;gt;Chinese-&amp;gt;Pinyin …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Ubuntu设置中文输入法IBus&lt;/h1&gt;
+&lt;h2&gt;1. 安装语言包&lt;/h2&gt;
+&lt;p&gt;打开System Settings–&amp;gt;Language Support–&amp;gt;Install/Remove Languages，安装Chinese(simplified)。&lt;/p&gt;
+&lt;h2&gt;2. 安裝IBus框架&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;3. 启用IBus框架&lt;/h2&gt;
+&lt;p&gt;运行以下命令，重启电脑。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ im-switch -s ibus     // Ubuntu &lt;span class="m"&gt;14&lt;/span&gt;.04
+$ im-config -s ibus     // Ubuntu &lt;span class="m"&gt;16&lt;/span&gt;.04
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;4. 安装拼音引擎&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ibus-pinyin
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;5. 设置IBus框架&lt;/h2&gt;
 &lt;p&gt;运行如下命令，在弹出的窗口中选择Add-&amp;gt;Chinese-&amp;gt;Pinyin&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ibus-setup
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ibus-setup
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -562,8 +693,11 @@ P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\\
 &lt;p&gt;打开System Settings–&amp;gt;Text Entry-&amp;gt;Add(+)-&amp;gt;Chinese(Pinyin)(IBus)&lt;/p&gt;
 &lt;h2&gt;7. 如果拼音打字不正常&lt;/h2&gt;
 &lt;p&gt;尝试在运行如下命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;ibus-daemon -drx
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="Linux"></category></entry><entry><title>Getting Started with ROS Navigation Stack</title><link href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html" rel="alternate"></link><updated>2016-08-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-08-19:getting-started-with-ros-navigation-stack.html</id><summary type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ibus-daemon -drx
+&lt;/pre&gt;&lt;/div&gt;</content><category term="Linux"></category></entry><entry><title>Getting Started with ROS Navigation Stack</title><link href="https://wang-xinyu.github.io/getting-started-with-ros-navigation-stack.html" rel="alternate"></link><published>2016-08-19T00:00:00+08:00</published><updated>2016-08-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-08-19:/getting-started-with-ros-navigation-stack.html</id><summary type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
+&lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
+&lt;h2&gt;1. Install ROS&lt;/h2&gt;
+&lt;p&gt;ROS is not a standalone OS, but based …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Getting Started with ROS Navigation Stack&lt;/h1&gt;
 &lt;p&gt;ROS is a open-source framework for robot software development. Personally, I think ROS is the future of Robot. In this article, I'll introduce how to work with ROS Navigation Stack from the beginning.&lt;/p&gt;
 &lt;h2&gt;1. Install ROS&lt;/h2&gt;
 &lt;p&gt;ROS is not a standalone OS, but based on Ubuntu or other Debian distributions. So first we need to install Ubuntu, or other Debian if you like, but it is recommanded to choose Ubuntu for beginners.&lt;/p&gt;
@@ -585,7 +719,7 @@ P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\\
 &lt;p&gt;And &lt;code&gt;RosAria&lt;/code&gt; publishes to the topic &lt;code&gt;pose&lt;/code&gt;, &lt;code&gt;sonar&lt;/code&gt;, &lt;code&gt;bumper_state&lt;/code&gt;, &lt;code&gt;motors_state&lt;/code&gt;, etc. I can get info from these topics.&lt;/p&gt;
 &lt;p&gt;Then I want to display my robot on the RViz and teleop it. The &lt;a href="https://github.com/MobileRobots/amr-ros-config"&gt;amr-ros-config&lt;/a&gt; package contains &lt;code&gt;URDF&lt;/code&gt;, &lt;code&gt;.rviz&lt;/code&gt; and &lt;code&gt;launch&lt;/code&gt; files, with all these stuff, I can display the P3DX model on the RViz and teleop it.&lt;/p&gt;
 &lt;h2&gt;4. Setup ROS Navigation Stack&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="ros_nav_stack.png" src="/images/nav_stack.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ros_nav_stack.png" src="/images/nav_stack.png"&gt;&lt;/p&gt;
 &lt;p&gt;The blue components are what we need to provide. Fortunately, &lt;code&gt;RosAria&lt;/code&gt; has done most of the work. &lt;code&gt;odometry source&lt;/code&gt;, &lt;code&gt;base controller&lt;/code&gt; and &lt;code&gt;sensor sources&lt;/code&gt; are all fully provided by &lt;code&gt;RosAria&lt;/code&gt;. For &lt;code&gt;sensor transforms&lt;/code&gt;, &lt;code&gt;RosAria&lt;/code&gt; provides the tf &lt;code&gt;odom-&amp;gt;base_link&lt;/code&gt;, other sensor frames transform should be provided by us. I didn't use laser, I just used sonar, so I just provided the tf &lt;code&gt;base_link-&amp;gt;sonar_frame&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;The gray components are optional components that are already implemented. Here I didn't use &lt;code&gt;amcl&lt;/code&gt;, I used &lt;code&gt;map_server&lt;/code&gt; with a existing map picture. So I need a YAML file to describe &lt;code&gt;map_server&lt;/code&gt; parameters.&lt;/p&gt;
 &lt;p&gt;The white components are required components that are already implemented. What we have to provide is just four configuration files, i.e. &lt;code&gt;costmap_common_params.yaml&lt;/code&gt;, &lt;code&gt;global_costmap_params.yaml&lt;/code&gt;, &lt;code&gt;local_costmap_params.yaml&lt;/code&gt; and &lt;code&gt;base_local_planner_params.yaml&lt;/code&gt;.&lt;/p&gt;
@@ -595,12 +729,32 @@ P(A|B)&amp;amp;=  {P(A,B) \over P(B)}\\
 &lt;li&gt;map_server with map YAML file&lt;/li&gt;
 &lt;li&gt;move_base with those four configuration files.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;OK, now set a goal from RViz, there will be a path and local cosmap, then the robot will go down that path until reaching that goal.&lt;/p&gt;</summary><category term="ROS"></category></entry><entry><title>Modify the user name of Raspbian</title><link href="https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html" rel="alternate"></link><updated>2016-04-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-04-19:modify-the-user-name-of-raspbian.html</id><summary type="html">&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
+&lt;p&gt;OK, now set a goal from RViz, there will be a path and local cosmap, then the robot will go down that path until reaching that goal.&lt;/p&gt;</content><category term="ROS"></category></entry><entry><title>Modify the user name of Raspbian</title><link href="https://wang-xinyu.github.io/modify-the-user-name-of-raspbian.html" rel="alternate"></link><published>2016-04-19T00:00:00+08:00</published><updated>2016-04-19T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2016-04-19:/modify-the-user-name-of-raspbian.html</id><summary type="html">&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
 &lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
 &lt;p&gt;本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。&lt;/p&gt;
 &lt;h2&gt;1. 启用root用户&lt;/h2&gt;
 &lt;p&gt;输入两遍密码解锁root用户，最后通过su验证root用户是否已经启用。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;pi@raspberrypi:~ $ sudo passwd root
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pi@raspberrypi:~ $ sudo passwd root
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+
+pi@raspberrypi:~ $ sudo passwd --unlock root
+passwd: password expiry information changed.
+
+pi@raspberrypi:~ $ su
+Password: 
+root@raspberrypi:/home/pi#
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;2. 允许SSH登录root用户&lt;/h2&gt;
+&lt;p&gt;SSH出于安全考虑，默认不允许登录root用户 …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;修改Raspbian的用户名&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
+&lt;p&gt;本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。&lt;/p&gt;
+&lt;h2&gt;1. 启用root用户&lt;/h2&gt;
+&lt;p&gt;输入两遍密码解锁root用户，最后通过su验证root用户是否已经启用。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pi@raspberrypi:~ $ sudo passwd root
 Enter new UNIX password: 
 Retype new UNIX password: 
 passwd: password updated successfully
@@ -616,7 +770,7 @@ root@raspberrypi:/home/pi#
 
 &lt;h2&gt;2. 允许SSH登录root用户&lt;/h2&gt;
 &lt;p&gt;SSH出于安全考虑，默认不允许登录root用户，需修改配置文件/etc/ssh/sshd_config，将PermitRootLogin的属性改为yes。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;#PermitRootLogin without-password
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#PermitRootLogin without-password
 PermitRootLogin yes
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -624,7 +778,7 @@ PermitRootLogin yes
 &lt;h2&gt;3. 修改Boot选项&lt;/h2&gt;
 &lt;p&gt;利用raspi-config工具修改Boot选项，将自动以pi用户登录，改为requiring user to login。修改后重启。&lt;/p&gt;
 &lt;h2&gt;4. SSH登录root用户&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;wxy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mf"&gt;@192.168.1.135&lt;/span&gt;
 &lt;span class="nl"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
 &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="nl"&gt;raspberrypi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -632,7 +786,7 @@ PermitRootLogin yes
 
 &lt;h2&gt;5. 修改名字&lt;/h2&gt;
 &lt;p&gt;修改user name，group name，home路径名，以及/etc/passwd中的home路径。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;root@raspberrypi:~# usermod -l urname pi
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;root@raspberrypi:~# usermod -l urname pi
 root@raspberrypi:~# groupmod -n urname pi
 root@raspberrypi:~# mv /home/pi/ /home/urname
 root@raspberrypi:~# usermod -d /home/urname urname
@@ -641,7 +795,7 @@ root@raspberrypi:~# usermod -d /home/urname urname
 
 &lt;h2&gt;6. 配置新用户的sudo权限&lt;/h2&gt;
 &lt;p&gt;修改/etc/sudoers文件，将具有sudo权限的pi改为urname。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;pi ALL=(ALL) NOPASSWD: ALL
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pi ALL=(ALL) NOPASSWD: ALL
 改为
 urname ALL=(ALL) NOPASSWD: ALL
 &lt;/pre&gt;&lt;/div&gt;
@@ -649,12 +803,22 @@ urname ALL=(ALL) NOPASSWD: ALL
 
 &lt;h2&gt;7. 收尾&lt;/h2&gt;
 &lt;p&gt;修改完之后，可用新用户名登录，最后不要忘了锁定root用户，并禁止SSH登录root用户。&lt;/p&gt;
-&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</summary><category term="Linux"></category><category term="Raspi"></category></entry><entry><title>Summary of C Traps</title><link href="https://wang-xinyu.github.io/summary-of-c-traps.html" rel="alternate"></link><updated>2015-12-08T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-08:summary-of-c-traps.html</id><summary type="html">&lt;h1&gt;C陷阱总结&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;</content><category term="Linux"></category><category term="Raspi"></category></entry><entry><title>Summary of C Traps</title><link href="https://wang-xinyu.github.io/summary-of-c-traps.html" rel="alternate"></link><published>2015-12-08T00:00:00+08:00</published><updated>2015-12-08T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-08:/summary-of-c-traps.html</id><summary type="html">&lt;h1&gt;C陷阱总结&lt;/h1&gt;
 &lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
 &lt;p&gt;本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。&lt;/p&gt;
 &lt;h2&gt;1. const修饰符&lt;/h2&gt;
 &lt;p&gt;const指常量、常数。const与#define相比，效率更高。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;const int i;                /* i不可变 */
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;const int i;                /* i不可变 */
+int const i;                /* i不可变 */
+int const a[3]={1, 2, 3};   /* 数组不可变 */
+const int a[3]={1, 2, 3};   /* 数组不可变 */
+const int *p;               /* p 可变，p 指向的对象不可变 */
+int const *p;               /* p 可变 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;C陷阱总结&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
+&lt;p&gt;本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。&lt;/p&gt;
+&lt;h2&gt;1. const修饰符&lt;/h2&gt;
+&lt;p&gt;const指常量、常数。const与#define相比，效率更高。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;const int i;                /* i不可变 */
 int const i;                /* i不可变 */
 int const a[3]={1, 2, 3};   /* 数组不可变 */
 const int a[3]={1, 2, 3};   /* 数组不可变 */
@@ -673,7 +837,7 @@ const int *const p;         /* 指针p 和p 指向的对象都不可变 */
 &lt;p&gt;在函数内部通过前面固定参数的地址获取可变参数的地址，从而可以在函数内部处理这些可变参数。&lt;/p&gt;
 &lt;h2&gt;4. 语句块&lt;/h2&gt;
 &lt;p&gt;由{}括起来的若干条语句组成一个语句块。如下所示，语句块构成一个作用域，函数内的i和语句块中的i不同，语句块中的j的作用域只是语句块内。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;void foo(void)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;void foo(void)
 {
     int i = 0;
     {
@@ -691,7 +855,7 @@ const int *const p;         /* 指针p 和p 指向的对象都不可变 */
 &lt;p&gt;如果全局变量在定义时不初始化，则初始值是0，也就是说，整型的就是0，字符型的就是'\0'，浮点型的就是0.0。如果局部变量在定义时不初始化，则初始值是不确定的，所以，局部变量在使用前一定要先赋值，不管是通过初始化还是赋值运算符。&lt;/p&gt;
 &lt;h2&gt;6. 结构体的初始化和赋值&lt;/h2&gt;
 &lt;p&gt;如果Initializer中的数据比结构体的成员多，编译器会报错，但如果只是末尾多个逗号不算错。如果Initializer中的数据比结构体的成员少，未指定的成员将用0来初始化，就像未初始化的全局变量一样。例如以下几种形式的初始化都是合法的，但结构体直接赋值是非法的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;struct complex_struct { double x, y; };
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;struct complex_struct { double x, y; };
 struct complex_struct z1 = { x, 4.0, }; /* z1.x=3.0, z1.y=4.0 */
 struct complex_struct z2 = { 3.0, };        /* z2.x=3.0, z2.y=0.0 */
 struct complex_struct z3 = { };             /* z3.x=0.0, z3.y=0.0 */
@@ -706,7 +870,7 @@ z1 = { 3.0, 4.0 };                          /* illegal */
 &lt;p&gt;而对于用引号包含的头文件，gcc首先查找包含头文件的.c文件所在的目录，然后查找-I选项指定的目录，然后查找系统的头文件目录。&lt;/p&gt;
 &lt;h2&gt;8. 指针数组和指向数组的指针&lt;/h2&gt;
 &lt;p&gt;int *a[10]是指针数组，而int (*a)[10]是指向数组的指针。我们可以认为[]比*有更高的优先级，如果a先和*结合则表示a是一个指针，如果a先和[]结合则表示a是一个数组。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* int *a[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cm"&gt;/* int *a[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 typedef&lt;span class="w"&gt; &lt;/span&gt;int&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;t&lt;span class="err"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 t&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="err"&gt;];&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
@@ -716,7 +880,13 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;持续更新中......&lt;/p&gt;</summary><category term="C"></category></entry><entry><title>Introduction to MODBUS over Serial Line</title><link href="https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html" rel="alternate"></link><updated>2015-12-02T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-02:introduction-to-modbus-over-serial-line.html</id><summary type="html">&lt;h1&gt;MODBUS over Serial Line介绍&lt;/h1&gt;
+&lt;p&gt;持续更新中......&lt;/p&gt;</content><category term="C"></category></entry><entry><title>Introduction to MODBUS over Serial Line</title><link href="https://wang-xinyu.github.io/introduction-to-modbus-over-serial-line.html" rel="alternate"></link><published>2015-12-02T00:00:00+08:00</published><updated>2015-12-02T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-02:/introduction-to-modbus-over-serial-line.html</id><summary type="html">&lt;h1&gt;MODBUS over Serial Line介绍&lt;/h1&gt;
+&lt;p&gt;本文参考'MODBUS over Serial Line V1.02'，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问&lt;a href="http://www.modbus.org"&gt;MODBUS官网&lt;/a&gt;。&lt;/p&gt;
+&lt;h2&gt;1. MODBUS简介&lt;/h2&gt;
+&lt;p&gt;MODBUS标准定义了一个应用层的消息传输协议，即位于OSI模型的第七层，它为连接至不同类型总线或网络的设备提供了Client/Server通信机制。此外，MODBUS也标定了一个串行线上的协议，即MODBUS over Serial Line，用于主机与从机之间交换MODBUS请求。&lt;/p&gt;
+&lt;h2&gt;2. MODBUS over Serial Line概述&lt;/h2&gt;
+&lt;p&gt;MODBUS over Serial Line也可被称为MODBUS Serial Line protocol，该协议位于OSI模型的第二层，即数据链路层。它是一种主从式的协议，支持的物理层协议是TIA/EIA-485或TIA/EIA-232，即RS485和RS232。&lt;/p&gt;
+&lt;h2&gt;3. MODBUS …&lt;/h2&gt;</summary><content type="html">&lt;h1&gt;MODBUS over Serial Line介绍&lt;/h1&gt;
 &lt;p&gt;本文参考'MODBUS over Serial Line V1.02'，根据个人的理解对MODBUS over Serial Line进行介绍，若要阅读协议文档请访问&lt;a href="http://www.modbus.org"&gt;MODBUS官网&lt;/a&gt;。&lt;/p&gt;
 &lt;h2&gt;1. MODBUS简介&lt;/h2&gt;
 &lt;p&gt;MODBUS标准定义了一个应用层的消息传输协议，即位于OSI模型的第七层，它为连接至不同类型总线或网络的设备提供了Client/Server通信机制。此外，MODBUS也标定了一个串行线上的协议，即MODBUS over Serial Line，用于主机与从机之间交换MODBUS请求。&lt;/p&gt;
@@ -745,12 +915,12 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;/ul&gt;
 &lt;h3&gt;3.3 帧结构&lt;/h3&gt;
 &lt;p&gt;帧结构图如下，PDU即Protocol Data Unit。主机下达请求时，将从机的地址写入地址字段，从机返回响应时，将自己的地址写入地址字段。功能码用于指示功能，数据字段包含请求或响应的参数。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ModbusPDU.png" src="/images/ModbusPDU.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ModbusPDU.png" src="/images/ModbusPDU.png"&gt;&lt;/p&gt;
 &lt;h3&gt;3.4 状态转换图&lt;/h3&gt;
 &lt;p&gt;主机状态转换图：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ModbusMasterStat.png" src="/images/ModbusMasterStat.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ModbusMasterStat.png" src="/images/ModbusMasterStat.png"&gt;&lt;/p&gt;
 &lt;p&gt;从机状态转换图：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ModbusSlaveStat.png" src="/images/ModbusSlaveStat.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ModbusSlaveStat.png" src="/images/ModbusSlaveStat.png"&gt;&lt;/p&gt;
 &lt;h3&gt;3.5 两种串行传输模式——RTU与ASCII&lt;/h3&gt;
 &lt;h4&gt;3.5.1 RTU模式&lt;/h4&gt;
 &lt;p&gt;RTU即Remote Terminal Unit，该模式下，数据以二进制数字形式传输，例如需传输的一个字节是0x5B，实际传输的数据也是0x5B。RTU模式主要包含如下几点约定：&lt;/p&gt;
@@ -767,7 +937,16 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;li&gt;帧结构包含1字符起始字段、2字符从机地址、2字符功能码、0－2x252字符数据、2字符LRC校验、2字符结束字段；&lt;/li&gt;
 &lt;li&gt;起始字段是冒号“:”，结束字段是CR和LF。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</summary><category term="MODBUS"></category></entry><entry><title>Getting Started with MQTT</title><link href="https://wang-xinyu.github.io/getting-started-with-mqtt.html" rel="alternate"></link><updated>2015-11-27T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-27:getting-started-with-mqtt.html</id><summary type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
+&lt;p&gt;注：本文为作者原创，欢迎批评指正，转载请注明出处。&lt;/p&gt;</content><category term="MODBUS"></category></entry><entry><title>Getting Started with MQTT</title><link href="https://wang-xinyu.github.io/getting-started-with-mqtt.html" rel="alternate"></link><published>2015-11-27T00:00:00+08:00</published><updated>2015-11-27T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-27:/getting-started-with-mqtt.html</id><summary type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
+&lt;p&gt;本文参考&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;，根据个人的理解对MQTT进行入门级的介绍。&lt;/p&gt;
+&lt;h2&gt;1. 概述&lt;/h2&gt;
+&lt;p&gt;MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。&lt;/p&gt;
+&lt;p&gt;MQTT是极其简单、轻量级的协议，这是针对IoT的带宽低、延迟高、不稳定、终端设备功能简单等特点而设计的。MQTT在简单轻量的同时保证了通信的有效性和可靠性。&lt;/p&gt;
+&lt;p&gt;MQTT采用客户端和服务器之间发布／订阅的方式进行消息传递。客户端可向服务器发布消息，也可向服务器订阅其它客户端发布的消息。服务器可被视为发布消息的客户端和订阅消息的客户端之间的中介。客户端之间不可直接传递消息，必须通过中介（服务器）来发布／订阅消息。&lt;/p&gt;
+&lt;p&gt;MQTT可基于TCP/IP或其它有序的、丢包率低的、双向的网络协议。&lt;/p&gt;
+&lt;p&gt;MQTT控制包（Control Packet）是网络中传输的MQTT信息的总称，控制包分为14种类型。&lt;/p&gt;
+&lt;h2&gt;2. MQTT内容概况&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1 …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;h1&gt;MQTT入门介绍&lt;/h1&gt;
 &lt;p&gt;本文参考&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;，根据个人的理解对MQTT进行入门级的介绍。&lt;/p&gt;
 &lt;h2&gt;1. 概述&lt;/h2&gt;
 &lt;p&gt;MQTT（MQ Telemetry Transport）是应用于M2M/IoT的传输协议，来自于IBM，已于2014年正式成为了OASIS标准。&lt;/p&gt;
@@ -783,19 +962,39 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;p&gt;（4）加密问题。&lt;/p&gt;
 &lt;h2&gt;3. 控制包格式&lt;/h2&gt;
 &lt;p&gt;MQTT控制包只有三部分，固定头、可选头、净荷，如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="MQTTctrlPktStruc.png" src="/images/MQTTctrlPktStruc.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="MQTTctrlPktStruc.png" src="/images/MQTTctrlPktStruc.png"&gt;&lt;/p&gt;
 &lt;p&gt;固定头是每一种控制包都有的，大小为2Byte，包括控制包类型、标志和剩余长度三个字段，如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="MQTTfixHead.png" src="/images/MQTTfixHead.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="MQTTfixHead.png" src="/images/MQTTfixHead.png"&gt;&lt;/p&gt;
 &lt;p&gt;可选头和净荷都存在于其中几种类型的控制包中，内容取决于包类型。&lt;/p&gt;
 &lt;h2&gt;4. 控制包类型&lt;/h2&gt;
 &lt;p&gt;下表是MQTT控制包的14种类型，C2S代表客户端到服务器，S2C反之。各类型控制包的具体内容请参阅&lt;a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html"&gt;MQTT Version 3.1.1&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="MQTTctrlPktCtgry.png" src="/images/MQTTctrlPktCtgry.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="MQTTctrlPktCtgry.png" src="/images/MQTTctrlPktCtgry.png"&gt;&lt;/p&gt;
 &lt;h2&gt;5. QoS等级和消息传递流程&lt;/h2&gt;
 &lt;p&gt;MQTT应用消息的传递有3个保障级别，即3个QoS等级。不同QoS等级对应着不同的消息传递流程。&lt;/p&gt;
 &lt;p&gt;（1）QoS 0: At most once delivery，至多一次传递。发送端仅发送一次，无重传，接收端无响应。消息可能到达接收端一次或零次。&lt;/p&gt;
 &lt;p&gt;（2）QoS 1: At least once delivery，至少一次传递。接收端收到消息后返回PUBACK，消息至少到达接收端一次。&lt;/p&gt;
 &lt;p&gt;（3）QoS 2: Exactly once delivery，消息传且仅传一次。此级别不允许丢包和消息重复。消息要经过两次确认，第一次发送端发送PUBLISH，接收端返回PUBREC；随后第二次发送端发送PUBREL，接收端返回PUBCOMP。&lt;/p&gt;
-&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</summary><category term="MQTT"></category></entry><entry><title>Concepts for ES</title><link href="https://wang-xinyu.github.io/concepts-for-es.html" rel="alternate"></link><updated>2015-11-06T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-06:concepts-for-es.html</id><summary type="html">&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
+&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</content><category term="MQTT"></category></entry><entry><title>Concepts for ES</title><link href="https://wang-xinyu.github.io/concepts-for-es.html" rel="alternate"></link><published>2015-11-06T00:00:00+08:00</published><updated>2015-11-06T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-11-06:/concepts-for-es.html</id><summary type="html">&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
+&lt;h2&gt;1. 什么是嵌入式系统？&lt;/h2&gt;
+&lt;h3&gt;维基百科的定义&lt;/h3&gt;
+&lt;p&gt;嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。&lt;/p&gt;
+&lt;h3&gt;TechTarget的定义&lt;/h3&gt;
+&lt;p&gt;嵌入式系统是一些计算机软硬件的集合，它是功能固定的或者可编程的，它是专门为一个特殊的功能而设计的。&lt;/p&gt;
+&lt;h3&gt;WeboPedia的定义&lt;/h3&gt;
+&lt;p&gt;一种专用的计算机系统，是一个大型系统或机械的一部分。通常，一个嵌入式系统位于一块单处理器的板子上，程序存在ROM中。&lt;/p&gt;
+&lt;h3&gt;TechoPedia的定义&lt;/h3&gt;
+&lt;p&gt;嵌入式系统是为一两个特殊功能而设计的专用计算机系统。这个系统被嵌入到一个完整的硬件设备中。嵌入式系统由一个或多个处理芯片管理，如MCU、DSP、FPGA、ASIC等。&lt;/p&gt;
+&lt;h3&gt;我的理解&lt;/h3&gt;
+&lt;p&gt;嵌入式系统是一个专用的计算机系统，嵌入到一套设备中，完成特定的功能。可以有也可以没有操作系统。&lt;/p&gt;
+&lt;h2&gt;2. 可用性、可靠性、安全性、保险性&lt;/h2&gt;
+&lt;h3&gt;可用性Availability&lt;/h3&gt;
+&lt;p&gt;系统在某个时间点是可运行的，并能够提供所期望服务的概率。&lt;/p&gt;
+&lt;h3&gt;可靠性Reliability&lt;/h3&gt;
+&lt;p&gt;系统在给定的时间内，给定的环境下，为给定目的而执行的系统操作保持无失效的概率。&lt;/p&gt;
+&lt;h3&gt;安全性Security&lt;/h3&gt;
+&lt;p&gt;系统保护自身不被外界故意或无意攻击的能力。&lt;/p&gt;
+&lt;h3&gt;保险性Safety&lt;/h3&gt;
+&lt;p&gt;系统运行期间不对人身或周边环境带来伤害的能力 …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;嵌入式系统的相关概念&lt;/h1&gt;
 &lt;h2&gt;1. 什么是嵌入式系统？&lt;/h2&gt;
 &lt;h3&gt;维基百科的定义&lt;/h3&gt;
 &lt;p&gt;嵌入式系统（Embedded system），是一种「嵌入机械或电气系统内部、具有专属功能的计算机系统」，通常要求实时计算性能。&lt;/p&gt;
@@ -817,4 +1016,4 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;h3&gt;保险性Safety&lt;/h3&gt;
 &lt;p&gt;系统运行期间不对人身或周边环境带来伤害的能力。&lt;/p&gt;
 &lt;p&gt;未完待续......&lt;/p&gt;
-&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</summary><category term="ES"></category></entry></feed>
+&lt;p&gt;注：本文为作者原创，转载请注明出处。&lt;/p&gt;</content><category term="ES"></category></entry></feed>

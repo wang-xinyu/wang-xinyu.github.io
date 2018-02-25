@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/programming-language.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2015-12-08T00:00:00+08:00</updated><entry><title>Summary of C Traps</title><link href="https://wang-xinyu.github.io/summary-of-c-traps.html" rel="alternate"></link><updated>2015-12-08T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-08:summary-of-c-traps.html</id><summary type="html">&lt;h1&gt;C陷阱总结&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlogWX - Programming Language</title><link href="https://wang-xinyu.github.io/" rel="alternate"></link><link href="https://wang-xinyu.github.io/feeds/programming-language.atom.xml" rel="self"></link><id>https://wang-xinyu.github.io/</id><updated>2015-12-08T00:00:00+08:00</updated><entry><title>Summary of C Traps</title><link href="https://wang-xinyu.github.io/summary-of-c-traps.html" rel="alternate"></link><published>2015-12-08T00:00:00+08:00</published><updated>2015-12-08T00:00:00+08:00</updated><author><name>WangXinyu</name></author><id>tag:wang-xinyu.github.io,2015-12-08:/summary-of-c-traps.html</id><summary type="html">&lt;h1&gt;C陷阱总结&lt;/h1&gt;
 &lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
 &lt;p&gt;本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。&lt;/p&gt;
 &lt;h2&gt;1. const修饰符&lt;/h2&gt;
 &lt;p&gt;const指常量、常数。const与#define相比，效率更高。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;const int i;                /* i不可变 */
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;const int i;                /* i不可变 */
+int const i;                /* i不可变 */
+int const a[3]={1, 2, 3};   /* 数组不可变 */
+const int a[3]={1, 2, 3};   /* 数组不可变 */
+const int *p;               /* p 可变，p 指向的对象不可变 */
+int const *p;               /* p 可变 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;C陷阱总结&lt;/h1&gt;
+&lt;h4&gt;版权声明：本文为作者原创，欢迎批评指正，谢绝转载。&lt;/h4&gt;
+&lt;p&gt;本文记录笔者在学习和实践中遇到的C问题，将随着学习的深入不断更新。&lt;/p&gt;
+&lt;h2&gt;1. const修饰符&lt;/h2&gt;
+&lt;p&gt;const指常量、常数。const与#define相比，效率更高。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;const int i;                /* i不可变 */
 int const i;                /* i不可变 */
 int const a[3]={1, 2, 3};   /* 数组不可变 */
 const int a[3]={1, 2, 3};   /* 数组不可变 */
@@ -23,7 +33,7 @@ const int *const p;         /* 指针p 和p 指向的对象都不可变 */
 &lt;p&gt;在函数内部通过前面固定参数的地址获取可变参数的地址，从而可以在函数内部处理这些可变参数。&lt;/p&gt;
 &lt;h2&gt;4. 语句块&lt;/h2&gt;
 &lt;p&gt;由{}括起来的若干条语句组成一个语句块。如下所示，语句块构成一个作用域，函数内的i和语句块中的i不同，语句块中的j的作用域只是语句块内。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;void foo(void)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;void foo(void)
 {
     int i = 0;
     {
@@ -41,7 +51,7 @@ const int *const p;         /* 指针p 和p 指向的对象都不可变 */
 &lt;p&gt;如果全局变量在定义时不初始化，则初始值是0，也就是说，整型的就是0，字符型的就是'\0'，浮点型的就是0.0。如果局部变量在定义时不初始化，则初始值是不确定的，所以，局部变量在使用前一定要先赋值，不管是通过初始化还是赋值运算符。&lt;/p&gt;
 &lt;h2&gt;6. 结构体的初始化和赋值&lt;/h2&gt;
 &lt;p&gt;如果Initializer中的数据比结构体的成员多，编译器会报错，但如果只是末尾多个逗号不算错。如果Initializer中的数据比结构体的成员少，未指定的成员将用0来初始化，就像未初始化的全局变量一样。例如以下几种形式的初始化都是合法的，但结构体直接赋值是非法的。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;struct complex_struct { double x, y; };
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;struct complex_struct { double x, y; };
 struct complex_struct z1 = { x, 4.0, }; /* z1.x=3.0, z1.y=4.0 */
 struct complex_struct z2 = { 3.0, };        /* z2.x=3.0, z2.y=0.0 */
 struct complex_struct z3 = { };             /* z3.x=0.0, z3.y=0.0 */
@@ -56,7 +66,7 @@ z1 = { 3.0, 4.0 };                          /* illegal */
 &lt;p&gt;而对于用引号包含的头文件，gcc首先查找包含头文件的.c文件所在的目录，然后查找-I选项指定的目录，然后查找系统的头文件目录。&lt;/p&gt;
 &lt;h2&gt;8. 指针数组和指向数组的指针&lt;/h2&gt;
 &lt;p&gt;int *a[10]是指针数组，而int (*a)[10]是指向数组的指针。我们可以认为[]比*有更高的优先级，如果a先和*结合则表示a是一个指针，如果a先和[]结合则表示a是一个数组。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* int *a[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cm"&gt;/* int *a[10];可以拆成以下两句 */&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 typedef&lt;span class="w"&gt; &lt;/span&gt;int&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;t&lt;span class="err"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 t&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="err"&gt;];&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
@@ -66,4 +76,4 @@ t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;a&lt;sp
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;持续更新中......&lt;/p&gt;</summary><category term="C"></category></entry></feed>
+&lt;p&gt;持续更新中......&lt;/p&gt;</content><category term="C"></category></entry></feed>

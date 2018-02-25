@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="修改Raspbian的用户名 版权声明：本文为作者原创，欢迎批评指正，谢绝转载。 本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。 1. 启用root用户 输入两遍密码解锁root用户，最后通过su验证root用户是否已经启用。 pi@raspberrypi:~ $ sudo passwd root Enter new UNIX password: Retype new ...">
+        <meta name="description" content="修改Raspbian的用户名 版权声明：本文为作者原创，欢迎批评指正，谢绝转载。 本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。 1. 启用root用户 输入两遍密码解锁root用户，最后通过su验证root用户是否已经启用。 pi@raspberrypi:~ $ sudo passwd root Enter new UNIX password: Retype new...">
         <meta name="keywords" content="Linux, Raspi">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
@@ -106,7 +106,7 @@
 <p>本文将介绍通过SSH修改Raspbian默认用户名pi的详细过程。</p>
 <h2>1. 启用root用户</h2>
 <p>输入两遍密码解锁root用户，最后通过su验证root用户是否已经启用。</p>
-<div class="highlight"><pre>pi@raspberrypi:~ $ sudo passwd root
+<div class="highlight"><pre><span></span>pi@raspberrypi:~ $ sudo passwd root
 Enter new UNIX password: 
 Retype new UNIX password: 
 passwd: password updated successfully
@@ -122,7 +122,7 @@ root@raspberrypi:/home/pi#
 
 <h2>2. 允许SSH登录root用户</h2>
 <p>SSH出于安全考虑，默认不允许登录root用户，需修改配置文件/etc/ssh/sshd_config，将PermitRootLogin的属性改为yes。</p>
-<div class="highlight"><pre>#PermitRootLogin without-password
+<div class="highlight"><pre><span></span>#PermitRootLogin without-password
 PermitRootLogin yes
 </pre></div>
 
@@ -130,7 +130,7 @@ PermitRootLogin yes
 <h2>3. 修改Boot选项</h2>
 <p>利用raspi-config工具修改Boot选项，将自动以pi用户登录，改为requiring user to login。修改后重启。</p>
 <h2>4. SSH登录root用户</h2>
-<div class="highlight"><pre><span class="n">wxy</span><span class="p">@</span><span class="nl">wxy</span><span class="p">:</span><span class="o">~</span> <span class="err">$</span> <span class="n">ssh</span> <span class="n">root</span><span class="mf">@192.168.1.135</span>
+<div class="highlight"><pre><span></span><span class="n">wxy</span><span class="p">@</span><span class="nl">wxy</span><span class="p">:</span><span class="o">~</span> <span class="err">$</span> <span class="n">ssh</span> <span class="n">root</span><span class="mf">@192.168.1.135</span>
 <span class="nl">password</span><span class="p">:</span> 
 <span class="n">root</span><span class="p">@</span><span class="nl">raspberrypi</span><span class="p">:</span><span class="o">~</span><span class="err">#</span>
 </pre></div>
@@ -138,7 +138,7 @@ PermitRootLogin yes
 
 <h2>5. 修改名字</h2>
 <p>修改user name，group name，home路径名，以及/etc/passwd中的home路径。</p>
-<div class="highlight"><pre>root@raspberrypi:~# usermod -l urname pi
+<div class="highlight"><pre><span></span>root@raspberrypi:~# usermod -l urname pi
 root@raspberrypi:~# groupmod -n urname pi
 root@raspberrypi:~# mv /home/pi/ /home/urname
 root@raspberrypi:~# usermod -d /home/urname urname
@@ -147,7 +147,7 @@ root@raspberrypi:~# usermod -d /home/urname urname
 
 <h2>6. 配置新用户的sudo权限</h2>
 <p>修改/etc/sudoers文件，将具有sudo权限的pi改为urname。</p>
-<div class="highlight"><pre>pi ALL=(ALL) NOPASSWD: ALL
+<div class="highlight"><pre><span></span>pi ALL=(ALL) NOPASSWD: ALL
 改为
 urname ALL=(ALL) NOPASSWD: ALL
 </pre></div>

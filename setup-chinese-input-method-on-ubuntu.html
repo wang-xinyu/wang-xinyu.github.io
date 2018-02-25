@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Ubuntu设置中文输入法IBus 1. 安装语言包 打开System Settings–&gt;Language Support–&gt;Install/Remove Languages，安装Chinese(simplified)。 2. 安裝IBus框架 $ sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4 3. ...">
+        <meta name="description" content="Ubuntu设置中文输入法IBus 1. 安装语言包 打开System Settings–&gt;Language Support–&gt;Install/Remove Languages，安装Chinese(simplified)。 2. 安裝IBus框架 $ sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4 3....">
         <meta name="keywords" content="Linux">
         <link rel="icon" href="https://wang-xinyu.github.io/favicon.ico">
 
@@ -105,25 +105,25 @@
 <h2>1. 安装语言包</h2>
 <p>打开System Settings–&gt;Language Support–&gt;Install/Remove Languages，安装Chinese(simplified)。</p>
 <h2>2. 安裝IBus框架</h2>
-<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
+<div class="highlight"><pre><span></span>$ sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
 </pre></div>
 
 
 <h2>3. 启用IBus框架</h2>
 <p>运行以下命令，重启电脑。</p>
-<div class="highlight"><pre><span class="nv">$ </span>im-switch -s ibus     // Ubuntu 14.04
-<span class="nv">$ </span>im-config -s ibus     // Ubuntu 16.04
+<div class="highlight"><pre><span></span>$ im-switch -s ibus     // Ubuntu <span class="m">14</span>.04
+$ im-config -s ibus     // Ubuntu <span class="m">16</span>.04
 </pre></div>
 
 
 <h2>4. 安装拼音引擎</h2>
-<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install ibus-pinyin
+<div class="highlight"><pre><span></span>$ sudo apt-get install ibus-pinyin
 </pre></div>
 
 
 <h2>5. 设置IBus框架</h2>
 <p>运行如下命令，在弹出的窗口中选择Add-&gt;Chinese-&gt;Pinyin</p>
-<div class="highlight"><pre><span class="nv">$ </span>ibus-setup
+<div class="highlight"><pre><span></span>$ ibus-setup
 </pre></div>
 
 
@@ -131,7 +131,7 @@
 <p>打开System Settings–&gt;Text Entry-&gt;Add(+)-&gt;Chinese(Pinyin)(IBus)</p>
 <h2>7. 如果拼音打字不正常</h2>
 <p>尝试在运行如下命令：</p>
-<div class="highlight"><pre><span class="nv">$ </span>ibus-daemon -drx
+<div class="highlight"><pre><span></span>$ ibus-daemon -drx
 </pre></div>
 
 
